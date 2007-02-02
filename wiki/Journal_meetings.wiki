@@ -2,3 +2,5 @@
 
 We talked about the amount of text that the user would be allowed to copy to Read2me.
 How are we gonna handle the navigation between 
+
+remi
