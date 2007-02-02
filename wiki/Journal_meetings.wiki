@@ -2,7 +2,7 @@
 
 We talked about the amount of text that the user would be allowed to copy to Read2me.
 
-How are we gonna handle the navigation in the text.
+How are we gonna handle the navigation in the text. <br>
 What do we consider as a paragraph end marker? 
 What do we consider as a sentence end marker? ?!.;:/""
 It may take more time than what we thought.
