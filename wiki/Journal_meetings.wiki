@@ -1,6 +1,8 @@
 #This page will present an overall summary of all the decision we took and all the ideas we thought about during the meetings.
 
 We talked about the amount of text that the user would be allowed to copy to Read2me.
-How are we gonna handle the navigation between 
 
-remi
+How are we gonna handle the navigation in the text.
+What do we consider as a paragraph end marker? 
+What do we consider as a sentence end marker? ?!.;:/""
+It may take more time than what we thought.
