@@ -1,2 +1,4 @@
 #Each member can put here all the links that might be useful for others
 
+== SWT ==
+[http://www.eclipse.org/swt/ main page for SWT]
