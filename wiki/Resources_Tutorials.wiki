@@ -2,3 +2,6 @@
 
 == SWT ==
 [http://www.eclipse.org/swt/ main page for SWT]
+
+== Free TTS ==
+[http://freetts.sourceforge.net/docs/ Main page for Free TTS]
