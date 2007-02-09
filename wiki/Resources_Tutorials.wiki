@@ -2,8 +2,7 @@
 
 == SWT ==
   * [http://www.eclipse.org/swt/ main page for SWT]
-  * [http://www.java2s.com/ Examples for SWT]
+  * [http://www.java2s.com/Code/Java/SWT-JFace-Eclipse/CatalogSWT-JFace-Eclipse.htm/ Examples for SWT]
 
 == Free TTS ==
 [http://freetts.sourceforge.net/docs/ Main page for Free TTS]
-
