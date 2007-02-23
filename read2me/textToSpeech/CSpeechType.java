@@ -1,4 +1,4 @@
-
+package textToSpeech;
 /**
  * Defines constants which represent different types of CSpeechObjects,
  * which can be played by the CPlayer.
