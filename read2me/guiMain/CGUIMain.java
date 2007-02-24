@@ -267,8 +267,11 @@ public class CGUIMain {
     	// Listener Stop button
     	Bstop.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
-                textArea.setText("Stop playing");
+                //textArea.setText("Stop playing");
                 player.stop();
+                player.resume();
+                Bplay.setImage(Iplay);
+            	playPause = "play";
               }
 
               public void widgetDefaultSelected(SelectionEvent event) {
