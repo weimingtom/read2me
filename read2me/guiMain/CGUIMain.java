@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.browser.*;
+import textToSpeech.*;
    
 
 public class CGUIMain {
@@ -16,7 +17,12 @@ public class CGUIMain {
     
 	
 	public static void main(String[] a){
-    	d = new Display();
+    	
+		final CPlayerInterface player = new CPlayer();   
+		player.createSynthesizers();
+		player.setSynthesizer(1);
+				
+		d = new Display();
         s = new Shell(d);
 
         GridLayout layout = new GridLayout();
@@ -131,6 +137,7 @@ public class CGUIMain {
     	data.horizontalSpan = 7;
     	data.grabExcessHorizontalSpace = true;
     	final StyledText textArea = new StyledText(s, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+    	textArea.setWordWrap(true);
     	textArea.setLayoutData(data);
     	
     	// Speed Label
@@ -229,18 +236,29 @@ public class CGUIMain {
     	Bplay.addSelectionListener(new SelectionListener() {
 
             public void widgetSelected(SelectionEvent event) {
-              if(playPause.equalsIgnoreCase("play"))
-              {
-            	  Bplay.setImage(Ipause);
-            	  playPause = "pause";
-            	  textArea.setText("Currently playing");
-              }  
-              else
-              {
-            	  Bplay.setImage(Iplay);
-            	  playPause = "play";
-            	  textArea.setText("Currently in pause");
-              }
+	            if(playPause.equalsIgnoreCase("play")) // player is in play mode
+	            {
+	            	String text = textArea.getText();
+            		System.out.println(text);
+            		if(player.isPaused())
+	            	{
+	            		player.resume();
+	            	}
+	            	else
+	            	{ // just to this part when we first play play
+	            		CSpeechObject speech = CSpeechObject.createTextSpeech(text);
+	            		player.addSpeech(speech);
+	            		player.play(speech);
+	            	}
+	            	Bplay.setImage(Ipause);
+	            	playPause = "pause";
+	            }  
+	            else  // player is in pause
+	            {
+	            	player.pause();
+            		Bplay.setImage(Iplay);
+	            	playPause = "play";
+	            }
             }
 
             public void widgetDefaultSelected(SelectionEvent event) {
@@ -250,6 +268,7 @@ public class CGUIMain {
     	Bstop.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
                 textArea.setText("Stop playing");
+                player.stop();
               }
 
               public void widgetDefaultSelected(SelectionEvent event) {
