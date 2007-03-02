@@ -13,9 +13,28 @@ import textToSpeech.*;
 public class CGUIMain {
 	private static String playPause = "Play";
 	private static Shell s;
+	private static Shell s2;
 	private static Display d;
     
+	// ---------------------  Guithread -----------------
 	
+	
+	
+	
+	/*
+	class MyHiddenGuiThread extends Thread {
+
+		public void run() {
+			createGUI();
+			
+			// ClipBoard stuff: connect handler
+			setup(shell.handle);
+			
+			runGUI();
+		}
+	}*/
+
+	// ------------------ Main ------------------------------
 	public static void main(String[] a){
     	
 		final CPlayerInterface player = new CPlayer();   
@@ -24,6 +43,8 @@ public class CGUIMain {
 				
 		d = new Display();
         s = new Shell(d);
+        s2 = new Shell(d);
+        s2.setSize(200, 200);
 
         GridLayout layout = new GridLayout();
         layout.numColumns = 11;
@@ -132,7 +153,7 @@ public class CGUIMain {
     	// text area
     	data = new GridData(GridData.FILL_BOTH);
     	data.verticalIndent = 40;
-    	data.verticalSpan = 3;
+    	data.verticalSpan = 2;
     	data.horizontalSpan = 7;
     	data.grabExcessHorizontalSpace = true;
     	final StyledText textArea = new StyledText(s, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
@@ -183,6 +204,14 @@ public class CGUIMain {
     	volumeValue.setEditable(false);
     	volumeValue.setLayoutData(data);
 		
+    	//not shown button
+    	data = new GridData(SWT.CENTER);
+    	data.horizontalSpan = 7;
+    	Button BnotShown4 = new Button(s, SWT.PUSH);
+    	BnotShown4.setText("Not shown");
+    	BnotShown4.setVisible(false);
+    	BnotShown4.setLayoutData(data);
+    	
     	// Right Value
 		data = new GridData(GridData.CENTER | GridData.HORIZONTAL_ALIGN_END);
     	data.horizontalSpan = 2;
@@ -288,9 +317,8 @@ public class CGUIMain {
     	// Listener Tip button
     	Btip.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
-                textArea.setText("display an html page with the help");
-                //Display display = new Display();
-                Shell shell = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
+                //textArea.setText("display an html page with the help");
+                Shell shell = new Shell(d);
                 shell.setLayout(new FillLayout());
                 shell.setSize(500, 400);
                 Browser browser = new Browser(shell,SWT.NONE);
