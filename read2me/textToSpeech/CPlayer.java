@@ -18,6 +18,7 @@ import javax.speech.Central;
 import javax.speech.Engine;
 import javax.speech.EngineException;
 import javax.speech.EngineList;
+import javax.speech.synthesis.SpeakableAdapter;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerModeDesc;
 import javax.speech.synthesis.SynthesizerProperties;
@@ -34,6 +35,8 @@ import javax.swing.ListModel;
 public class CPlayer implements CPlayerInterface {
 
     private Synthesizer synthesizer;
+    private SpeakableAdapter speakableAdapter;
+    private CR2MSpeakableAdapter speakListener;
     private boolean paused = false;
     private boolean stopped = false;
     private boolean playingFile = false;
@@ -87,6 +90,9 @@ public class CPlayer implements CPlayerInterface {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        speakListener = new CR2MSpeakableAdapter();
+    	//System.out.println("it got here" + speakListener + " " + synthesizer);
+    	synthesizer.addSpeakableListener(speakListener);
     }
 
     /**
