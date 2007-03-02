@@ -12,11 +12,11 @@ This page purpose is to write down all the issues we may encounter or just the g
     
   * a button mode would allow the user to switch between edit / navigation mode
     It would be great to switch to navigation mode as soon as we click on the play button
+    But having two modes and a button to switch is not a good idea. Too confusing for the        users
 
   * focus on the windows
 
   * need to spare space on the sides and expend the text area
-
 
 
 
