@@ -39,7 +39,6 @@ public class CGUIMain {
         //s.setBackground(d.getSystemColor(SWT.COLOR_BLUE));
         s.setMinimumSize(575, 450);
         s.setText("Read 2 Me!");
-        //s.forceActive();
     	
         final Image Iplay = new Image(d, "./Images/Play.png");
         final Image Ipause = new Image(d, "./Images/Pause.png");
@@ -155,7 +154,7 @@ public class CGUIMain {
     	data.verticalIndent = 20;
     	data.horizontalSpan = 2;
     	final Slider Svolume = new Slider(s, SWT.VERTICAL);
-    	Svolume.setMaximum(25);
+    	Svolume.setMaximum(13);
     	Svolume.setMinimum(0);
     	Svolume.setIncrement(1);
     	Svolume.setPageIncrement(5);
@@ -169,8 +168,8 @@ public class CGUIMain {
     	data.verticalIndent = 20;
     	data.horizontalSpan = 2;
     	final Slider Sspeed = new Slider(s, SWT.VERTICAL);
-    	Sspeed.setMaximum(25);
-    	Sspeed.setMinimum(0);
+    	Sspeed.setMaximum(43);
+    	Sspeed.setMinimum(1);
     	Sspeed.setIncrement(1);
     	Sspeed.setPageIncrement(5);
     	Sspeed.setThumb(3);  // dimension of the thing
@@ -309,6 +308,7 @@ public class CGUIMain {
     	      public void handleEvent(Event event) {
         	        int VValue = Svolume.getMaximum() - Svolume.getSelection() + Svolume.getMinimum() - Svolume.getThumb();
         	        volumeValue.setText("Vol: " +VValue);
+        	        player.setVolume(VValue);
         	      }
         	    });
     	// Listener Speed Slider
@@ -316,6 +316,7 @@ public class CGUIMain {
     	      public void handleEvent(Event event) {
         	        int SValue = Sspeed.getMaximum() - Sspeed.getSelection() + Sspeed.getMinimum() - Sspeed.getThumb();
         	        speedValue.setText("Speed: " +SValue);
+        	        player.setSpeakingSpeed(SValue*10);
         	      }
         	    });
     	
@@ -324,6 +325,7 @@ public class CGUIMain {
             if(!d.readAndDispatch())
                 d.sleep();
         }
+        player.stop();
         d.dispose();
     }
 }
