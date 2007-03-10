@@ -5,14 +5,18 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.layout.*;
 
 public class CToolbar {
 
-	CToolbar(final Shell s, Display d)
+	CToolbar(final Shell s, final Display d)
 	{
+		GridData data = new GridData(GridData.CENTER | GridData.HORIZONTAL_ALIGN_END);
+		data.verticalIndent = -20;
 		final ToolBar bar = new ToolBar(s,SWT.HORIZONTAL);
         bar.setSize(300,10);
         bar.setLocation(0,0);
+        bar.setLayoutData(data);
 
         // create the menu
         Menu m = new Menu(s,SWT.BAR);
@@ -173,7 +177,7 @@ public class CToolbar {
       		public void widgetSelected(SelectionEvent event) {
                //textArea.setText("display an html page with the help");
                //Display display = new Display();
-               Shell shell = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
+               Shell shell = new Shell(d);
                shell.setLayout(new FillLayout());
                shell.setSize(500, 400);
                Browser browser = new Browser(shell,SWT.NONE);

@@ -11,54 +11,37 @@ import textToSpeech.*;
    
 
 public class CGUIMain {
-	private static String playPause = "Play";
+	private static boolean isPlaying = false;
 	private static Shell s;
-	private static Shell s2;
 	private static Display d;
-    
-	// ---------------------  Guithread -----------------
+	private static StyledText textArea;
 	
-	
-	
-	
-	/*
-	class MyHiddenGuiThread extends Thread {
-
-		public void run() {
-			createGUI();
-			
-			// ClipBoard stuff: connect handler
-			setup(shell.handle);
-			
-			runGUI();
-		}
-	}*/
 
 	// ------------------ Main ------------------------------
 	public static void main(String[] a){
-    	
+    	/*
 		final CPlayerInterface player = new CPlayer();   
 		player.createSynthesizers();
 		player.setSynthesizer(1);
+		*/
+		final CGUICommandInterface guiControl = new CGUICommand();
 				
 		d = new Display();
         s = new Shell(d);
-        s2 = new Shell(d);
-        s2.setSize(200, 200);
 
         GridLayout layout = new GridLayout();
         layout.numColumns = 11;
         layout.makeColumnsEqualWidth = false;
         layout.horizontalSpacing = 0;
-        layout.marginTop = 15;
+        layout.marginTop = 5;
         layout.marginLeft = 15;
         layout.marginRight = 15;
         
         s.setLayout(layout);
-        s.setSize(575,450);
+        s.setSize(600,450);
 
         //s.setBackground(d.getSystemColor(SWT.COLOR_BLUE));
-        s.setMinimumSize(575, 450);
+        s.setMinimumSize(600, 450);
         s.setText("Read 2 Me!");
     	
         final Image Iplay = new Image(d, "./Images/Play.png");
@@ -73,65 +56,75 @@ public class CGUIMain {
         final Image Imp3 = new Image(d, "./Images/mp3.png");
         final Image Itip = new Image(d, "./Images/tip.png");
        
-        
+        // Back paragraph button
         GridData data = new GridData(SWT.CENTER);
     	final Button BbackParagraph = new Button(s, SWT.PUSH);
     	BbackParagraph.setImage(IbackParagraph);
     	BbackParagraph.setLayoutData(data);
     	BbackParagraph.setToolTipText("One paragraph back");
     	
+    	// One sentence back Button
     	data = new GridData(SWT.CENTER);
     	Button Bback = new Button(s, SWT.PUSH);
     	Bback.setImage(Iback);
     	Bback.setLayoutData(data);
     	Bback.setToolTipText("One sentence back");
     	
+    	// Next sentence Button
     	data = new GridData(SWT.CENTER);
     	Button Bnext = new Button(s, SWT.PUSH);
     	Bnext.setImage(Inext);
     	Bnext.setLayoutData(data);
     	Bnext.setToolTipText("Next sentence");
     	
+    	// Next Paragraph Button
     	data = new GridData(SWT.CENTER);
     	Button BnextParagraph = new Button(s, SWT.PUSH);
     	BnextParagraph.setImage(InextParagraph);
     	BnextParagraph.setLayoutData(data);
-    	BnextParagraph.setToolTipText("One paragraph further");
+    	BnextParagraph.setToolTipText("Next paragraph");
     	
+    	// Separator
     	Button BnotShown = new Button(s, SWT.PUSH);
     	BnotShown.setText("Not shown");
     	BnotShown.setVisible(false);
     	BnotShown.setLayoutData(data);
     	
+    	// Play pause Button
     	data = new GridData(SWT.CENTER);
     	final Button Bplay = new Button(s, SWT.PUSH);
     	Bplay.setImage(Iplay);
     	Bplay.setLayoutData(data);
     	Bplay.setToolTipText("Play / Pause button");
     	
+    	// Stop Button
     	data = new GridData(SWT.CENTER);
     	Button Bstop = new Button(s, SWT.PUSH);
     	Bstop.setImage(Istop);
     	Bstop.setLayoutData(data);
     	Bstop.setToolTipText("Stop button");
     	
+    	// Separator
     	Button BnotShown2 = new Button(s, SWT.PUSH);
     	BnotShown2.setText("Not shown");
     	BnotShown2.setVisible(false);
     	BnotShown2.setLayoutData(data);
     	
+    	// MP3 Button
     	data = new GridData(SWT.CENTER);
     	Button Bmp3 = new Button(s, SWT.PUSH);
     	Bmp3.setImage(Imp3);
     	Bmp3.setLayoutData(data);
     	Bmp3.setToolTipText("Convert to mp3");
     	
+    	// Separator
     	data = new GridData(SWT.CENTER);
     	Button BnotShown3 = new Button(s, SWT.PUSH);
     	BnotShown3.setText("Not shown");
     	BnotShown3.setVisible(false);
     	BnotShown3.setLayoutData(data);
     	
+    	// tips Buttton
     	data = new GridData(SWT.CENTER);
     	Button Btip = new Button(s, SWT.PUSH);
     	Btip.setImage(Itip);
@@ -142,9 +135,9 @@ public class CGUIMain {
     	
     	
     	// Volume label
-    	data = new GridData(SWT.LEFT | GridData.HORIZONTAL_ALIGN_CENTER | GridData.VERTICAL_ALIGN_BEGINNING);
-    	data.verticalIndent = 20;
-    	data.horizontalSpan = 2;
+    	data = new GridData(SWT.LEFT | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING);
+    	data.verticalIndent = 10;
+    	data.horizontalSpan = 1;
     	Label volumeLabel = new Label(s, SWT.BEGINNING);
     	volumeLabel.setImage(Ivolume);
     	volumeLabel.setLayoutData(data);
@@ -154,17 +147,17 @@ public class CGUIMain {
     	data = new GridData(GridData.FILL_BOTH);
     	data.verticalIndent = 40;
     	data.verticalSpan = 2;
-    	data.horizontalSpan = 7;
+    	data.horizontalSpan = 9;
     	data.grabExcessHorizontalSpace = true;
-    	final StyledText textArea = new StyledText(s, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+    	textArea = new StyledText(s, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
     	textArea.setWordWrap(true);
     	textArea.setLayoutData(data);
     	
     	// Speed Label
-    	data = new GridData(SWT.LEFT | GridData.HORIZONTAL_ALIGN_CENTER | GridData.VERTICAL_ALIGN_BEGINNING);
+    	data = new GridData(SWT.LEFT | GridData.HORIZONTAL_ALIGN_END | GridData.VERTICAL_ALIGN_BEGINNING);
     	data.horizontalIndent = 20;
     	data.verticalIndent = 20;
-    	data.horizontalSpan = 2;
+    	data.horizontalSpan = 1;
     	Label speedLabel = new Label(s, SWT.BEGINNING);
     	speedLabel.setImage(Ispeed);
     	speedLabel.setLayoutData(data);
@@ -173,7 +166,7 @@ public class CGUIMain {
     	// Left Slider
     	data = new GridData(SWT.LEFT | GridData.HORIZONTAL_ALIGN_CENTER | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_VERTICAL);
     	data.verticalIndent = 20;
-    	data.horizontalSpan = 2;
+    	data.horizontalSpan = 1;
     	final Slider Svolume = new Slider(s, SWT.VERTICAL);
     	Svolume.setMaximum(13);
     	Svolume.setMinimum(0);
@@ -181,27 +174,34 @@ public class CGUIMain {
     	Svolume.setPageIncrement(5);
     	Svolume.setThumb(3);  // dimension of the thing
     	Svolume.setToolTipText("Adjust the volume");
+    	Svolume.setSelection(Svolume.getMaximum() - 10 + Svolume.getMinimum() - Svolume.getThumb());
+    	guiControl.volume(10);
     	Svolume.setLayoutData(data);
 	    
     	// Right Slider
 	    data = new GridData(SWT.LEFT | GridData.HORIZONTAL_ALIGN_CENTER | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_VERTICAL);
     	data.horizontalIndent = 20;
     	data.verticalIndent = 20;
-    	data.horizontalSpan = 2;
+    	data.horizontalSpan = 1;
     	final Slider Sspeed = new Slider(s, SWT.VERTICAL);
     	Sspeed.setMaximum(43);
     	Sspeed.setMinimum(1);
     	Sspeed.setIncrement(1);
     	Sspeed.setPageIncrement(5);
-    	Sspeed.setThumb(3);  // dimension of the thing
+    	Sspeed.setThumb(3);
     	Sspeed.setToolTipText("Adjust the reading speed");
+    	Sspeed.setSelection(Sspeed.getMaximum() - 15 + Sspeed.getMinimum() - Sspeed.getThumb());
+    	guiControl.speed(150);
     	Sspeed.setLayoutData(data);
 
 	    // Left Value
     	data = new GridData(GridData.CENTER);
     	data.horizontalSpan = 2;
+    	data.verticalAlignment = SWT.BEGINNING;
     	final Text volumeValue = new Text(s, SWT.BORDER | SWT.SINGLE);
     	volumeValue.setEditable(false);
+    	int tempVolume = Svolume.getMaximum() - Svolume.getSelection() + Svolume.getMinimum() - Svolume.getThumb();
+    	volumeValue.setText("Vol: "+ tempVolume);
     	volumeValue.setLayoutData(data);
 		
     	//not shown button
@@ -217,17 +217,19 @@ public class CGUIMain {
     	data.horizontalSpan = 2;
     	final Text speedValue = new Text(s, SWT.BORDER | SWT.SINGLE);
     	speedValue.setEditable(false);
+    	int tempSpeed = Sspeed.getMaximum() - Sspeed.getSelection() + Sspeed.getMinimum() - Sspeed.getThumb();
+    	speedValue.setText("Speed: "+ tempSpeed);
     	speedValue.setLayoutData(data);
     	
     	final CToolbar toolbar = new CToolbar(s,d);
-    	
     	
     	// LISTENERS
     	
     	// Listener Back Paragraph
     	BbackParagraph.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
-                textArea.setText("Back one paragraph");
+                guiControl.setText(getText());
+                guiControl.backParagraph();
               }
 
               public void widgetDefaultSelected(SelectionEvent event) {
@@ -236,7 +238,9 @@ public class CGUIMain {
     	// Listener back sentence
     	Bback.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
-                textArea.setText("Back one sentence");
+                guiControl.setText(getText());
+                guiControl.backSentence();
+                
               }
 
               public void widgetDefaultSelected(SelectionEvent event) {
@@ -245,7 +249,8 @@ public class CGUIMain {
     	// Listener next sentence
     	Bnext.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
-                textArea.setText("next sentence");
+                guiControl.setText(getText());
+                guiControl.nextSentence();
               }
 
               public void widgetDefaultSelected(SelectionEvent event) {
@@ -254,7 +259,8 @@ public class CGUIMain {
     	// Listener next paragraph
     	BnextParagraph.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
-                textArea.setText("next paragraph");
+                guiControl.setText(getText());
+                guiControl.nextParagraph();
               }
 
               public void widgetDefaultSelected(SelectionEvent event) {
@@ -264,10 +270,18 @@ public class CGUIMain {
     	Bplay.addSelectionListener(new SelectionListener() {
 
             public void widgetSelected(SelectionEvent event) {
-	            if(playPause.equalsIgnoreCase("play")) // player is in play mode
+	            
+            	guiControl.setText(getText());
+            	isPlaying = guiControl.play(isPlaying);
+            	if(isPlaying == true)
+            		Bplay.setImage(Ipause);
+            	else
+            		Bplay.setImage(Iplay);
+            	/*
+            	if(isPlaying == false) // player is in play mode
 	            {
-	            	String text = textArea.getText();
-            		System.out.println(text);
+	            	String text = getText();
+            		//System.out.println(text);
             		if(player.isPaused())
 	            	{
 	            		player.resume();
@@ -279,14 +293,14 @@ public class CGUIMain {
 	            		player.play(speech);
 	            	}
 	            	Bplay.setImage(Ipause);
-	            	playPause = "pause";
+	            	isPlaying = true;
 	            }  
 	            else  // player is in pause
 	            {
 	            	player.pause();
             		Bplay.setImage(Iplay);
-	            	playPause = "play";
-	            }
+	            	isPlaying = false;
+	            }*/
             }
 
             public void widgetDefaultSelected(SelectionEvent event) {
@@ -296,10 +310,10 @@ public class CGUIMain {
     	Bstop.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
                 //textArea.setText("Stop playing");
-                player.stop();
-                player.resume();
+                
+                isPlaying = guiControl.stop();
                 Bplay.setImage(Iplay);
-            	playPause = "play";
+            	//isPlaying = false;
               }
 
               public void widgetDefaultSelected(SelectionEvent event) {
@@ -308,7 +322,7 @@ public class CGUIMain {
     	// Listener mp3 button
     	Bmp3.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
-                textArea.setText("Convert to mp3");
+    			guiControl.mp3();
               }
 
               public void widgetDefaultSelected(SelectionEvent event) {
@@ -317,14 +331,13 @@ public class CGUIMain {
     	// Listener Tip button
     	Btip.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
-                //textArea.setText("display an html page with the help");
                 Shell shell = new Shell(d);
                 shell.setLayout(new FillLayout());
                 shell.setSize(500, 400);
                 Browser browser = new Browser(shell,SWT.NONE);
                 //browser.setUrl("http://unc.edu/~rjean");
-                CHTML test = new CHTML();
-                browser.setText(test.getHTML());
+                CHTML textHTML = new CHTML();
+                browser.setText(textHTML.getHTML());
                 shell.open();
               }
 
@@ -336,7 +349,8 @@ public class CGUIMain {
     	      public void handleEvent(Event event) {
         	        int VValue = Svolume.getMaximum() - Svolume.getSelection() + Svolume.getMinimum() - Svolume.getThumb();
         	        volumeValue.setText("Vol: " +VValue);
-        	        player.setVolume(VValue);
+        	        //player.setVolume(VValue);
+        	        guiControl.volume(VValue);
         	      }
         	    });
     	// Listener Speed Slider
@@ -344,7 +358,8 @@ public class CGUIMain {
     	      public void handleEvent(Event event) {
         	        int SValue = Sspeed.getMaximum() - Sspeed.getSelection() + Sspeed.getMinimum() - Sspeed.getThumb();
         	        speedValue.setText("Speed: " +SValue);
-        	        player.setSpeakingSpeed(SValue*10);
+        	        //player.setSpeakingSpeed(SValue*10);
+        	        guiControl.speed(SValue*10);
         	      }
         	    });
     	
@@ -353,7 +368,14 @@ public class CGUIMain {
             if(!d.readAndDispatch())
                 d.sleep();
         }
-        player.stop();
+        //player.stop();
+        guiControl.stop();
         d.dispose();
     }
+	
+	private static String getText()
+	{
+		return textArea.getText();
+	}
+	
 }
