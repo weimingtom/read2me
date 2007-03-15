@@ -1,4 +1,4 @@
-package guiMain;
+package gui;
  
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
@@ -20,7 +20,7 @@ public class CToolbar {
 
         // create the menu
         Menu m = new Menu(s,SWT.BAR);
-
+ 
         // create a file menu and add an exit item
         final MenuItem file = new MenuItem(m, SWT.CASCADE);
         file.setText("&File");

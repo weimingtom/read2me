@@ -1,4 +1,6 @@
-package guiMain;
+package gui;
+
+//import org.eclipse.swt.graphics.*;
 
 public class CHTML {
 	private String Html = "<html> <head>"
@@ -10,7 +12,7 @@ public class CHTML {
 	
 	public CHTML()
 	{
-		
+		 
 	}
 	
 	public String getHTML()

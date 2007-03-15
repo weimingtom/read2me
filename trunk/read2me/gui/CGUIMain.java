@@ -1,4 +1,4 @@
-package guiMain;
+package gui;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.browser.*;
-import textToSpeech.*;
+//import textToSpeech.*;
    
 
 public class CGUIMain {
@@ -18,13 +18,13 @@ public class CGUIMain {
 	
 
 	// ------------------ Main ------------------------------
-	public static void main(String[] a){
+	public CGUIMain(final CGUICommandInterface guiControl){
     	/*
 		final CPlayerInterface player = new CPlayer();   
 		player.createSynthesizers();
 		player.setSynthesizer(1);
 		*/
-		final CGUICommandInterface guiControl = new CGUICommand();
+		//final CGUICommandInterface guiControl = new CGUICommand();
 				
 		d = new Display();
         s = new Shell(d);
@@ -234,7 +234,7 @@ public class CGUIMain {
 
               public void widgetDefaultSelected(SelectionEvent event) {
               }
-    	});
+    	}); 
     	// Listener back sentence
     	Bback.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
@@ -261,6 +261,11 @@ public class CGUIMain {
     		public void widgetSelected(SelectionEvent event) {
                 guiControl.setText(getText());
                 guiControl.nextParagraph();
+                /*String textd = getText();
+                textArea.setCaretOffset(10);
+                int pouet  = textArea.getCaretOffset();
+                System.out.println(textd.charAt(pouet));  // 20 _ u
+                */
               }
 
               public void widgetDefaultSelected(SelectionEvent event) {
@@ -338,6 +343,7 @@ public class CGUIMain {
                 //browser.setUrl("http://unc.edu/~rjean");
                 CHTML textHTML = new CHTML();
                 browser.setText(textHTML.getHTML());
+                //browser.setUrl("../images/test.html");
                 shell.open();
               }
 
