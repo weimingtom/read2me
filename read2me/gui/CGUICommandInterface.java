@@ -1,4 +1,4 @@
-package guiMain;
+package gui;
 
 /**
  * Defines the model for interacting between the GUI and the player (FreeTTS or MS SAPI)
@@ -6,7 +6,7 @@ package guiMain;
  * 
  */
 public interface CGUICommandInterface {
-	
+	 
 	/**
 	 * Performs an update of the text that will be read:
 	 * Moves the cursor one paragraph back and start reading.
