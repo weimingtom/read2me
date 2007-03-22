@@ -4,18 +4,18 @@ Team
 Stefan - MS SAPI
  * Talk about the word highlighting
 
-Remi - navigation: 
+Remi - Navigation: 
  * stop at ? ! . ;
  * Do a black list of words we have to ignore
 
 Mickael - Help
  * do the Help window
+ * Preferences GUI
 
 
 Tasks to attribute
  * LAME converter
  * Installer
-
 
 
 
