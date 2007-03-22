@@ -3,6 +3,7 @@ Team
 
 Stefan - MS SAPI
  * Talk about the word highlighting
+ * Put in the interface the export of an audio file
 
 Remi - Navigation: 
  * stop at ? ! . ;
@@ -16,7 +17,6 @@ Mickael - Help
 Tasks to attribute
  * LAME converter
  * Installer
-
 
 
 
