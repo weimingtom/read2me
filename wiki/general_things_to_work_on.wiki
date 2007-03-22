@@ -22,3 +22,6 @@ This page purpose is to write down all the issues we may encounter or just the g
           * titles to hard code for sentence detection
           * semi column are not a new sentence
           * need to implement all kind of punctuation
+
+  * Audio encoder:
+    Would be better to save text to an audio (wave?) file and then to run LAME on this file.
