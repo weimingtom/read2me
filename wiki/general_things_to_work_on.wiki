@@ -19,6 +19,6 @@ This page purpose is to write down all the issues we may encounter or just the g
   * need to spare space on the sides and expend the text area
 
   * Navigation:
-titles to hard code for sentence detection
-semi column are not a new sentence
-need to implement all kind of punctuation
+-titles to hard code for sentence detection
+-semi column are not a new sentence
+-need to implement all kind of punctuation
