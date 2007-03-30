@@ -1,5 +1,6 @@
 package textToSpeech;
 import javax.swing.ListModel;
+import javax.speech.synthesis.SpeakableListener;
 import javax.speech.synthesis.SynthesizerModeDesc;
 
 /**
@@ -60,12 +61,15 @@ public interface CPlayerInterface {
      */
     public void cancel();
 
-
     /**
      * Creates the list of synthesizers.
      */
     public void createSynthesizers();
 
+    /**
+     * Sets speakable listener
+     */
+    public void setListener(SpeakableListener tgListener);
 
     /**
      * Sets the Synthesizer at the given index to use

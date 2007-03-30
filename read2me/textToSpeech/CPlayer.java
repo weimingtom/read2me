@@ -23,6 +23,7 @@ import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerModeDesc;
 import javax.speech.synthesis.SynthesizerProperties;
 import javax.speech.synthesis.Voice;
+import javax.speech.synthesis.SpeakableListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -35,8 +36,7 @@ import javax.swing.ListModel;
 public class CPlayer implements CPlayerInterface {
 
     private Synthesizer synthesizer;
-    private SpeakableAdapter speakableAdapter;
-    private CR2MSpeakableAdapter speakListener;
+    private SpeakableListener speakListener;
     private boolean paused = false;
     private boolean stopped = false;
     private boolean playingFile = false;
@@ -90,9 +90,11 @@ public class CPlayer implements CPlayerInterface {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        speakListener = new CR2MSpeakableAdapter();
-    	//System.out.println("it got here" + speakListener + " " + synthesizer);
-    	synthesizer.addSpeakableListener(speakListener);
+        //speakListener = new CR2MListener();
+    }
+    
+    public void setListener(SpeakableListener tgListener){
+    	speakListener = tgListener;
     }
 
     /**
@@ -159,7 +161,9 @@ public class CPlayer implements CPlayerInterface {
      * @param text the text to perform TTS
      */
     private void play(String text) {
-	synthesizer.speakPlainText(text, null);
+    	if(speakListener == null)
+    		speakListener = new CR2MListener();
+    	synthesizer.speakPlainText(text, speakListener);
     }
     
 
@@ -170,7 +174,9 @@ public class CPlayer implements CPlayerInterface {
      */
     private void playJSML(String jsmlText) {
 	try {
-	    synthesizer.speak(jsmlText, null);
+		if(speakListener == null)
+    		speakListener = new CR2MListener();
+		synthesizer.speak(jsmlText, speakListener);
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
@@ -282,7 +288,7 @@ public class CPlayer implements CPlayerInterface {
     }
 
     /**
-     * Close this playable
+     * Close this object
      */
     public void close() {
 	for (Iterator i = loadedSynthesizers.iterator(); i.hasNext();) {
@@ -294,8 +300,7 @@ public class CPlayer implements CPlayerInterface {
 	    }
 	}
     }
-
-
+    
     /**
      * Returns true if the CPlayer is currently being stopped.
      *
