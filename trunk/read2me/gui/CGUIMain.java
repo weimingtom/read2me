@@ -1,5 +1,7 @@
 package gui;
 
+import java.io.File;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.*;
@@ -42,19 +44,19 @@ public class CGUIMain {
 
         //s.setBackground(d.getSystemColor(SWT.COLOR_BLUE));
         s.setMinimumSize(600, 450);
-        s.setText("Read 2 Me!");
+        s.setText("Read2Me!");
     	
-        final Image Iplay = new Image(d, "./Images/Play.png");
-        final Image Ipause = new Image(d, "./Images/Pause.png");
-        final Image Istop = new Image(d, "./Images/Stop.png");
-        final Image Iback = new Image(d, "./Images/Back.png");
-        final Image IbackParagraph = new Image(d, "./Images/BackParagraph.png");
-        final Image Inext = new Image(d, "./Images/Next.png");
-        final Image InextParagraph = new Image(d, "./Images/NextParagraph.png");
-        final Image Ivolume = new Image(d, "./Images/Sound.png");
-        final Image Ispeed = new Image(d, "./Images/speedFull.png");
-        final Image Imp3 = new Image(d, "./Images/mp3.png");
-        final Image Itip = new Image(d, "./Images/tip.png");
+        final Image Iplay = new Image(d, "./images/Play.png");
+        final Image Ipause = new Image(d, "./images/Pause.png");
+        final Image Istop = new Image(d, "./images/Stop.png");
+        final Image Iback = new Image(d, "./images/Back.png");
+        final Image IbackParagraph = new Image(d, "./images/BackParagraph.png");
+        final Image Inext = new Image(d, "./images/Next.png");
+        final Image InextParagraph = new Image(d, "./images/NextParagraph.png");
+        final Image Ivolume = new Image(d, "./images/Sound.png");
+        final Image Ispeed = new Image(d, "./images/speedFull.png");
+        final Image Imp3 = new Image(d, "./images/mp3.png");
+        final Image Itip = new Image(d, "./images/tip.png");
        
         // Back paragraph button
         GridData data = new GridData(SWT.CENTER);
@@ -338,13 +340,16 @@ public class CGUIMain {
     		public void widgetSelected(SelectionEvent event) {
                 Shell shell = new Shell(d);
                 shell.setLayout(new FillLayout());
-                shell.setSize(500, 400);
+                shell.setSize(500, 600);
+                shell.setText("Tips and Tricks");
+                shell.setLocation(600, 100);
+                String curDir = System.getProperty("user.dir");
+                String folder = "\\images\\tips.html";
+                curDir= curDir+folder;
+
                 Browser browser = new Browser(shell,SWT.NONE);
-                //browser.setUrl("http://unc.edu/~rjean");
-                CHTML textHTML = new CHTML();
-                browser.setText(textHTML.getHTML());
-                //browser.setUrl("../images/test.html");
-                shell.open();
+                browser.setUrl(curDir);
+                shell.open();                
               }
 
               public void widgetDefaultSelected(SelectionEvent event) {
