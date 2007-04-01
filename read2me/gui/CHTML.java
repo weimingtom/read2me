@@ -1,5 +1,5 @@
 package gui;
-
+import org.eclipse.swt.program.Program;
 //import org.eclipse.swt.graphics.*;
 
 public class CHTML {
@@ -18,6 +18,11 @@ public class CHTML {
 	public String getHTML()
 	{
 		return Html;
+	}
+	
+	public void viewTips()
+	{
+		Program.launch(".\\images\\tips.html");	
 	}
 
 }

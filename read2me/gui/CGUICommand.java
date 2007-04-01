@@ -136,7 +136,9 @@ public class CGUICommand implements CGUICommandInterface{
 	 * Convert the text from the current position to the end into a MP3 file
 	 */
 	public void mp3(){
-		System.out.println("MP3 Converter");
+		//System.out.println("MP3 Converter");
+		CExportDialog exportDialog = new CExportDialog(text);
+		exportDialog.createDialog();
 	}
 	
 	

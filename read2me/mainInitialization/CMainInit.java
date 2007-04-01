@@ -25,8 +25,7 @@ public class CMainInit {
 		CGUICommandInterface guiControl = new CGUICommand(player);
 		
 		// Display the GUI
-		CGUIMain mainGUI = new CGUIMain(guiControl);
-		
+		CGUIMain mainGUI = new CGUIMain(guiControl);	
 		
 	}
 }
