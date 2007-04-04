@@ -1,7 +1,5 @@
 package gui;
 
-import java.io.File;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.*;
@@ -14,13 +12,22 @@ import org.eclipse.swt.browser.*;
 
 public class CGUIMain {
 	private static boolean isPlaying = false;
-	private static Shell s;
-	private static Display d;
+	public static Shell s;
+	public static Display d;
 	private static StyledText textArea;
-	
+	private final Button Bplay;
+	private Button BbackParagraph;
+	private Button Bback;
+	private Button Bnext;
+	private Button BnextParagraph;
+	private Button Bstop;
+	private CGUICommandInterface guiControl;
+	private final Image Iplay; 
+    private final Image Ipause;
 
 	// ------------------ Main ------------------------------
-	public CGUIMain(final CGUICommandInterface guiControl){
+	public CGUIMain(final CGUICommandInterface _guiControl){
+		guiControl = _guiControl;
     	/*
 		final CPlayerInterface player = new CPlayer();   
 		player.createSynthesizers();
@@ -46,42 +53,43 @@ public class CGUIMain {
         s.setMinimumSize(600, 450);
         s.setText("Read2Me!");
     	
-        final Image Iplay = new Image(d, "./images/Play.png");
-        final Image Ipause = new Image(d, "./images/Pause.png");
-        final Image Istop = new Image(d, "./images/Stop.png");
-        final Image Iback = new Image(d, "./images/Back.png");
-        final Image IbackParagraph = new Image(d, "./images/BackParagraph.png");
-        final Image Inext = new Image(d, "./images/Next.png");
-        final Image InextParagraph = new Image(d, "./images/NextParagraph.png");
-        final Image Ivolume = new Image(d, "./images/Sound.png");
-        final Image Ispeed = new Image(d, "./images/speedFull.png");
-        final Image Imp3 = new Image(d, "./images/mp3.png");
-        final Image Itip = new Image(d, "./images/tip.png");
+        Iplay = new Image(d, "./Images/Play.png");
+        Ipause = new Image(d, "./Images/Pause.png");
+        final Image Istop = new Image(d, "./Images/Stop.png");
+        final Image Iback = new Image(d, "./Images/Back.png");
+        final Image IbackParagraph = new Image(d, "./Images/BackParagraph.png");
+        final Image Inext = new Image(d, "./Images/Next.png");
+        final Image InextParagraph = new Image(d, "./Images/NextParagraph.png");
+        final Image Ivolume = new Image(d, "./Images/Sound.png");
+        final Image Ispeed = new Image(d, "./Images/speedFull.png");
+        final Image Imp3 = new Image(d, "./Images/mp3.png");
+        final Image Itip = new Image(d, "./Images/tip.png");
+
        
         // Back paragraph button
         GridData data = new GridData(SWT.CENTER);
-    	final Button BbackParagraph = new Button(s, SWT.PUSH);
+    	BbackParagraph = new Button(s, SWT.PUSH);
     	BbackParagraph.setImage(IbackParagraph);
     	BbackParagraph.setLayoutData(data);
     	BbackParagraph.setToolTipText("One paragraph back");
     	
     	// One sentence back Button
     	data = new GridData(SWT.CENTER);
-    	Button Bback = new Button(s, SWT.PUSH);
+    	Bback = new Button(s, SWT.PUSH);
     	Bback.setImage(Iback);
     	Bback.setLayoutData(data);
     	Bback.setToolTipText("One sentence back");
     	
     	// Next sentence Button
     	data = new GridData(SWT.CENTER);
-    	Button Bnext = new Button(s, SWT.PUSH);
+    	Bnext = new Button(s, SWT.PUSH);
     	Bnext.setImage(Inext);
     	Bnext.setLayoutData(data);
     	Bnext.setToolTipText("Next sentence");
     	
     	// Next Paragraph Button
     	data = new GridData(SWT.CENTER);
-    	Button BnextParagraph = new Button(s, SWT.PUSH);
+    	BnextParagraph = new Button(s, SWT.PUSH);
     	BnextParagraph.setImage(InextParagraph);
     	BnextParagraph.setLayoutData(data);
     	BnextParagraph.setToolTipText("Next paragraph");
@@ -94,14 +102,15 @@ public class CGUIMain {
     	
     	// Play pause Button
     	data = new GridData(SWT.CENTER);
-    	final Button Bplay = new Button(s, SWT.PUSH);
+    	Bplay = new Button(s, SWT.PUSH);
     	Bplay.setImage(Iplay);
     	Bplay.setLayoutData(data);
     	Bplay.setToolTipText("Play / Pause button");
     	
+    	
     	// Stop Button
     	data = new GridData(SWT.CENTER);
-    	Button Bstop = new Button(s, SWT.PUSH);
+    	Bstop = new Button(s, SWT.PUSH);
     	Bstop.setImage(Istop);
     	Bstop.setLayoutData(data);
     	Bstop.setToolTipText("Stop button");
@@ -223,25 +232,44 @@ public class CGUIMain {
     	speedValue.setText("Speed: "+ tempSpeed);
     	speedValue.setLayoutData(data);
     	
+    	@SuppressWarnings("unused")
     	final CToolbar toolbar = new CToolbar(s,d);
     	
     	// LISTENERS
     	
+    	// Listener when we modify the text
+    	/*textArea.addModifyListener(new ModifyListener() {
+    		public void modifyText(ModifyEvent event) {
+    			updateGUIControl(guiControl);
+    		}
+    	});*/
+    	
+    	// link between the 2 classes
+    	guiControl.setGUIMain(this);
+    	
+    	
     	// Listener Back Paragraph
     	BbackParagraph.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
-                guiControl.setText(getText());
+                //guiControl.setText(getText());
+    			updateGUIControl(guiControl);
                 guiControl.backParagraph();
+                //highlight(guiControl);
+                System.out.println("backparagraph");
               }
 
               public void widgetDefaultSelected(SelectionEvent event) {
               }
     	}); 
+    	
+    	
     	// Listener back sentence
     	Bback.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
-                guiControl.setText(getText());
+                //guiControl.setText(getText());
+    			updateGUIControl(guiControl);
                 guiControl.backSentence();
+                highlight(guiControl);
                 
               }
 
@@ -251,8 +279,10 @@ public class CGUIMain {
     	// Listener next sentence
     	Bnext.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
-                guiControl.setText(getText());
+                //guiControl.setText(getText());
+    			updateGUIControl(guiControl);
                 guiControl.nextSentence();
+                highlight(guiControl);
               }
 
               public void widgetDefaultSelected(SelectionEvent event) {
@@ -261,13 +291,10 @@ public class CGUIMain {
     	// Listener next paragraph
     	BnextParagraph.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
-                guiControl.setText(getText());
+    			//updateGUIControl(guiControl);
+    			updateGUIControl(guiControl);
                 guiControl.nextParagraph();
-                /*String textd = getText();
-                textArea.setCaretOffset(10);
-                int pouet  = textArea.getCaretOffset();
-                System.out.println(textd.charAt(pouet));  // 20 _ u
-                */
+                highlight(guiControl);
               }
 
               public void widgetDefaultSelected(SelectionEvent event) {
@@ -277,37 +304,21 @@ public class CGUIMain {
     	Bplay.addSelectionListener(new SelectionListener() {
 
             public void widgetSelected(SelectionEvent event) {
-	            
-            	guiControl.setText(getText());
+
+            	updateGUIControl(guiControl);
             	isPlaying = guiControl.play(isPlaying);
             	if(isPlaying == true)
+            	{
             		Bplay.setImage(Ipause);
+            		textArea.setEditable(false);	
+            	}
             	else
+            	{
             		Bplay.setImage(Iplay);
-            	/*
-            	if(isPlaying == false) // player is in play mode
-	            {
-	            	String text = getText();
-            		//System.out.println(text);
-            		if(player.isPaused())
-	            	{
-	            		player.resume();
-	            	}
-	            	else
-	            	{ // just to this part when we first play play
-	            		CSpeechObject speech = CSpeechObject.createTextSpeech(text);
-	            		player.addSpeech(speech);
-	            		player.play(speech);
-	            	}
-	            	Bplay.setImage(Ipause);
-	            	isPlaying = true;
-	            }  
-	            else  // player is in pause
-	            {
-	            	player.pause();
-            		Bplay.setImage(Iplay);
-	            	isPlaying = false;
-	            }*/
+            		textArea.setEditable(false);
+            	}
+            	
+            	highlight(guiControl);
             }
 
             public void widgetDefaultSelected(SelectionEvent event) {
@@ -317,9 +328,10 @@ public class CGUIMain {
     	Bstop.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
                 //textArea.setText("Stop playing");
-                
+    			updateGUIControl(guiControl);
                 isPlaying = guiControl.stop();
                 Bplay.setImage(Iplay);
+                textArea.setEditable(true);
             	//isPlaying = false;
               }
 
@@ -329,6 +341,7 @@ public class CGUIMain {
     	// Listener mp3 button
     	Bmp3.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
+    			updateGUIControl(guiControl);
     			guiControl.mp3();
               }
 
@@ -348,8 +361,10 @@ public class CGUIMain {
                 curDir= curDir+folder;
 
                 Browser browser = new Browser(shell,SWT.NONE);
+
                 browser.setUrl(curDir);
                 shell.open();                
+
               }
 
               public void widgetDefaultSelected(SelectionEvent event) {
@@ -376,6 +391,20 @@ public class CGUIMain {
     	
     	s.open();
         while(!s.isDisposed()){
+        	// check if we need to update the selection
+        	if(guiControl.getNeedUpdate())
+        	{
+        		highlight(guiControl);
+        		guiControl.setNeedUpdate();
+        	}
+        	if(guiControl.getNeedToStop())
+        	{
+        		isPlaying = false;
+        		Bplay.setImage(Iplay);
+                textArea.setEditable(true);
+                guiControl.setNeedToStop();
+        	}
+        	
             if(!d.readAndDispatch())
                 d.sleep();
         }
@@ -384,9 +413,60 @@ public class CGUIMain {
         d.dispose();
     }
 	
-	private static String getText()
+	private static void updateGUIControl(final CGUICommandInterface guiControl)
 	{
-		return textArea.getText();
+		guiControl.setText(textArea.getText());
+		guiControl.setPosition(textArea.getCaretOffset());
+		//if(textArea.getSelectionText() != "")
+			//guiControl.setText(textArea.getSelectionText());
+		
 	}
+	
+	private static void highlight(final CGUICommandInterface guiControl)
+	{
+		textArea.setCaretOffset(guiControl.getSentence()[0]);
+		textArea.setSelection(guiControl.getSentence()[0],guiControl.getSentence()[1]);
+		
+	}
+	
+	//BbackParagraph.notifyListeners(SWT.Selection, new Event());
+	public void updateListeners()
+	{
+		d.wake();
+		
+		
+		/*if(guiControl.getNeedUpdate())
+    	{
+    		highlight(guiControl);
+    		guiControl.setNeedUpdate();
+    	}*/
+		//highlight(guiControl);
+		//textArea.setCaretOffset(_lis);
+		//textArea.setSelection(_lis,t);
+		/* 
+		 * 1 - Back paragraph
+		 * 2 - Back sentence
+		 * 3 - Next sentence
+		 * 4 - Next paragraph
+		 * 5 - Play
+		 * 6 - Stop			
+		*/
+		/*switch(_lis)
+		{
+		case 1:
+			BbackParagraph.notifyListeners(SWT.Selection, new Event());
+		case 2:
+			Bback.notifyListeners(SWT.Selection, new Event());
+		case 3:
+			Bnext.notifyListeners(SWT.Selection, new Event());
+		case 4:
+			BnextParagraph.notifyListeners(SWT.Selection, new Event());
+		case 5:
+			Bplay.notifyListeners(SWT.Selection, new Event());
+		case 6:
+			Bstop.notifyListeners(SWT.Selection, new Event());
+		}*/
+	}
+	
 	
 }

@@ -314,10 +314,11 @@ public class Mp3Encoder extends Thread {
 		//	System.out.println("Librarypath=" + System.getProperty("java.library.path", ""));
 		//} catch (Throwable t) {}
 
-		String encodeArgs[] = new String[3];
-		encodeArgs [0]="-b";
-		encodeArgs [1]=quality;
-		encodeArgs [2]=path;
+		String encodeArgs[] = new String[4];
+		encodeArgs [0]="-t";
+		encodeArgs [1]="-b";
+		encodeArgs [2]=quality;
+		encodeArgs [3]=path;
 
 		int firstFileIndex = parseArgs(encodeArgs);
 		//int firstFileIndex = parseArgs(args);

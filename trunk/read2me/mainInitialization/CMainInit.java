@@ -14,6 +14,8 @@ public class CMainInit {
 
 	public static void main(String[] a){
 		System.out.println("Starting Read2Me!");
+		System.out.println(System.getProperty("os.name"));
+		
 		
 		// Free TTS player
 		final CPlayerInterface player;
@@ -25,7 +27,10 @@ public class CMainInit {
 		CGUICommandInterface guiControl = new CGUICommand(player);
 		
 		// Display the GUI
+		@SuppressWarnings("unused")
 		CGUIMain mainGUI = new CGUIMain(guiControl);	
-		
+
+		//player.setListener(new CTGListener(mainGUI));
+
 	}
 }

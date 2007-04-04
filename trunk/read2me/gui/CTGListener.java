@@ -1,16 +1,16 @@
-package guiMain;
+package gui;
 
 import javax.speech.synthesis.SpeakableEvent;
 import javax.speech.synthesis.SpeakableListener;
 
 public class CTGListener implements SpeakableListener {
 
-    private CGUIMain GUIMain;
+    private CGUICommand GUIMain;
 	
 	public CTGListener(){}
     
-    public CTGListener(CGUIMain GUIMain){
-    	this.GUIMain = GUIMain;
+    public CTGListener(CGUICommand _GUIMain){
+    	GUIMain = _GUIMain;
     }
 	
 	private String formatEvent(SpeakableEvent event) {
@@ -26,7 +26,9 @@ public class CTGListener implements SpeakableListener {
     }
 
     public void speakableEnded(SpeakableEvent event) {
-        GUIMain.eventEndSpeak();
+        //System.out.println("in the listener");
+    	GUIMain.eventEndSpeak();
+        
         System.out.println(formatEvent(event));
     }
 
