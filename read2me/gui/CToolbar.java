@@ -1,12 +1,11 @@
 package gui;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.*;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.program.Program;
+import java.awt.datatransfer.*;
 
 public class CToolbar {
 
@@ -27,10 +26,6 @@ public class CToolbar {
 		file.setText("&File");
 		final Menu filemenu = new Menu(s, SWT.DROP_DOWN);
 		file.setMenu(filemenu);
-		final MenuItem openMenuItem = new MenuItem(filemenu, SWT.PUSH);
-		openMenuItem.setText("&Open\tCTRL+O");
-		openMenuItem.setAccelerator(SWT.CTRL+'O');
-		final MenuItem separator = new MenuItem(filemenu, SWT.SEPARATOR);
 		final MenuItem exitMenuItem = new MenuItem(filemenu, SWT.PUSH);
 		exitMenuItem.setText("E&xit");
 
@@ -82,14 +77,6 @@ public class CToolbar {
 
 		// add action listeners for the menu items
 
-		openMenuItem.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
-				System.out.println("Open");
-			}
-			public void widgetDefaultSelected(SelectionEvent e) {                
-			}
-		});
-
 		preferencesMenuItem.addSelectionListener(new SelectionListener(){
 			public void widgetSelected(SelectionEvent e) {
 				final Shell prefWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
@@ -129,6 +116,7 @@ public class CToolbar {
 		cutMenuItem.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Cut");
+				
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
@@ -145,6 +133,7 @@ public class CToolbar {
 		pasteMenuItem.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Paste");
+				
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
@@ -168,7 +157,30 @@ public class CToolbar {
 
 		aboutMenuItem.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("Help Invoked");
+				//System.out.println("Help Invoked");
+				final Shell aboutWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
+				aboutWin.setSize(200, 200);
+				aboutWin.setText("About");
+				
+				final Label lab = new Label(aboutWin,SWT.CENTER);
+				lab.setText("Read2Me! \n\n" +
+						"Developpers: \n" +
+						"- Stefan Estrada -\n- Rémi Jean -\n- Mickaël Meyer -");
+				lab.setBounds(10, 10, 190, 100);
+
+				final Button closePrefButton = new Button(aboutWin, SWT.PUSH);
+				closePrefButton.setText("Close");
+				closePrefButton.setBounds(75, 120, 50, 30);
+
+				aboutWin.open();
+
+				closePrefButton.addSelectionListener(new SelectionListener() {
+					public void widgetSelected(SelectionEvent e) {
+						aboutWin.close();
+					}
+					public void widgetDefaultSelected(SelectionEvent e) {                
+					}
+				});
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
@@ -176,14 +188,6 @@ public class CToolbar {
 
 		tipsMenuItem.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
-				//textArea.setText("display an html page with the help");
-				//Display display = new Display();
-
-				//Browser browser = new Browser(shell,SWT.NONE);
-				//browser.setUrl("http://unc.edu/~rjean");
-				//browser.setUrl("\tips.html");
-				//CHTML test = new CHTML();
-				//browser.setText(test.getHTML());
 				Program.launch(".\\images\\tips.html");
 			}
 
@@ -193,7 +197,6 @@ public class CToolbar {
 
 		faqMenuItem.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("F.A.Q. Invoked");
 				Program.launch(".\\images\\tips.html");
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                

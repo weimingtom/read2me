@@ -6,10 +6,7 @@ package textToSpeech;
  * For a list of all SWT example snippets see
  * http://dev.eclipse.org/viewcvs/index.cgi/%7Echeckout%7E/platform-swt-home/dev.html#snippets
  */
-import java.io.File;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
@@ -23,20 +20,22 @@ public class CExportDialog {
 
 	public CExportDialog(String text){
 		textToConvert=text;
+
 	}
 
 	public void setText(String text){
 		textToConvert=text;
 	}
 
-	public void createDialog() {
-		//Display display = new Display();
-		Display display=Display.getCurrent();
-		Shell shell = new Shell(display);
-		shell = shell.getShell();
-		FileDialog dialog = new FileDialog(shell, SWT.SAVE);
-		dialog
-		.setFilterNames(new String[] { "Mp3 file", "Wav file" });
+	public void createDialog(final Shell _s) {
+		
+		//display = Display.getCurrent();
+		//Shell shell = new Shell(display);
+
+		//shell = shell.getShell();
+		
+		FileDialog dialog = new FileDialog(_s, SWT.SAVE);
+		dialog.setFilterNames(new String[] { "Mp3 file", "Wav file" });
 		dialog.setFilterExtensions(new String[] { "*.mp3", "*.wav" }); // Windows
 		// wild
 		// cards
@@ -55,8 +54,8 @@ public class CExportDialog {
 			fileName = fileName.replace(".mp3", ".wav");
 			path = path +"\\"+ fileName;
 			System.out.println("filename: "+path);
-			CExportToWAV createWAV = new CExportToWAV("change default text to mp3 textToConvert",path);
-			//CExportToWAV createWAV = new CExportToWAV(textToConvert,path);
+			//CExportToWAV createWAV = new CExportToWAV("change default text to mp3 textToConvert",path);
+			CExportToWAV createWAV = new CExportToWAV(textToConvert,path);
 			
 			Mp3Encoder encoder = new Mp3Encoder(path,"16");
 			
@@ -81,11 +80,17 @@ public class CExportDialog {
 			createWAV.start();
 		}
 		
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
-				display.sleep();
-		}
+		//while (!_s.isDisposed() && closeWindow == false) {
+			
+			//System.out.println("in the CExportDialog class GRRRRRRR");
+			//if (!display.readAndDispatch())
+				//display.sleep();
+		//}
 		
-		display.dispose();
+		//_s.close();
+		//display.dispose();
+		//display.close();
+		
+		//_s.setActive();
 	}
 }

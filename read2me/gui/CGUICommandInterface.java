@@ -80,5 +80,34 @@ public interface CGUICommandInterface {
 	 * @param _text Text that needs to be read
 	 */
 	public void setText(String _text);
+	
+	/**
+	 * Updates the guiControl with the current position of the cursor in the text area
+	 * @param _pos Position of the cursor in the text
+	 */
+	public void setPosition(int _pos);
+	
+	/**
+	 * Get the starting and ending indices of the sentence which is read
+	 * @return the start and the end indice of the current sentence
+	 */
+	public int[] getSentence();
+	
+	/**
+	 * The GUI will update the selection according to a parameter
+	 * @return a boolean to make the GUI know if it needs to update the selection or not
+	 */
+	public boolean getNeedUpdate();
+	
+	/**
+	 * The GUI calls this function when he just updated the text
+	 */
+	public void setNeedUpdate();
+	
+	
+	public void setGUIMain(CGUIMain _gui);
+	
+	public boolean getNeedToStop();
+	public void setNeedToStop();
 
 }

@@ -8,6 +8,7 @@ public class CHTML {
 		+ " </head> "
 		+ " <body>"
 		+ "<h1 align='center'>Tips for Read2me</h1>"
+		+ "<a href='test.html'>pouet</a>"
 		+ "</body></html>";
 	
 	public CHTML()
