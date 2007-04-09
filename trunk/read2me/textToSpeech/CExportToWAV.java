@@ -144,7 +144,7 @@ public class CExportToWAV extends Thread{
 
     
     /**
-     * Converts the given text to speech based using processing
+     * Converts the given text to speech based using processing 
      * options currently set.
      *
      * @param text the text to speak
