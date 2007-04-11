@@ -2,23 +2,26 @@ package gui;
 
 import textToSpeech.*;
 import java.util.*;
+import java.text.*;
 
 public class CGUICommand implements CGUICommandInterface{
 	
 	private final CPlayerInterface player;
 	private String text;
-	private String textToRead;
+	//private String textToRead;
 	private int currentIndex = 0;
+	private int currentIndexParagraph = 0;
 	private int position;
 	private int indexOfSentence = 0;
 	private Vector<CSentence> endOfSentence;
+	private Vector<CSentence> endOfParagraph;
 	private boolean needUpdate = false;
 	private boolean needToStop = false;
-	private boolean endOfText = false;
+	//private boolean endOfText = false;
 	private CSpeechObject speech;
 	private CGUIMain guiMain;
 	private boolean isPlaying;
-	private boolean isConverting = false;
+	//private boolean isConverting = false;
 	 
 	/**
 	 * Constructor for the command class if we use the FreeTTS player.
@@ -29,6 +32,7 @@ public class CGUICommand implements CGUICommandInterface{
 		player = _player;
 		player.setListener(new CTGListener(this));
 		endOfSentence = new Vector<CSentence>(50,1);
+		endOfParagraph = new Vector<CSentence>(10,1);
 	}
 	
 	public void setGUIMain(CGUIMain _gui)
@@ -56,8 +60,10 @@ public class CGUICommand implements CGUICommandInterface{
 	public void eventEndSpeak()
 	{
 		//nextSentence();
+		currentIndex = indexOfSentence;
 		if(indexOfSentence != endOfSentence.size()-1)
 			indexOfSentence++;
+		currentIndexParagraph = getParagraphNumber(indexOfSentence);
 		needUpdate = true;
 		guiMain.updateListeners();
 		//System.out.println("phrase a higllité: "+getSentence()[0]+ "  "+getSentence()[1]);
@@ -76,6 +82,7 @@ public class CGUICommand implements CGUICommandInterface{
 			isPlaying = false;
 			stop();
 		}
+		// comes here only when it has finish to read everything
 		currentIndex = indexOfSentence;
 		
 	}
@@ -87,7 +94,14 @@ public class CGUICommand implements CGUICommandInterface{
 	public void backParagraph()
 	{
 		System.out.println("back paragraph");
-		
+		if(currentIndexParagraph != 0)
+			currentIndexParagraph--;
+		indexOfSentence = getSentenceNumber(currentIndexParagraph);
+		if(isPlaying)
+		{
+			player.cancel();
+			play(false);
+		}
 	}
 	
 	/**
@@ -98,6 +112,7 @@ public class CGUICommand implements CGUICommandInterface{
 	{
 		if(indexOfSentence != 0)
 			indexOfSentence--;
+		currentIndexParagraph = getParagraphNumber(indexOfSentence);
 		if(isPlaying)
 		{
 			player.cancel();
@@ -112,6 +127,7 @@ public class CGUICommand implements CGUICommandInterface{
 		
 		if(indexOfSentence != endOfSentence.size()-1)
 			indexOfSentence++;
+		currentIndexParagraph = getParagraphNumber(indexOfSentence);
 		if(isPlaying)
 		{
 			player.cancel();
@@ -123,7 +139,15 @@ public class CGUICommand implements CGUICommandInterface{
 	 * Goes to the next paragraph
 	 */
 	public void nextParagraph(){
-		System.out.println("next paragraph");
+		//System.out.println("next paragraph");
+		if(currentIndexParagraph != endOfParagraph.size()-1)
+			currentIndexParagraph++;
+		indexOfSentence = getSentenceNumber(currentIndexParagraph);
+		if(isPlaying)
+		{
+			player.cancel();
+			play(false);
+		}
 	}
 	
 	/**
@@ -162,7 +186,7 @@ public class CGUICommand implements CGUICommandInterface{
 		player.stop();
         player.resume();
         currentIndex = 0;
-        endOfText = false;
+        //endOfText = false;
         return false;
 	}
 	
@@ -173,8 +197,7 @@ public class CGUICommand implements CGUICommandInterface{
 		CExportDialog exportDialog = new CExportDialog(text);
 		exportDialog.createDialog(guiMain.s);
 	}
-	
-	
+		
 	public void tip(){
 		
 	}
@@ -195,18 +218,52 @@ public class CGUICommand implements CGUICommandInterface{
 
 	private void parseText()
 	{
+		/*String str = text;
+		BreakIterator brkit = BreakIterator.getSentenceInstance();
+		//BreakIterator brkit = BreakIterator.getLineInstance();
+        brkit.setText(str);
+
+        // iterate across the string
+
+        int start = brkit.first();
+        int end = brkit.next();
+        while (end != BreakIterator.DONE) {
+            String sentence = str.substring(start, end);
+            System.out.println(start + " " + sentence + " " + (end-1));
+            start = end;
+            end = brkit.next();
+        }*/
+        
 		endOfSentence.clear();
+		endOfParagraph.clear();
 		CSentence temp;
 		int index1=0, index2=0;
+		int indexParag1=0, indexParag2=0;
 		for(int i=0; i<text.length(); i++)
 		{
 			if(text.charAt(i)== '.' || text.charAt(i)== '?' || text.charAt(i)== '!')
 			{
 				index2 = i;
-				temp = new CSentence(index1,index2);
-				index1 = index2+1;
-				endOfSentence.add(temp);
-			}		
+				int test = index2 - index1;
+				if(test >1)
+				{
+					if(i == text.length()-1 || (i != 0 && i!=1 && i != text.length()-1))// && text.charAt(i+1) == ' ' && text.charAt(i-2) !='.'))
+					{
+						temp = new CSentence(index1,index2);
+						index1 = index2+1;
+						endOfSentence.add(temp);
+					}			
+				}
+				else
+					index1=i;
+			}
+			if(text.charAt(i) == '\n')
+			{
+				indexParag2 = i;
+				temp = new CSentence(indexParag1,indexParag2);
+				indexParag1 = indexParag2+1;
+				endOfParagraph.add(temp);
+			}
 		}
 		
 		// no point has been found
@@ -215,6 +272,7 @@ public class CGUICommand implements CGUICommandInterface{
 			temp = new CSentence(0,text.length());
 			endOfSentence.add(temp);
 		}
+		
 		// a point is not at the end of the text
 		if(index2 != text.length()-1 && index1 !=0 && index2 !=0)
 		{
@@ -225,10 +283,36 @@ public class CGUICommand implements CGUICommandInterface{
 			}
 		}
 		
-		for(int i=0; i<endOfSentence.size(); i++)
+		// If there are no '\n' character, the text is considered as a paragraph
+		if(indexParag2 == 0 && indexParag1 == 0)
+		{
+			endOfParagraph.add(new CSentence(0, text.length()));
+		}
+		
+		// Consider that the last character is a \n even if it doesn't exist
+		if(endOfParagraph.elementAt(endOfParagraph.size()-1).end != text.length()-1  && indexParag2 != 0 && indexParag1 != 0)
+		{
+			if(indexParag1 != text.length())
+				endOfParagraph.add(new CSentence(indexParag1, text.length()));
+		}
+		
+		// Don't consider when there are several blank lines
+		for(int i=0; i<endOfParagraph.size(); i++)
+		{
+			if(endOfParagraph.elementAt(i).begin == endOfParagraph.elementAt(i).end-1)
+				endOfParagraph.remove(i--);
+		}
+		
+		
+		
+		/*for(int i=0; i<endOfSentence.size(); i++)
 		{
 			System.out.println(endOfSentence.elementAt(i).begin+" end: "+endOfSentence.elementAt(i).end);
 		}
+		for(int i=0; i<endOfParagraph.size(); i++)
+		{
+			System.out.println(endOfParagraph.elementAt(i).begin+" end: "+endOfParagraph.elementAt(i).end);
+		}*/
 	}
 	
 	
@@ -247,13 +331,33 @@ public class CGUICommand implements CGUICommandInterface{
 	public void setPosition(int _pos)
 	{
 		position = _pos;
+		
+		// we update the sentence index
 		for(int i=0; i<endOfSentence.size(); i++)
 		{
 			if(position >= endOfSentence.elementAt(i).begin && position <= endOfSentence.elementAt(i).end)
 				indexOfSentence = i;
+			else if(i != endOfSentence.size()-1 && position > endOfSentence.elementAt(i).end && position < endOfSentence.elementAt(i+1).begin)
+				indexOfSentence = i+1;
+			else if(position < endOfSentence.elementAt(0).begin)
+				indexOfSentence = 0;
 		}
+		currentIndex = indexOfSentence;
 		
-		//System.out.println("position of the curcor: "+_pos+ "  "+indexOfSentence );
+		// Then we update the Paragraph index
+		currentIndexParagraph = getParagraphNumber(position);
+		
+		/*for(int i=0; i<endOfParagraph.size(); i++)
+		{
+			if(position >= endOfParagraph.elementAt(i).begin && position <= endOfParagraph.elementAt(i).end)
+				currentIndexParagraph = i;
+			else if(i != endOfParagraph.size()-1 && position > endOfParagraph.elementAt(i).end && position < endOfParagraph.elementAt(i+1).begin)
+				currentIndexParagraph = i+1;
+			else if(position < endOfParagraph.elementAt(0).begin)
+				currentIndexParagraph = 0;
+		}*/
+		
+		//System.out.println(currentIndexParagraph);
 	}
 	
 	/**
@@ -270,5 +374,34 @@ public class CGUICommand implements CGUICommandInterface{
 	private void updateSpeechObject()
 	{
 		speech = CSpeechObject.createTextSpeech(text.substring(getSentence()[0], getSentence()[1]));
+	}
+	
+	private int getParagraphNumber(int _t)
+	{
+		for(int i=0; i<endOfParagraph.size(); i++)
+		{
+			if(_t >= endOfParagraph.elementAt(i).begin && _t <= endOfParagraph.elementAt(i).end)
+				return i;
+			else if(i != endOfParagraph.size()-1 && _t > endOfParagraph.elementAt(i).end && _t < endOfParagraph.elementAt(i+1).begin)
+				return i+1;
+			else if(_t < endOfParagraph.elementAt(0).begin)
+				return 0;
+		}
+		return 0;
+	}
+	
+	private int getSentenceNumber(int _t )
+	{
+		int temp = endOfParagraph.elementAt(_t).begin;
+		for(int i=0; i<endOfSentence.size(); i++)
+		{
+			if(temp >= endOfSentence.elementAt(i).begin && temp <= endOfSentence.elementAt(i).end)
+				return i;
+			else if(i != endOfSentence.size()-1 && temp > endOfSentence.elementAt(i).end && temp < endOfSentence.elementAt(i+1).begin)
+				return i+1;
+			else if(temp < endOfSentence.elementAt(0).begin)
+				return 0;
+		}
+		return 0;
 	}
 }

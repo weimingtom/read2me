@@ -254,7 +254,7 @@ public class CGUIMain {
                 //guiControl.setText(getText());
     			updateGUIControl(guiControl);
                 guiControl.backParagraph();
-                //highlight(guiControl);
+                highlight(guiControl);
                 System.out.println("backparagraph");
               }
 
@@ -305,20 +305,23 @@ public class CGUIMain {
 
             public void widgetSelected(SelectionEvent event) {
 
-            	updateGUIControl(guiControl);
-            	isPlaying = guiControl.play(isPlaying);
-            	if(isPlaying == true)
+            	if(textArea.getText().length() != 0)
             	{
-            		Bplay.setImage(Ipause);
-            		textArea.setEditable(false);	
+            		updateGUIControl(guiControl);
+            		isPlaying = guiControl.play(isPlaying);
+            		if(isPlaying == true)
+            		{
+            			Bplay.setImage(Ipause);
+            			textArea.setEditable(false);	
+            		}
+            		else
+            		{
+            			Bplay.setImage(Iplay);
+            			textArea.setEditable(false);
+            		}
+
+            		highlight(guiControl);
             	}
-            	else
-            	{
-            		Bplay.setImage(Iplay);
-            		textArea.setEditable(false);
-            	}
-            	
-            	highlight(guiControl);
             }
 
             public void widgetDefaultSelected(SelectionEvent event) {
