@@ -5,7 +5,7 @@ import org.eclipse.swt.events.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.program.Program;
-import java.awt.datatransfer.*;
+//import java.awt.datatransfer.*;
 
 public class CToolbar {
 
@@ -166,7 +166,7 @@ public class CToolbar {
 				lab.setText("Read2Me! \n\n" +
 						"Developpers: \n" +
 						"- Stefan Estrada -\n- Rémi Jean -\n- Mickaël Meyer -");
-				lab.setBounds(10, 10, 190, 100);
+				lab.setBounds(0, 10, 200, 100);
 
 				final Button closePrefButton = new Button(aboutWin, SWT.PUSH);
 				closePrefButton.setText("Close");
