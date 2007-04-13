@@ -14,4 +14,4 @@
   
   * pretty good [http://www.atomicmpc.com.au/article.asp?SCID=25&CIID=24263&p=2 tutorial]  for NSIS 
 
-  * A very easy way to work with NSIS HM [http://hmne.sourceforge.net/ NIS Edit ]
+  * A very easy way to work with NSIS: [http://hmne.sourceforge.net/ HM NIS Edit ]
