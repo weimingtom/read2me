@@ -1,6 +1,7 @@
 package gui;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.layout.*;
@@ -9,7 +10,7 @@ import org.eclipse.swt.program.Program;
 
 public class CToolbar {
 
-	CToolbar(final Shell s, final Display d)
+	CToolbar(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel)
 	{
 		GridData data = new GridData(GridData.CENTER | GridData.HORIZONTAL_ALIGN_END);
 		data.verticalIndent = -20;
@@ -79,7 +80,9 @@ public class CToolbar {
 
 		preferencesMenuItem.addSelectionListener(new SelectionListener(){
 			public void widgetSelected(SelectionEvent e) {
-				final Shell prefWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
+				
+				
+				/*final Shell prefWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 				//prefWin.setLayout(new FillLayout());
 				prefWin.setSize(300, 300);
 
@@ -97,9 +100,13 @@ public class CToolbar {
 					public void widgetSelected(SelectionEvent e) {
 						prefWin.close();
 					}
+
 					public void widgetDefaultSelected(SelectionEvent e) {                
 					}
-				});
+				});*/
+				CPreferenceWindow pref= new CPreferenceWindow(s,d,textArea, volumeLabel, speedLabel);
+				
+				
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
@@ -164,7 +171,7 @@ public class CToolbar {
 				
 				final Label lab = new Label(aboutWin,SWT.CENTER);
 				lab.setText("Read2Me! \n\n" +
-						"Developpers: \n" +
+						"Developers: \n" +
 						"- Stefan Estrada -\n- Rémi Jean -\n- Mickaël Meyer -");
 				lab.setBounds(0, 10, 200, 100);
 

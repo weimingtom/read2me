@@ -1,5 +1,8 @@
 package textToSpeech;
 
+import java.net.URL;
+import java.io.File;
+
 /*
  * FileDialog example snippet: prompt for a file name (to save)
  *
@@ -45,19 +48,22 @@ public class CExportDialog {
 		System.out.println("Save to: " + dialog.open());
 		
 		
-		System.out.println("got here");
+		//System.out.println("got here");
 		String fileName = dialog.getFileName();
 		String path = dialog.getFilterPath();
 		
 		if( fileName.endsWith("mp3") ){
 			
-			fileName = fileName.replace(".mp3", ".wav");
+			System.out.println("InstallationDirectory: " +System.getProperty("user.dir"));
+			String encodePath = System.getProperty("user.dir")+ "\\temp.wav";
+			
+			//fileName = fileName.replace(".mp3", ".wav");
 			path = path +"\\"+ fileName;
 			System.out.println("filename: "+path);
 			//CExportToWAV createWAV = new CExportToWAV("change default text to mp3 textToConvert",path);
-			CExportToWAV createWAV = new CExportToWAV(textToConvert,path);
+			CExportToWAV createWAV = new CExportToWAV(textToConvert,encodePath);
 			
-			Mp3Encoder encoder = new Mp3Encoder(path,"16");
+			Mp3Encoder encoder = new Mp3Encoder(encodePath,"16");
 			
 			try
 			{
@@ -72,25 +78,54 @@ public class CExportDialog {
 			{
 				System.out.println("InterruptedException caught: " + e);
 			}
+			
+			
+			//moves the generated mp3 file to the location chosen by the user
+			encodePath = encodePath.replace(".wav", ".mp3");
+			
+			System.out.println("encodepath :"+encodePath);
+			System.out.println("new path :"+path);
+			
+		    // File (or directory) with old name
+		    File file1 = new File(encodePath);
+		    
+		    // File (or directory) with new name
+		    File dir = new File(path);
+		    
+		    // Rename file (or directory)
+		    boolean success = file1.renameTo(new File(dir, file1.getName()));
+		    if (!success) {
+		        // File was not successfully renamed
+		    	System.out.println("move failed");
+		    }
+		    
+		    
+			//forces the garbage collector to run
+			/*System.gc();
+			File temp = new File(path);
+			temp.delete();*/
+			
+			/*File myFile = new File("c:\\mySpeech.wav");
+			//myFile.deleteOnExit()
+			try {
+				//boolean deletionSuccess = 
+				myFile.delete();
+					//myFile.deleteOnExit();
+				//if (!deletionSuccess) {
+					//System.out.println("delete failed");
+				//}
+			}
+			catch (SecurityException e) {
+				System.out.println("Caught security exception trying to delete file " + myFile.toString());
+			}*/
 		}
 		else{
 			path = path +"\\"+ fileName;
 			System.out.println("filename: "+path);
-			CExportToWAV createWAV = new CExportToWAV("change default text to mp3 textToConvert",path);
+			CExportToWAV createWAV = new CExportToWAV(textToConvert,path);
 			createWAV.start();
+			
 		}
 		
-		//while (!_s.isDisposed() && closeWindow == false) {
-			
-			//System.out.println("in the CExportDialog class GRRRRRRR");
-			//if (!display.readAndDispatch())
-				//display.sleep();
-		//}
-		
-		//_s.close();
-		//display.dispose();
-		//display.close();
-		
-		//_s.setActive();
 	}
 }
