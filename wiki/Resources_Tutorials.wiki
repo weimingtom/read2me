@@ -12,6 +12,6 @@
 
   * NSIS [http://nsis.sourceforge.net/Main_Page home page]: creates the installer
   
-  * pretty good [http://www.atomicmpc.com.au/article.asp?SCID=25&CIID=24263&p=2 tutorial]  for NSIS 
+  * pretty good [http://www.atomicmpc.com.au/article.asp?SCID=25&CIID=24263&p=2 tutorial]  for NSIS (uses HM SIS Edit, see below)
 
   * A very easy way to work with NSIS: [http://hmne.sourceforge.net/ HM NIS Edit ]
