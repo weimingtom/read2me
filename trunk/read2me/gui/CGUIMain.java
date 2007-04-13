@@ -151,6 +151,8 @@ public class CGUIMain {
     	data.horizontalSpan = 1;
     	Label volumeLabel = new Label(s, SWT.BEGINNING);
     	volumeLabel.setImage(Ivolume);
+    	Ivolume.setBackground(s.getBackground());
+    	//volumeLabel.setForeground(s.getBackground());
     	volumeLabel.setLayoutData(data);
     	volumeLabel.setToolTipText("Volume");
 	    
@@ -163,7 +165,7 @@ public class CGUIMain {
     	textArea = new StyledText(s, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
     	textArea.setWordWrap(true);
     	textArea.setLayoutData(data);
-    	
+     	
     	// Speed Label
     	data = new GridData(SWT.LEFT | GridData.HORIZONTAL_ALIGN_END | GridData.VERTICAL_ALIGN_BEGINNING);
     	data.horizontalIndent = 20;
@@ -233,7 +235,7 @@ public class CGUIMain {
     	speedValue.setLayoutData(data);
     	
     	@SuppressWarnings("unused")
-    	final CToolbar toolbar = new CToolbar(s,d);
+    	final CToolbar toolbar = new CToolbar(s,d, textArea, volumeLabel, speedLabel);
     	
     	// LISTENERS
     	
@@ -354,9 +356,9 @@ public class CGUIMain {
     	// Listener Tip button
     	Btip.addSelectionListener(new SelectionListener() {
     		public void widgetSelected(SelectionEvent event) {
-                Shell shell = new Shell(d);
+                final Shell shell = new Shell(d);
                 shell.setLayout(new FillLayout());
-                shell.setSize(500, 600);
+                shell.setSize(500, 700);
                 shell.setText("Tips and Tricks");
                 shell.setLocation(600, 100);
                 String curDir = System.getProperty("user.dir");
@@ -366,8 +368,7 @@ public class CGUIMain {
                 Browser browser = new Browser(shell,SWT.NONE);
 
                 browser.setUrl(curDir);
-                shell.open();                
-
+                shell.open();
               }
 
               public void widgetDefaultSelected(SelectionEvent event) {

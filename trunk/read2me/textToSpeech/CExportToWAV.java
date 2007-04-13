@@ -227,7 +227,6 @@ public class CExportToWAV extends Thread{
     	//text = "this is a test to see if this works";
     	batchTextToSpeech(text);
     	shutdown();
-    	
     }
     
     /**

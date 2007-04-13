@@ -58,7 +58,7 @@ public class Mp3Encoder extends Thread {
 		this.path=path;
 		this.quality=quality;
 	}
-
+	
 	private static AudioInputStream getInStream(String filename)
 	throws IOException {
 		File	file = new File(filename);
@@ -317,7 +317,10 @@ public class Mp3Encoder extends Thread {
 		String encodeArgs[] = new String[4];
 		encodeArgs [0]="-t";
 		encodeArgs [1]="-b";
-		encodeArgs [2]=quality;
+		//encodeArgs [2]=quality; //we leave the option available
+		//but since the text to speech engines used produce 
+		//a sound not better than 16kbits we will use this setting for encoding
+		encodeArgs [2]="16";
 		encodeArgs [3]=path;
 
 		int firstFileIndex = parseArgs(encodeArgs);
@@ -403,19 +406,6 @@ public class Mp3Encoder extends Thread {
 			System.out.println("InterruptedException caught: " + e);
 		}
 
-/*
-		File myFile = new File("c:\\mySpeech.wav");
-		//myFile.deleteOnExit()
-		try {
-			//boolean deletionSuccess = 
-				myFile.deleteOnExit();
-			//if (!deletionSuccess) {
-				//System.out.println("delete failed");
-			//}
-		}
-		catch (SecurityException e) {
-			System.out.println("Caught security exception trying to delete file " + myFile.toString());
-		}*/
 	}
 
 
