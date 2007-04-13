@@ -415,6 +415,7 @@ public class CGUIMain {
         //player.stop();
         guiControl.stop();
         d.dispose();
+        System.exit(0);
     }
 	
 	private static void updateGUIControl(final CGUICommandInterface guiControl)
