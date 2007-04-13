@@ -15,6 +15,7 @@ public class CMainInit {
 	public static void main(String[] a){
 		System.out.println("Starting Read2Me!");
 		System.out.println(System.getProperty("os.name"));
+		System.out.println(System.getProperty("java.class.path"));
 		
 		
 		// Free TTS player
