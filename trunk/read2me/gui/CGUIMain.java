@@ -24,9 +24,10 @@ public class CGUIMain {
 	private CGUICommandInterface guiControl;
 	private final Image Iplay; 
     private final Image Ipause;
+    private static CToolbar toolbar;
 
 	// ------------------ Main ------------------------------
-	public CGUIMain(final CGUICommandInterface _guiControl){
+	public CGUIMain(final CGUICommandInterface _guiControl, String[] voices){
 		guiControl = _guiControl;
     	/*
 		final CPlayerInterface player = new CPlayer();   
@@ -37,6 +38,7 @@ public class CGUIMain {
 				
 		d = new Display();
         s = new Shell(d);
+        
 
         GridLayout layout = new GridLayout();
         layout.numColumns = 11;
@@ -234,21 +236,17 @@ public class CGUIMain {
     	speedValue.setText("Speed: "+ tempSpeed);
     	speedValue.setLayoutData(data);
     	
-    	@SuppressWarnings("unused")
-    	final CToolbar toolbar = new CToolbar(s,d, textArea, volumeLabel, speedLabel);
+    	//@SuppressWarnings("unused")
+    	toolbar = new CToolbar(s,d, textArea, volumeLabel, speedLabel, voices);
+    	//System.out.println("Gui main: "+toolbar.getIndexVoice());
+    	
+    	
+    	
     	
     	// LISTENERS
     	
-    	// Listener when we modify the text
-    	/*textArea.addModifyListener(new ModifyListener() {
-    		public void modifyText(ModifyEvent event) {
-    			updateGUIControl(guiControl);
-    		}
-    	});*/
-    	
     	// link between the 2 classes
     	guiControl.setGUIMain(this);
-    	
     	
     	// Listener Back Paragraph
     	BbackParagraph.addSelectionListener(new SelectionListener() {
@@ -413,7 +411,9 @@ public class CGUIMain {
                 d.sleep();
         }
         //player.stop();
+        
         guiControl.stop();
+        
         d.dispose();
         System.exit(0);
     }
@@ -422,6 +422,7 @@ public class CGUIMain {
 	{
 		guiControl.setText(textArea.getText());
 		guiControl.setPosition(textArea.getCaretOffset());
+		guiControl.setVoiceIndex(toolbar.getIndexVoice());
 		//if(textArea.getSelectionText() != "")
 			//guiControl.setText(textArea.getSelectionText());
 		
@@ -434,44 +435,8 @@ public class CGUIMain {
 		
 	}
 	
-	//BbackParagraph.notifyListeners(SWT.Selection, new Event());
 	public void updateListeners()
 	{
 		d.wake();
-		
-		
-		/*if(guiControl.getNeedUpdate())
-    	{
-    		highlight(guiControl);
-    		guiControl.setNeedUpdate();
-    	}*/
-		//highlight(guiControl);
-		//textArea.setCaretOffset(_lis);
-		//textArea.setSelection(_lis,t);
-		/* 
-		 * 1 - Back paragraph
-		 * 2 - Back sentence
-		 * 3 - Next sentence
-		 * 4 - Next paragraph
-		 * 5 - Play
-		 * 6 - Stop			
-		*/
-		/*switch(_lis)
-		{
-		case 1:
-			BbackParagraph.notifyListeners(SWT.Selection, new Event());
-		case 2:
-			Bback.notifyListeners(SWT.Selection, new Event());
-		case 3:
-			Bnext.notifyListeners(SWT.Selection, new Event());
-		case 4:
-			BnextParagraph.notifyListeners(SWT.Selection, new Event());
-		case 5:
-			Bplay.notifyListeners(SWT.Selection, new Event());
-		case 6:
-			Bstop.notifyListeners(SWT.Selection, new Event());
-		}*/
 	}
-	
-	
 }

@@ -20,19 +20,21 @@ import org.eclipse.swt.graphics.FontData;
 
 public class CPreferenceWindow {
 
-	Font font;
-	Color fontColor;
+	private Font font;
+	private Color fontColor;
 	
 	/**main window: font*/
-	Font fontM;
+	private Font fontM;
 	/** main window: text color background*/
-	Color colorMTextBkg;
+	private Color colorMTextBkg;
 	/**main window: color */
-	Color colorMWindow;
+	private Color colorMWindow;
 	/**main window text color*/
-	Color colorFont;
+	private Color colorFont;
 	
-	public CPreferenceWindow(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel){
+	public int selected;
+	
+	public CPreferenceWindow(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, String[] voices){
 		final Shell prefWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		prefWin.setSize(300, 300);
 		prefWin.setText("Preferences");
@@ -44,13 +46,33 @@ public class CPreferenceWindow {
 
 		//the windows color label
 		final Label labelWinColor = new Label(prefWin, SWT.PUSH);
-		labelWinColor.setBounds(30, 90, 120, 15);
+		labelWinColor.setBounds(30, 80, 120, 15);
 		labelWinColor.setText("Windows color");
 
 		//the font label
 		final Label labelFont = new Label(prefWin, SWT.PUSH);
-		labelFont.setBounds(30, 145, 120, 40);
+		labelFont.setBounds(30, 130, 120, 20);
 		labelFont.setText("Font");
+		
+//		the voice label
+		final Label voiceFont = new Label(prefWin, SWT.PUSH);
+		voiceFont.setBounds(30, 180, 120, 20);
+		voiceFont.setText("Select voice: ");
+		
+		//the combo box to select the voices
+		final Combo voiceSel = new Combo(prefWin, SWT.READ_ONLY);
+		voiceSel.setBounds(180, 180, 90, 40);
+		voiceSel.setItems(voices);
+		voiceSel.select(0);
+		voiceSel.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				//sets the customization options to what they were before
+				selected = voiceSel.getSelectionIndex();
+			}
+			public void widgetDefaultSelected(SelectionEvent e) {                
+			}
+		});
+		
 
 //		the text background color change button
 		final Button bTextBkgColor = new Button(prefWin, SWT.PUSH);
@@ -73,7 +95,7 @@ public class CPreferenceWindow {
 
 //		the windows color change color
 		final Button bWindowsColor = new Button(prefWin, SWT.PUSH);
-		bWindowsColor.setBounds(180, 85, 70, 25);
+		bWindowsColor.setBounds(180, 75, 70, 25);
 		bWindowsColor.setText("Change");
 		bWindowsColor.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -96,7 +118,7 @@ public class CPreferenceWindow {
 
 		//the font change button
 		final Button bFont = new Button(prefWin, SWT.PUSH);
-		bFont.setBounds(180, 145, 70, 25);
+		bFont.setBounds(180, 125, 70, 25);
 		bFont.setText("Change");
 		bFont.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {

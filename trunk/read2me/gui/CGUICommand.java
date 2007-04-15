@@ -3,6 +3,7 @@ package gui;
 import textToSpeech.*;
 import java.util.*;
 import java.text.*;
+import javax.swing.ListModel;
 
 public class CGUICommand implements CGUICommandInterface{
 	
@@ -21,8 +22,11 @@ public class CGUICommand implements CGUICommandInterface{
 	private CSpeechObject speech;
 	private CGUIMain guiMain;
 	private boolean isPlaying;
+	private ListModel voices;
+	private int voiceIndex;
+	private PlayerVoice playerVoice;
 	//private boolean isConverting = false;
-	 
+		 
 	/**
 	 * Constructor for the command class if we use the FreeTTS player.
 	 * @param _player Interface with the FreeTTs player that has been initialised in the main Initialisation class
@@ -33,13 +37,24 @@ public class CGUICommand implements CGUICommandInterface{
 		player.setListener(new CTGListener(this));
 		endOfSentence = new Vector<CSentence>(50,1);
 		endOfParagraph = new Vector<CSentence>(10,1);
+		
+		
+		
+		//voices = player.getVoiceList();
+		voiceIndex = 1;
+		//voices.getSize();
+		//playerVoice = (PlayerVoice)voices.getElementAt(voiceIndex);
+		//playerVoice.getName();
+		
+		player.setVoice(voiceIndex);
+		//player.setVoice(0);
+		
 	}
 	
 	public void setGUIMain(CGUIMain _gui)
 	{
 		guiMain = _gui;
 	}
-	
 	public boolean getNeedToStop()
 	{
 		return needToStop;
@@ -48,7 +63,6 @@ public class CGUICommand implements CGUICommandInterface{
 	{
 		needToStop = false;
 	}
-	
 	public boolean getNeedUpdate()
 	{
 		return needUpdate;
@@ -154,37 +168,40 @@ public class CGUICommand implements CGUICommandInterface{
 	 * Play the text from the current position of the cursor to the end of the text
 	 */
 	public boolean play(boolean _isPlaying){
-		
-			if(_isPlaying == false) // player is in pause mode and we go to play mode
+
+		if(_isPlaying == false) // player is in pause mode and we go to play mode
+		{
+			if(player.isPaused())
 			{
-				if(player.isPaused())
-				{
-					player.resume();
-				}
-				else
-				{ // just to this part when we first press play
-					//CSpeechObject speech = CSpeechObject.createTextSpeech(text);
-					updateSpeechObject();
-					player.addSpeech(speech);
-					player.play(speech);
-				}
-				isPlaying = true;
-				return true;
-			}  
-			else  // player is in play mode and we pause it
-			{
-				player.pause();
-				isPlaying = false;
-				return false;
+				player.resume();
 			}
+			else
+			{ // just to this part when we first press play
+				//CSpeechObject speech = CSpeechObject.createTextSpeech(text);
+				updateSpeechObject();
+				player.addSpeech(speech);
+				player.play(speech);
+			}
+			isPlaying = true;
+			return true;
+		}  
+		else  // player is in play mode and we pause it
+		{
+			player.pause();
+			isPlaying = false;
+			return false;
+		}
 	}
 	
 	/**
 	 * Stop playing the text and set the cursor to the beginning of the text
 	 */
 	public boolean stop(){
+
+		isPlaying = false;
+		
 		player.stop();
-        player.resume();
+        //player.resume();
         currentIndex = 0;
         //endOfText = false;
         return false;
@@ -374,6 +391,8 @@ public class CGUICommand implements CGUICommandInterface{
 	private void updateSpeechObject()
 	{
 		speech = CSpeechObject.createTextSpeech(text.substring(getSentence()[0], getSentence()[1]));
+		player.cancel();
+		player.setVoice(voiceIndex);
 	}
 	
 	private int getParagraphNumber(int _t)
@@ -404,4 +423,11 @@ public class CGUICommand implements CGUICommandInterface{
 		}
 		return 0;
 	}
+	
+	public void setVoiceIndex(int _v)
+	{
+		voiceIndex = _v;
+		System.out.println("guicommand: "+ voiceIndex);
+	}
 }
+

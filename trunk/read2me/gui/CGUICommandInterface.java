@@ -109,5 +109,6 @@ public interface CGUICommandInterface {
 	
 	public boolean getNeedToStop();
 	public void setNeedToStop();
+	public void setVoiceIndex(int _v);
 
 }
