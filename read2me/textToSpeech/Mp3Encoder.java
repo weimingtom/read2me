@@ -42,7 +42,7 @@ import	org.tritonus.share.sampled.Encodings;
 public class Mp3Encoder extends Thread {
 	private static boolean DEBUG = false;
 	private static boolean dumpExceptions=false;
-	private static boolean traceConverters=false;
+	//private static boolean traceConverters=false;
 	private static boolean quiet=false;
 
 	// currently, there is no convenient method in Java Sound to specify non-standard Encodings.

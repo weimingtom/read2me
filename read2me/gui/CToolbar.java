@@ -10,7 +10,20 @@ import org.eclipse.swt.program.Program;
 
 public class CToolbar {
 
-	CToolbar(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel)
+	private CPreferenceWindow pref;
+	
+	int getIndexVoice()
+	{
+		try
+		{
+			return pref.selected;
+		}
+		catch(Exception e)
+		{
+			return 1;
+		}
+	}
+	CToolbar(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, final String[] voices)
 	{
 		GridData data = new GridData(GridData.CENTER | GridData.HORIZONTAL_ALIGN_END);
 		data.verticalIndent = -20;
@@ -42,6 +55,7 @@ public class CToolbar {
 		final MenuItem pasteMenuItem = new MenuItem(editmenu, SWT.PUSH);
 		pasteMenuItem.setText("&Paste");            
 
+		/*
 		//create a Voices menu and add Child item
 		final MenuItem voices = new MenuItem(m, SWT.CASCADE);
 		voices.setText("&Voices");
@@ -50,7 +64,7 @@ public class CToolbar {
 		final MenuItem Voice1MenuItem = new MenuItem(voicesmenu, SWT.PUSH);
 		Voice1MenuItem.setText("Voice 1");
 		final MenuItem Voice2MenuItem = new MenuItem(voicesmenu, SWT.PUSH);
-		Voice2MenuItem.setText("Voice 2");
+		Voice2MenuItem.setText("Voice 2");*/
 
 //		create a Settings menu and add Child item
 		final MenuItem settings = new MenuItem(m, SWT.CASCADE);
@@ -81,31 +95,7 @@ public class CToolbar {
 		preferencesMenuItem.addSelectionListener(new SelectionListener(){
 			public void widgetSelected(SelectionEvent e) {
 				
-				
-				/*final Shell prefWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-				//prefWin.setLayout(new FillLayout());
-				prefWin.setSize(300, 300);
-
-				final Button cancelPrefButton = new Button(prefWin, SWT.PUSH);
-				cancelPrefButton.setText("Cancel");
-				cancelPrefButton.setBounds(80, 220, 50, 30);
-
-				final Button savePrefButton = new Button(prefWin, SWT.PUSH);
-				savePrefButton.setText("Save");
-				savePrefButton.setBounds(130, 220, 50, 30);
-
-				prefWin.open();
-
-				cancelPrefButton.addSelectionListener(new SelectionListener() {
-					public void widgetSelected(SelectionEvent e) {
-						prefWin.close();
-					}
-
-					public void widgetDefaultSelected(SelectionEvent e) {                
-					}
-				});*/
-				CPreferenceWindow pref= new CPreferenceWindow(s,d,textArea, volumeLabel, speedLabel);
-				
+				pref= new CPreferenceWindow(s,d,textArea, volumeLabel, speedLabel, voices);
 				
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
@@ -141,11 +131,12 @@ public class CToolbar {
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Paste");
 				
+				
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
 		});
-
+/*
 		Voice1MenuItem.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Voice 1 selected");
@@ -160,7 +151,7 @@ public class CToolbar {
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
-		});
+		});*/
 
 		aboutMenuItem.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {

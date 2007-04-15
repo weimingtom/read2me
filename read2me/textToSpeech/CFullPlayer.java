@@ -175,7 +175,7 @@ public class CFullPlayer implements CPlayerInterface {
 	 }
 	 
 }
-
+/*
 class PlayerVoice {
 
 	private String name;
@@ -193,4 +193,4 @@ class PlayerVoice {
     public int getMode(){
     	return mode;
     }
-}
+}*/
