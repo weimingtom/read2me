@@ -2,14 +2,13 @@ package gui;
 
 import textToSpeech.*;
 import java.util.*;
-import java.text.*;
-import javax.swing.ListModel;
+//import java.text.*;
+//import javax.swing.ListModel;
 
 public class CGUICommand implements CGUICommandInterface{
 	
 	private final CPlayerInterface player;
 	private String text;
-	//private String textToRead;
 	private int currentIndex = 0;
 	private int currentIndexParagraph = 0;
 	private int position;
@@ -18,13 +17,12 @@ public class CGUICommand implements CGUICommandInterface{
 	private Vector<CSentence> endOfParagraph;
 	private boolean needUpdate = false;
 	private boolean needToStop = false;
-	//private boolean endOfText = false;
 	private CSpeechObject speech;
 	private CGUIMain guiMain;
 	private boolean isPlaying;
-	private ListModel voices;
+	//private ListModel voices;
 	private int voiceIndex;
-	private PlayerVoice playerVoice;
+	//private PlayerVoice playerVoice;
 	//private boolean isConverting = false;
 		 
 	/**
