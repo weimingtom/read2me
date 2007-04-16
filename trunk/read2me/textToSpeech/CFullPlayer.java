@@ -23,41 +23,26 @@ public class CFullPlayer implements CPlayerInterface {
 		
 	}
 	
-	/*public void setMode(int m){
-		if(m == 1 || m == 2){
-			mode = m;
-		}
-		else mode = 1;
-	}
-	
-	public int getMode(){
-		return mode;
-	}*/
-	
 	public void createSynthesizers() {
 		freeTTSPlayer.createSynthesizers();
 		sapiPlayer.init();
-		for(int i = 0; i < sapiPlayer.getTotalVoices(); i++){
-			 PlayerVoice pVoice = new PlayerVoice(sapiPlayer.getVoiceName(i), 2);
-			 voiceList.addElement(pVoice);
-		 }
-		ListModel freeTTSVoice = freeTTSPlayer.getVoiceList();
-		for(int i = 0; i < freeTTSVoice.getSize(); i++){
-			 MyVoice voiceObject = (MyVoice) freeTTSVoice.getElementAt(i);
-			 PlayerVoice pVoice = new PlayerVoice(voiceObject.getName(), 1);
-			 voiceList.addElement(pVoice);
-		}
+		sapiPlayer.start();
 	}
 	
 	public void setListener(SpeakableListener tgListener){
     	freeTTSPlayer.setListener(tgListener);
     }
 	
+	public void setSAPIListener(CSapiListener tsListener){
+		sapiPlayer.addListener(tsListener);
+	}
+	
 	public void play(CSpeechObject speech) {
 		if(mode == 1)
 			freeTTSPlayer.play(speech);
 		else {
-			sapiPlayer.play(speech.getText());
+			sapiPlayer.play2(speech.getText());
+			//sapiPlayer.start();
 		}
 	}
 	
@@ -66,7 +51,10 @@ public class CFullPlayer implements CPlayerInterface {
 	}
 	
 	public synchronized boolean isPaused() {
-		return freeTTSPlayer.isPaused();
+		if(mode == 1)
+			return freeTTSPlayer.isPaused();
+		else
+			return sapiPlayer.isPaused();
 	}
 	
 	public synchronized void pause() {
@@ -84,19 +72,42 @@ public class CFullPlayer implements CPlayerInterface {
 	}
 	
 	public synchronized void stop() {
-		freeTTSPlayer.stop();
+		if(mode == 1)
+			freeTTSPlayer.stop();
+		else
+			sapiPlayer.cancel();
 	}
 	
 	public void cancel() {
-		freeTTSPlayer.cancel();
+		if(mode == 1)
+			freeTTSPlayer.cancel();
+		else
+			sapiPlayer.cancel();
 	}
 	
 	public void close() {
-		freeTTSPlayer.close();
+		if(mode == 1)
+			freeTTSPlayer.close();
 	}
 	
 	public void setSynthesizer(int index) {
 		freeTTSPlayer.setSynthesizer(index);
+		int totalVoices = sapiPlayer.getTotalVoices();
+		for(int i = 0; i <  totalVoices; i++){
+			if(!sapiPlayer.getVoiceName(i).equals("Sample TTS Voice")){
+				PlayerVoice pVoice = new PlayerVoice(sapiPlayer.getVoiceName(i), 2, i);
+				voiceList.addElement(pVoice);
+			} else {
+				i--;
+				totalVoices--;
+			}
+		 }
+		ListModel freeTTSVoice = freeTTSPlayer.getVoiceList();
+		for(int i = 0; i < freeTTSVoice.getSize(); i++){
+			 MyVoice voiceObject = (MyVoice) freeTTSVoice.getElementAt(i);
+			 PlayerVoice pVoice = new PlayerVoice(voiceObject.getName(), 1, i+sapiPlayer.getTotalVoices());
+			 voiceList.addElement(pVoice);
+		}
 	}
 	
 	public void setVoice(int index) {
@@ -137,46 +148,45 @@ public class CFullPlayer implements CPlayerInterface {
 	 }
 	 
 	 public void setVoiceList(SynthesizerModeDesc modeDesc) {
-		 freeTTSPlayer.setVoiceList(modeDesc);
+		 if(mode == 1)
+			 freeTTSPlayer.setVoiceList(modeDesc);
 	 }
 	 
 	 public ListModel getPlayList() {
-		 return freeTTSPlayer.getPlayList();
+		 if(mode == 1)
+			 return freeTTSPlayer.getPlayList();
+		 else return null;
 	 }
 	 
 	 public ListModel getVoiceList() {
-		 /*for(int i = 0; i < sapiPlayer.getTotalVoices(); i++){
-			 PlayerVoice pVoice = new PlayerVoice(sapiPlayer.getVoiceName(i), 2);
-			 voiceList.addElement(pVoice);
-		 }
-		 ListModel freeTTSVoice = freeTTSPlayer.getVoiceList();
-		 for(int i = 0; i < freeTTSVoice.getSize(); i++){
-			 MyVoice voiceObject = (MyVoice) freeTTSVoice.getElementAt(i);
-			 PlayerVoice pVoice = new PlayerVoice(voiceObject.getName(), 1);
-			 voiceList.addElement(pVoice);
-		 }*/
 		 return voiceList;
 	 }
 	 
 	 public ListModel getSynthesizerList() {
-		 return freeTTSPlayer.getSynthesizerList();
+		 if(mode == 1)
+			 return freeTTSPlayer.getSynthesizerList();
+		 else return null;
 	 }
 
 	 public Object getSpeechObjectAt(int index) {
-		 return freeTTSPlayer.getSpeechObjectAt(index);
+		 if(mode == 1)
+			 return freeTTSPlayer.getSpeechObjectAt(index);
+		 else return null;
 	 }
 	 
 	 public void addSpeech(CSpeechObject speech) {
-		 freeTTSPlayer.addSpeech(speech);
+		 if(mode == 1)
+			 freeTTSPlayer.addSpeech(speech);
 	 }
 	 
 	 public void removeSpeechObjectAt(int index) {
-		 freeTTSPlayer.removeSpeechObjectAt(index);
+		 if(mode == 1)
+			 freeTTSPlayer.removeSpeechObjectAt(index);
 	 }
 	 
 }
 /*
-class PlayerVoice {
+/*class PlayerVoice {
 
 	private String name;
 	private int mode;
