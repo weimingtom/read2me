@@ -10,7 +10,7 @@ import org.eclipse.swt.program.Program;
 
 public class CToolbar {
 
-	private CPreferenceWindow pref;
+	private static CPreferenceWindow pref;
 	
 	int getIndexVoice()
 	{
@@ -25,6 +25,8 @@ public class CToolbar {
 	}
 	CToolbar(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, final String[] voices)
 	{
+		pref = new CPreferenceWindow();
+		
 		GridData data = new GridData(GridData.CENTER | GridData.HORIZONTAL_ALIGN_END);
 		data.verticalIndent = -20;
 		final ToolBar bar = new ToolBar(s,SWT.HORIZONTAL);
@@ -95,7 +97,7 @@ public class CToolbar {
 		preferencesMenuItem.addSelectionListener(new SelectionListener(){
 			public void widgetSelected(SelectionEvent e) {
 				
-				pref= new CPreferenceWindow(s,d,textArea, volumeLabel, speedLabel, voices);
+				pref.display(s,d,textArea, volumeLabel, speedLabel, voices);
 				
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                

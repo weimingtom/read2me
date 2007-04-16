@@ -28,9 +28,8 @@ public class CMainInit {
 		player.createSynthesizers();
 		player.setSynthesizer(1);
 		
-		// Initialize the voices parameters
+		// Initialize the voices parameters: numbers and names
 		ListModel voices = player.getVoiceList();
-		int voiceIndex = 0;
 		int sizeVoices = voices.getSize();
 		PlayerVoice playerVoice;
 		String[] listVoices = new String[sizeVoices];
@@ -39,10 +38,6 @@ public class CMainInit {
 			playerVoice = (PlayerVoice)voices.getElementAt(i);
 			listVoices[i] = playerVoice.getName();
 		}
-		
-		//PlayerVoice playerVoice = (PlayerVoice)voices.getElementAt(voiceIndex);
-		//playerVoice.getName();
-		//player.setVoice(voiceIndex);
 		
 		// Initialize the command control for the GUI
 		CGUICommandInterface guiControl = new CGUICommand(player);

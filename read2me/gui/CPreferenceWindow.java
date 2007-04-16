@@ -12,7 +12,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.FontDialog;
@@ -34,7 +33,12 @@ public class CPreferenceWindow {
 	
 	public int selected;
 	
-	public CPreferenceWindow(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, String[] voices){
+	public CPreferenceWindow()
+	{
+		selected =1;
+	}
+	
+	public void display(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, String[] voices){
 		final Shell prefWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		prefWin.setSize(300, 300);
 		prefWin.setText("Preferences");
@@ -55,15 +59,15 @@ public class CPreferenceWindow {
 		labelFont.setText("Font");
 		
 //		the voice label
-		final Label voiceFont = new Label(prefWin, SWT.PUSH);
-		voiceFont.setBounds(30, 180, 120, 20);
-		voiceFont.setText("Select voice: ");
+		final Label labelVoice = new Label(prefWin, SWT.PUSH);
+		labelVoice.setBounds(30, 180, 120, 20);
+		labelVoice.setText("Select voice: ");
 		
 		//the combo box to select the voices
 		final Combo voiceSel = new Combo(prefWin, SWT.READ_ONLY);
 		voiceSel.setBounds(180, 180, 90, 40);
 		voiceSel.setItems(voices);
-		voiceSel.select(0);
+		voiceSel.select(selected);
 		voiceSel.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				//sets the customization options to what they were before
