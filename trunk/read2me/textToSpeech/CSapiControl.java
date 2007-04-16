@@ -19,6 +19,11 @@ public class CSapiControl extends Thread{
 	private int speed;
 	private boolean isPaused;
 	private String toSpeak;
+	private CSapiListener sListener;
+	private boolean speaking;
+	private boolean stopped;
+	private boolean terminated ;
+	private boolean threadSuspended;
 	
 	private DefaultComboBoxModel voiceList;
 	
@@ -31,6 +36,14 @@ public class CSapiControl extends Thread{
 		speed = 0;
 		isPaused = false;
 		toSpeak = "";
+		speaking = false;
+		terminated = false;
+		threadSuspended = true;
+		stopped = false;
+	}
+	
+	public void addListener(CSapiListener listener){
+		sListener = listener;
 	}
 	
 	public String getVoiceName(int index){
@@ -99,6 +112,7 @@ public class CSapiControl extends Thread{
 							+ "\"><rate absspeed =\""+ speed +"\">" + speech + "</rate></volume></voice>"; 
 		Dispatch.call(msTTS, "Speak", msSpeech, new Variant(1));
 		String done = "not set";
+		sListener.started();
 		while(!done.equals("1")) {
 			try {
 			if(isPaused){
@@ -109,36 +123,72 @@ public class CSapiControl extends Thread{
 				Dispatch ISpeechVoiceStatus = Dispatch.get(msTTS, "Status").toDispatch();
 				Variant SpeechRunState = Dispatch.get(ISpeechVoiceStatus, "RunningState");
 				done = SpeechRunState.toString();
-				System.out.println(SpeechRunState.toString());
 			}
 			}catch (Exception e) {
 				System.out.println("thread err");
 				e.printStackTrace();
 			}
 		}
+		//sListener.finished();
 	}
 	
-	public void play2(String speech){
+	public synchronized void play2(String speech){
+		System.out.println("Playing SAPI");
 		toSpeak = speech;
+		speaking = true;
+		threadSuspended = false;
+		notify();
 	}
 	
 	public void run(){
-		play(toSpeak);
+		while(!terminated){
+			if(speaking){
+				play(toSpeak);
+				speaking = false;
+				if(!stopped){
+					sListener.finished();
+				}
+				stopped = false;
+				threadSuspended = true;
+			} else {
+				try {
+	                sleep(200);
+	                synchronized(this) {
+	                    while (threadSuspended)
+	                        wait();
+	                }
+	            } catch (InterruptedException e){
+	            }
+			}
+		}
 	}
 	
 	public void pause(){
-		Dispatch.call(msTTS, "Pause");
 		isPaused = true;
+		sListener.paused();
+		Dispatch.call(msTTS, "Pause");
 	}
 	
 	public void resumeSP(){
-		Dispatch.call(msTTS, "Resume");
 		isPaused = false;
+		sListener.resumed();
+		Dispatch.call(msTTS, "Resume");
 	}
 	
-	public void exportToWAV(String speech){
-		String location = "C:/testfile.wav";
-		Dispatch.call(msFS, "Open", location, new Variant(3), new Variant(true));
+	public boolean isPaused(){
+		return isPaused;
+	}
+	
+	public synchronized void cancel(){
+		isPaused = false;
+		if(speaking) stopped = true;
+		Dispatch.call(msTTS, "Skip", "Sentence", new Variant(1));
+		sListener.cancelled();
+		notify();
+	}
+	
+	public void exportToWAV(String speech, String target){
+		Dispatch.call(msFS, "Open", target, new Variant(3), new Variant(true));
 		Dispatch.putRef(msTTS, "AudioOutputStream", msFS);
 		Dispatch.call(msTTS, "Speak", speech);
 		Dispatch.call(msFS,"Close");
@@ -156,14 +206,18 @@ public class CSapiControl extends Thread{
 	    		voiceList.addElement(new MySapiVoice(voiceName.toString()));
 	    	}
 	    	
-	    	for(int i = 0; i < voiceList.getSize(); i++){
+	    	/*for(int i = 0; i < voiceList.getSize(); i++){
 	    		MySapiVoice voice = (MySapiVoice) voiceList.getElementAt(i);
 	    		System.out.println(voice.getName());
-	    	}
+	    	}*/
 	    	
 	    } catch (Exception e) {
 	      e.printStackTrace();
 	    }
+	}
+	
+	public void shutdown(){
+		terminated = true;
 	}
 
 }
