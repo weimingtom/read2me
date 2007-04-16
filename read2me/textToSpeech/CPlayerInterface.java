@@ -70,6 +70,8 @@ public interface CPlayerInterface {
      * Sets speakable listener
      */
     public void setListener(SpeakableListener tgListener);
+    
+    public void setSAPIListener(CSapiListener tsListener);
 
     /**
      * Sets the Synthesizer at the given index to use

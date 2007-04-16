@@ -96,6 +96,10 @@ public class CPlayer implements CPlayerInterface {
     public void setListener(SpeakableListener tgListener){
     	speakListener = tgListener;
     }
+    
+    public void setSAPIListener(CSapiListener tsListener){
+    	
+    }
 
     /**
      * Returns a "no synthesizer" message, and asks 
