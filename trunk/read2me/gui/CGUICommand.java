@@ -3,7 +3,7 @@ package gui;
 import textToSpeech.*;
 import java.util.*;
 //import java.text.*;
-//import javax.swing.ListModel;
+import javax.swing.ListModel;
 
 public class CGUICommand implements CGUICommandInterface{
 	
@@ -20,7 +20,7 @@ public class CGUICommand implements CGUICommandInterface{
 	private CSpeechObject speech;
 	private CGUIMain guiMain;
 	private boolean isPlaying;
-	//private ListModel voices;
+	private ListModel voices;
 	private int voiceIndex;
 	//private PlayerVoice playerVoice;
 	//private boolean isConverting = false;
@@ -33,12 +33,13 @@ public class CGUICommand implements CGUICommandInterface{
 	{
 		player = _player;
 		player.setListener(new CTGListener(this));
+		player.setSAPIListener(new CTSListener(this));
 		endOfSentence = new Vector<CSentence>(50,1);
 		endOfParagraph = new Vector<CSentence>(10,1);
 		
 		
 		
-		//voices = player.getVoiceList();
+		voices = player.getVoiceList();
 		voiceIndex = 1;
 		//voices.getSize();
 		//playerVoice = (PlayerVoice)voices.getElementAt(voiceIndex);
@@ -209,7 +210,8 @@ public class CGUICommand implements CGUICommandInterface{
 	 * Convert the text from the current position to the end into a MP3 file
 	 */
 	public void mp3(){
-		CExportDialog exportDialog = new CExportDialog(text);
+		//playerVoice = (PlayerVoice)voices.getElementAt(voiceIndex);
+		CExportDialog exportDialog = new CExportDialog(text, (PlayerVoice)voices.getElementAt(voiceIndex));
 		exportDialog.createDialog(guiMain.s);
 	}
 		
