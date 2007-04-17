@@ -16,14 +16,15 @@ import org.eclipse.swt.widgets.Shell;
 public class CExportDialog {
 
 	private String textToConvert;
+	private PlayerVoice voice;
 
 	public CExportDialog(){
 		textToConvert="text";
 	}
 
-	public CExportDialog(String text){
+	public CExportDialog(String text, PlayerVoice voice){
 		textToConvert=text;
-
+		this.voice = voice;
 	}
 
 	public void setText(String text){
@@ -61,23 +62,23 @@ public class CExportDialog {
 			path = path +"\\"+ fileName;
 			System.out.println("filename: "+path);
 			//CExportToWAV createWAV = new CExportToWAV("change default text to mp3 textToConvert",path);
-			CExportToWAV createWAV = new CExportToWAV(textToConvert,encodePath);
+			CFullExportToWAV createWAV = new CFullExportToWAV(textToConvert,encodePath, voice);
 			
 			Mp3Encoder encoder = new Mp3Encoder(encodePath,"16");
 			
-			try
-			{
+			//try
+			//{
 				createWAV.exportToWAV();
 				encoder.start();
-			}
-			catch(java.io.IOException e)
-			{
-				System.out.println("IOException caught: " + e);
-			}
-			catch(java.lang.InterruptedException e)
-			{
-				System.out.println("InterruptedException caught: " + e);
-			}
+			//}
+			//catch(java.io.IOException e)
+			//{
+			//	System.out.println("IOException caught: " + e);
+			//}
+			//catch(java.lang.InterruptedException e)
+			//{
+			//	System.out.println("InterruptedException caught: " + e);
+			//}
 			
 			
 			//moves the generated mp3 file to the location chosen by the user
@@ -122,7 +123,7 @@ public class CExportDialog {
 		else{
 			path = path +"\\"+ fileName;
 			System.out.println("filename: "+path);
-			CExportToWAV createWAV = new CExportToWAV(textToConvert,path);
+			CFullExportToWAV createWAV = new CFullExportToWAV(textToConvert,path, voice);
 			createWAV.start();
 			
 		}

@@ -29,9 +29,10 @@ public class CExportToWAV extends Thread{
     /**
      * Constructs a default object with the kevin16 voice.
      */
-    public CExportToWAV(String text, String target) {
+    public CExportToWAV(String text, String target, PlayerVoice pVoice) {
         VoiceManager voiceManager = VoiceManager.getInstance();
-        voice = voiceManager.getVoice("kevin16");
+        System.out.println("Voice: " + pVoice.getName());
+        voice = voiceManager.getVoice(pVoice.getName());
         
         this.text = text;
         this.target = target;
