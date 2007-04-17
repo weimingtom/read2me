@@ -16,12 +16,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.swt.graphics.FontData;
+import java.util.Properties;
+import java.io.*;
 
 public class CPreferenceWindow {
 
 	private Font font;
 	private Color fontColor;
-	
+
 	/**main window: font*/
 	private Font fontM;
 	/** main window: text color background*/
@@ -30,41 +32,63 @@ public class CPreferenceWindow {
 	private Color colorMWindow;
 	/**main window text color*/
 	private Color colorFont;
-	
+
 	public int selected;
-	
+
+
+	/**the text background color label*/
+	Label labelBkgColor;
+	/**	the windows color label*/
+	Label labelWinColor;
+	/**the font label*/
+	Label labelFont;
+	/**the voice label*/
+	Label labelVoice;
+	/**the voice comboBox*/
+	Combo voiceSel;
+
+	//final Shell prefWin;
+	Shell prefWin;
+	private Properties prop;
+	private boolean fontSet=false;
+
+
+	//public CPreferenceWindow(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, String[] voices){
+
 	public CPreferenceWindow()
 	{
 		selected =1;
 	}
-	
+
 	public void display(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, String[] voices){
-		final Shell prefWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
+
+		prefWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		prefWin.setSize(300, 300);
 		prefWin.setText("Preferences");
 
 		//the text background color label
-		final Label labelBkgColor = new Label(prefWin, SWT.PUSH);
+		labelBkgColor = new Label(prefWin, SWT.PUSH);
 		labelBkgColor.setBounds(30, 30, 110, 15);
 		labelBkgColor.setText("Text Background Color");
 
 		//the windows color label
-		final Label labelWinColor = new Label(prefWin, SWT.PUSH);
+		labelWinColor = new Label(prefWin, SWT.PUSH);
 		labelWinColor.setBounds(30, 80, 120, 15);
 		labelWinColor.setText("Windows color");
 
 		//the font label
-		final Label labelFont = new Label(prefWin, SWT.PUSH);
+		labelFont = new Label(prefWin, SWT.PUSH);
 		labelFont.setBounds(30, 130, 120, 20);
 		labelFont.setText("Font");
-		
-//		the voice label
-		final Label labelVoice = new Label(prefWin, SWT.PUSH);
+
+		//the voice label
+		labelVoice = new Label(prefWin, SWT.PUSH);
 		labelVoice.setBounds(30, 180, 120, 20);
 		labelVoice.setText("Select voice: ");
-		
+
+
 		//the combo box to select the voices
-		final Combo voiceSel = new Combo(prefWin, SWT.READ_ONLY);
+		voiceSel = new Combo(prefWin, SWT.READ_ONLY);
 		voiceSel.setBounds(180, 180, 90, 40);
 		voiceSel.setItems(voices);
 		voiceSel.select(selected);
@@ -76,7 +100,7 @@ public class CPreferenceWindow {
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
 		});
-		
+
 
 //		the text background color change button
 		final Button bTextBkgColor = new Button(prefWin, SWT.PUSH);
@@ -115,6 +139,7 @@ public class CPreferenceWindow {
 				prefWin.setBackground(new Color(d, newColor));
 				labelWinColor.setBackground(new Color(d, newColor));
 				labelFont.setBackground(new Color(d, newColor));
+				labelVoice.setBackground(new Color(d, newColor));
 				volumeLabel.setBackground(new Color(d, newColor));
 				speedLabel.setBackground(new Color(d, newColor));
 			}
@@ -139,7 +164,9 @@ public class CPreferenceWindow {
 					textArea.setFont(font);
 					labelFont.setForeground(fontColor);
 					textArea.setForeground(fontColor);
+					fontSet=true;
 				}else{
+					fontSet=false;
 					System.out.println("Setting font action canceled.");
 				}
 			}
@@ -154,7 +181,7 @@ public class CPreferenceWindow {
 		cancelPrefButton.setText("Cancel");
 		cancelPrefButton.setBounds(155, 220, 55, 25);
 
-		
+
 		//gets the properties (Font, Color...) from the main window
 		//and apply them to the preference window
 		prefWin.setBackground(s.getBackground());
@@ -163,14 +190,15 @@ public class CPreferenceWindow {
 		labelFont.setBackground(s.getBackground());
 		labelFont.setFont(textArea.getFont());
 		labelFont.setForeground(textArea.getForeground());
-		
+		labelVoice.setBackground(s.getBackground());
+
 		//save the main window customization options
 		//useful if the user decides to cancel his choice
 		fontM = textArea.getFont();
 		colorMTextBkg = textArea.getBackground();
 		colorMWindow = s.getBackground();
 		colorFont = textArea.getForeground();
-		
+
 		prefWin.open();
 
 		cancelPrefButton.addSelectionListener(new SelectionListener() {
@@ -187,14 +215,57 @@ public class CPreferenceWindow {
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
 		});
-		
+
 		savePrefButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
+				savePref();
 				prefWin.close();
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
 		});
+	}
+
+	public void savePref()
+	{
+		/*System.out.println("textBkgColorR: "+labelBkgColor.getBackground().getRed());
+		System.out.println("textBkgColorG: "+labelBkgColor.getBackground().getGreen());
+		System.out.println("textBkgColorB: "+labelBkgColor.getBackground().getBlue());
+
+		System.out.println("windowsColor: "+prefWin.getBackground());
+		System.out.println("font: "+font.toString());
+		System.out.println("fontColor: "+fontColor);
+		System.out.println("voice: "+voiceSel.getItem(voiceSel.getSelectionIndex()));
+		 */
+		prop=new Properties();
+
+		prop.setProperty("textBkgColorR" , ""+labelBkgColor.getBackground().getRed());
+		prop.setProperty("textBkgColorG" , ""+labelBkgColor.getBackground().getGreen());
+		prop.setProperty("textBkgColorB" , ""+labelBkgColor.getBackground().getBlue());
+
+		prop.setProperty("windowsColorR", ""+prefWin.getBackground().getRed());
+		prop.setProperty("windowsColorG", ""+prefWin.getBackground().getGreen());
+		prop.setProperty("windowsColorB", ""+prefWin.getBackground().getBlue());
+
+		if(fontSet){
+			prop.setProperty("fontName", ""+font.getFontData()[0].getName());
+			prop.setProperty("fontHeight", ""+font.getFontData()[0].getHeight());
+			prop.setProperty("fontStyle", ""+font.getFontData()[0].getStyle());
+
+			prop.setProperty("fontColorR", ""+fontColor.getRed());
+			prop.setProperty("fontColorG", ""+fontColor.getGreen());
+			prop.setProperty("fontColorB", ""+fontColor.getBlue());
+		}
+
+		prop.setProperty("voiceIndex", ""+selected);
+
+
+		// Write properties file.
+		try {
+			prop.store(new FileOutputStream("user.prop"), null);
+		} catch (IOException e) {
+		}
+
 	}
 
 }
