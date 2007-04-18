@@ -461,7 +461,9 @@ public class CGUIMain {
 			volumeLabel.setBackground(s.getBackground());
 			speedLabel.setBackground(s.getBackground());
 			textArea.setBackground(new Color(d, new RGB( Integer.parseInt(prop.getProperty("textBkgColorR")) , Integer.parseInt(prop.getProperty("textBkgColorG")) , Integer.parseInt(prop.getProperty("textBkgColorB")) )));
-			textArea.setForeground(new Color(d, new RGB( Integer.parseInt(prop.getProperty("fontColorR")) , Integer.parseInt(prop.getProperty("fontColorG")) , Integer.parseInt(prop.getProperty("fontColorB")) )));
+			
+			if(prop.getProperty("fontColorR")!=null)
+				textArea.setForeground(new Color(d, new RGB( Integer.parseInt(prop.getProperty("fontColorR")) , Integer.parseInt(prop.getProperty("fontColorG")) , Integer.parseInt(prop.getProperty("fontColorB")) )));
 			/*
 			//Font font = new Font(d, prop.getProperty("fontName"), Integer.parseInt(prop.getProperty("fontHeight")), SWT.NONE);
 			Font font = new Font(d, prop.getProperty("fontName"), Integer.parseInt(prop.getProperty("fontHeight")) , Integer.parseInt(prop.getProperty("fontStyle")));
