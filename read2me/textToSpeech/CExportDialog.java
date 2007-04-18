@@ -49,7 +49,6 @@ public class CExportDialog {
 		System.out.println("Save to: " + dialog.open());
 		
 		
-		//System.out.println("got here");
 		String fileName = dialog.getFileName();
 		String path = dialog.getFilterPath();
 		
@@ -58,12 +57,18 @@ public class CExportDialog {
 			System.out.println("InstallationDirectory: " +System.getProperty("user.dir"));
 			String encodePath = System.getProperty("user.dir")+ "\\temp.wav";
 			
-			//fileName = fileName.replace(".mp3", ".wav");
+			fileName = fileName.replace(".mp3", ".wav");
 			path = path +"\\"+ fileName;
 			System.out.println("filename: "+path);
 			//CExportToWAV createWAV = new CExportToWAV("change default text to mp3 textToConvert",path);
-			CFullExportToWAV createWAV = new CFullExportToWAV(textToConvert,encodePath, voice);
+
+			//saves the audio files in the install directory. Useful for future move of file
+			//CExportToWAV createWAV = new CExportToWAV(textToConvert,encodePath);
+			//Mp3Encoder encoder = new Mp3Encoder(encodePath,"16");
+			//CExportToWAV createWAV = new CExportToWAV(textToConvert,path);
 			
+
+			CFullExportToWAV createWAV = new CFullExportToWAV(textToConvert,encodePath, voice);
 			Mp3Encoder encoder = new Mp3Encoder(encodePath,"16");
 			
 			//try
@@ -80,7 +85,7 @@ public class CExportDialog {
 			//	System.out.println("InterruptedException caught: " + e);
 			//}
 			
-			
+			/*
 			//moves the generated mp3 file to the location chosen by the user
 			encodePath = encodePath.replace(".wav", ".mp3");
 			
@@ -98,7 +103,7 @@ public class CExportDialog {
 		    if (!success) {
 		        // File was not successfully renamed
 		    	System.out.println("move failed");
-		    }
+		    }*/
 		    
 		    
 			//forces the garbage collector to run
