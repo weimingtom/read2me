@@ -20,7 +20,7 @@ public class CToolbar {
 		}
 		catch(Exception e)
 		{
-			return 1;
+			return -1;
 		}
 	}
 	CToolbar(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, final String[] voices)

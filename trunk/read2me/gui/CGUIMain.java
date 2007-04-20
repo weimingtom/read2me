@@ -11,7 +11,7 @@ import org.eclipse.swt.browser.*;
 import java.util.Properties;
 import java.io.*;
 //import org.eclipse.swt.graphics.Color;
-//import textToSpeech.*;
+//import textToSpeech.*; 
 
 
 public class CGUIMain {
@@ -31,6 +31,7 @@ public class CGUIMain {
 	private static CToolbar toolbar;
 	private Label volumeLabel;
 	private Label speedLabel;
+	private static int voiceIndex =0;
 	private Properties prop;
 
 
@@ -274,8 +275,6 @@ public class CGUIMain {
 			public void widgetDefaultSelected(SelectionEvent event) {
 			}
 		}); 
-
-
 		// Listener back sentence
 		Bback.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
@@ -431,11 +430,33 @@ public class CGUIMain {
 		System.exit(0);
 	}
 
+	private static String modifyText(String _t)
+	{
+		_t = _t.replace("U.S.A.", "United State Of America");
+		_t = _t.replace("u.s.a.", "usa");
+		_t = _t.replace("Dr.", "Doctor");
+		_t = _t.replace("dr.", "drive");
+		_t = _t.replace("C.N.N.", "CNN");
+		_t = _t.replace("Pr.", "Professor");
+		_t = _t.replace("U.S.", "US");
+		_t = _t.replace("u.s.", "US");
+		
+		
+		System.out.println(_t);
+		return _t;
+	}
+	
 	private static void updateGUIControl(final CGUICommandInterface guiControl)
 	{
-		guiControl.setText(textArea.getText());
-		guiControl.setPosition(textArea.getCaretOffset());
-		guiControl.setVoiceIndex(toolbar.getIndexVoice());
+		int t = textArea.getCaretOffset();
+		String text = modifyText(textArea.getText());
+		textArea.setText(text);
+		guiControl.setText(text);
+		guiControl.setPosition(t);
+		if(toolbar.getIndexVoice() == -1)
+			guiControl.setVoiceIndex(voiceIndex);
+		else
+			guiControl.setVoiceIndex(toolbar.getIndexVoice());
 		//if(textArea.getSelectionText() != "")
 		//guiControl.setText(textArea.getSelectionText());
 	}
@@ -461,7 +482,7 @@ public class CGUIMain {
 			volumeLabel.setBackground(s.getBackground());
 			speedLabel.setBackground(s.getBackground());
 			textArea.setBackground(new Color(d, new RGB( Integer.parseInt(prop.getProperty("textBkgColorR")) , Integer.parseInt(prop.getProperty("textBkgColorG")) , Integer.parseInt(prop.getProperty("textBkgColorB")) )));
-			
+			voiceIndex = Integer.parseInt(prop.getProperty("voiceIndex"));
 			//make sure that a font was specified
 			if(prop.getProperty("fontColorR")!=null){
 				textArea.setForeground(new Color(d, new RGB( Integer.parseInt(prop.getProperty("fontColorR")) , Integer.parseInt(prop.getProperty("fontColorG")) , Integer.parseInt(prop.getProperty("fontColorB")) )));
@@ -472,7 +493,7 @@ public class CGUIMain {
 			System.out.println("user.prop found. Customization applied");
 		} 
 		catch (IOException e) {
-			System.out.println("no user.prop found");
+			System.out.println("no user.prop found or a field is missing");
 		}
 
 	}

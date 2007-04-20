@@ -64,6 +64,7 @@ public class CPreferenceWindow {
 		} 
 		catch (IOException e) {
 			System.out.println("no voice found");
+			selected = 0;
 		}
 	}
 
