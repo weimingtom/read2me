@@ -57,7 +57,15 @@ public class CPreferenceWindow {
 
 	public CPreferenceWindow()
 	{
-		selected =1;
+		System.out.println("user.home: "+System.getProperty("user.home"));
+		prop=new Properties();
+		try {
+			prop.load(new FileInputStream("user.prop"));
+			selected = Integer.parseInt(prop.getProperty("voiceIndex"));
+		} 
+		catch (IOException e) {
+			System.out.println("no voice found");
+		}
 	}
 
 	public void display(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, String[] voices){
@@ -78,7 +86,7 @@ public class CPreferenceWindow {
 
 		//the font label
 		labelFont = new Label(prefWin, SWT.PUSH);
-		labelFont.setBounds(30, 130, 120, 20);
+		labelFont.setBounds(30, 120, 120, 50);
 		labelFont.setText("Font");
 
 		//the voice label
@@ -228,16 +236,6 @@ public class CPreferenceWindow {
 
 	public void savePref()
 	{
-		/*System.out.println("textBkgColorR: "+labelBkgColor.getBackground().getRed());
-		System.out.println("textBkgColorG: "+labelBkgColor.getBackground().getGreen());
-		System.out.println("textBkgColorB: "+labelBkgColor.getBackground().getBlue());
-
-		System.out.println("windowsColor: "+prefWin.getBackground());
-		System.out.println("font: "+font.toString());
-		System.out.println("fontColor: "+fontColor);
-		System.out.println("voice: "+voiceSel.getItem(voiceSel.getSelectionIndex()));
-		 */
-		prop=new Properties();
 
 		prop.setProperty("textBkgColorR" , ""+labelBkgColor.getBackground().getRed());
 		prop.setProperty("textBkgColorG" , ""+labelBkgColor.getBackground().getGreen());
