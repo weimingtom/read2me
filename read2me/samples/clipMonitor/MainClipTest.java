@@ -1,4 +1,4 @@
-package clipMonitor;
+package samples.clipMonitor;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;

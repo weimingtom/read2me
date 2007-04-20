@@ -1,4 +1,4 @@
-package clipMonitor;
+package samples.clipMonitor;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -275,3 +275,10 @@ public class ClipMonitor implements WindowProc {
 
 
 }
+
+
+
+
+
+
+

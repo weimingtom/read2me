@@ -1,4 +1,4 @@
-package clipMonitor;
+package samples.clipMonitor;
 
 import java.util.EventObject;
 
