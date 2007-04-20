@@ -25,12 +25,14 @@ public class CGUIMain {
 	private Button Bnext;
 	private Button BnextParagraph;
 	private Button Bstop;
+	private Button Bclear;
 	private CGUICommandInterface guiControl;
 	private final Image Iplay; 
 	private final Image Ipause;
 	private static CToolbar toolbar;
 	private Label volumeLabel;
 	private Label speedLabel;
+	private Label editLabel;
 	private static int voiceIndex =0;
 	private Properties prop;
 
@@ -51,18 +53,18 @@ public class CGUIMain {
 
 
 		GridLayout layout = new GridLayout();
-		layout.numColumns = 11;
+		layout.numColumns = 13;
 		layout.makeColumnsEqualWidth = false;
 		layout.horizontalSpacing = 0;
 		layout.marginTop = 5;
-		layout.marginLeft = 15;
-		layout.marginRight = 15;
+		layout.marginLeft = 2;
+		layout.marginRight = 2;
 
 		s.setLayout(layout);
-		s.setSize(600,450);
+		s.setSize(660,450);
 
 		//s.setBackground(d.getSystemColor(SWT.COLOR_BLUE));
-		s.setMinimumSize(600, 450);
+		s.setMinimumSize(660, 450);
 		s.setText("Read2Me!");
 
 		Iplay = new Image(d, "./Images/Play.png");
@@ -76,7 +78,9 @@ public class CGUIMain {
 		final Image Ispeed = new Image(d, "./Images/speedFull.png");
 		final Image Imp3 = new Image(d, "./Images/Export.png");
 		final Image Itip = new Image(d, "./Images/tip.png");
-
+		final Image Iedit = new Image(d,"./Images/Pencil.png");
+		final Image Ixedit = new Image(d,"./Images/PencilX.png");
+		final Image Iclear = new Image(d,"./Images/Clear.png");
 
 		// Back paragraph button
 		GridData data = new GridData(SWT.CENTER);
@@ -127,12 +131,26 @@ public class CGUIMain {
 		Bstop.setLayoutData(data);
 		Bstop.setToolTipText("Stop button");
 
+		// Edit or Non Edit label
+		data = new GridData(SWT.CENTER);
+		editLabel = new Label(s, SWT.PUSH);
+		editLabel.setImage(Iedit);
+		editLabel.setLayoutData(data);
+		editLabel.setToolTipText("you can edit the text Area :)");
+		
 		// Separator
 		Button BnotShown2 = new Button(s, SWT.PUSH);
 		BnotShown2.setText("Not shown");
 		BnotShown2.setVisible(false);
 		BnotShown2.setLayoutData(data);
 
+		// Clear Button
+		data = new GridData(SWT.CENTER);
+		Button Bclear = new Button(s, SWT.PUSH);
+		Bclear.setImage(Iclear);
+		Bclear.setLayoutData(data);
+		Bclear.setToolTipText("Clear the text Area");
+		
 		// MP3 Button
 		data = new GridData(SWT.CENTER);
 		Button Bmp3 = new Button(s, SWT.PUSH);
@@ -171,9 +189,9 @@ public class CGUIMain {
 		
 		// text area
 		data = new GridData(GridData.FILL_BOTH);
-		data.verticalIndent = 40;
-		data.verticalSpan = 2;
-		data.horizontalSpan = 9;
+		data.verticalIndent = 3;
+		data.verticalSpan = 3;
+		data.horizontalSpan = 11;
 		data.grabExcessHorizontalSpace = true;
 		textArea = new StyledText(s, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		textArea.setWordWrap(true);
@@ -181,7 +199,7 @@ public class CGUIMain {
 
 		// Speed Label
 		data = new GridData(SWT.LEFT | GridData.HORIZONTAL_ALIGN_END | GridData.VERTICAL_ALIGN_BEGINNING);
-		data.horizontalIndent = 20;
+		data.horizontalIndent = 5;
 		data.verticalIndent = 10;
 		data.horizontalSpan = 1;
 		speedLabel = new Label(s, SWT.BEGINNING);
@@ -190,8 +208,9 @@ public class CGUIMain {
 		speedLabel.setToolTipText("Reading speed");
 
 		// Left Slider
-		data = new GridData(SWT.LEFT | GridData.HORIZONTAL_ALIGN_CENTER | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_VERTICAL);
-		data.verticalIndent = 20;
+		data = new GridData(SWT.CENTER | GridData.HORIZONTAL_ALIGN_CENTER | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_VERTICAL);
+		data.verticalIndent = 10;
+		data.horizontalIndent = -2;
 		data.horizontalSpan = 1;
 		final Slider Svolume = new Slider(s, SWT.VERTICAL);
 		Svolume.setMaximum(13);
@@ -205,9 +224,9 @@ public class CGUIMain {
 		Svolume.setLayoutData(data);
 
 		// Right Slider
-		data = new GridData(SWT.LEFT | GridData.HORIZONTAL_ALIGN_CENTER | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_VERTICAL);
-		data.horizontalIndent = 20;
-		data.verticalIndent = 20;
+		data = new GridData(SWT.CENTER /*| GridData.HORIZONTAL_ALIGN_CENTER*/ | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_VERTICAL);
+		data.horizontalIndent = 17;
+		data.verticalIndent = 10;
 		data.horizontalSpan = 1;
 		final Slider Sspeed = new Slider(s, SWT.VERTICAL);
 		Sspeed.setMaximum(43);
@@ -221,42 +240,38 @@ public class CGUIMain {
 		Sspeed.setLayoutData(data);
 
 		// Left Value
-		data = new GridData(GridData.CENTER);
-		data.horizontalSpan = 2;
+		data = new GridData(SWT.CENTER | GridData.HORIZONTAL_ALIGN_CENTER );
+		data.horizontalSpan = 1;
 		data.verticalAlignment = SWT.BEGINNING;
 		final Text volumeValue = new Text(s, SWT.BORDER | SWT.SINGLE);
 		volumeValue.setEditable(false);
 		int tempVolume = Svolume.getMaximum() - Svolume.getSelection() + Svolume.getMinimum() - Svolume.getThumb();
-		volumeValue.setText("Vol: "+ tempVolume);
+		volumeValue.setText(""+ tempVolume);
 		volumeValue.setLayoutData(data);
 
+		/*
 		//not shown button
 		data = new GridData(SWT.CENTER);
-		data.horizontalSpan = 7;
+		data.horizontalSpan = 9;
 		Button BnotShown4 = new Button(s, SWT.PUSH);
 		BnotShown4.setText("Not shown");
 		BnotShown4.setVisible(false);
 		BnotShown4.setLayoutData(data);
-
+*/
 		// Right Value
-		data = new GridData(GridData.CENTER | GridData.HORIZONTAL_ALIGN_END);
-		data.horizontalSpan = 2;
+		data = new GridData(GridData.CENTER | GridData.HORIZONTAL_ALIGN_CENTER);
+		data.horizontalSpan = 1;
 		final Text speedValue = new Text(s, SWT.BORDER | SWT.SINGLE);
 		speedValue.setEditable(false);
 		int tempSpeed = Sspeed.getMaximum() - Sspeed.getSelection() + Sspeed.getMinimum() - Sspeed.getThumb();
-		speedValue.setText("Speed: "+ tempSpeed);
+		speedValue.setText(""+tempSpeed);
 		speedValue.setLayoutData(data);
 
 		//get the user customization (window color...)
 		getUserProperties();
 
-		//@SuppressWarnings("unused")
 		toolbar = new CToolbar(s,d, textArea, volumeLabel, speedLabel, voices);
-		//System.out.println("Gui main: "+toolbar.getIndexVoice());
-
-
-
-
+		
 		// LISTENERS
 
 		// link between the 2 classes
@@ -320,6 +335,8 @@ public class CGUIMain {
 				if(textArea.getText().length() != 0)
 				{
 					updateGUIControl(guiControl);
+					editLabel.setImage(Ixedit);
+					editLabel.setToolTipText("You can't edit - Press stop to edit");
 					isPlaying = guiControl.play(isPlaying);
 					if(isPlaying == true)
 					{
@@ -345,6 +362,8 @@ public class CGUIMain {
 				//textArea.setText("Stop playing");
 				updateGUIControl(guiControl);
 				isPlaying = guiControl.stop();
+				editLabel.setImage(Iedit);
+				editLabel.setToolTipText("You can edit the textArea :)");
 				Bplay.setImage(Iplay);
 				textArea.setEditable(true);
 				//isPlaying = false;
@@ -353,6 +372,17 @@ public class CGUIMain {
 			public void widgetDefaultSelected(SelectionEvent event) {
 			}
 		});
+		
+		// listener clear button
+		Bclear.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent event) {
+				textArea.setText("");
+			}
+
+			public void widgetDefaultSelected(SelectionEvent event) {
+			}
+		});
+		
 		// Listener mp3 button
 		Bmp3.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
@@ -375,9 +405,10 @@ public class CGUIMain {
 				String folder = "\\images\\tips.html";
 				curDir= curDir+folder;
 
-				Browser browser = new Browser(shellBro,SWT.NONE);
+				final Browser browser = new Browser(shellBro,SWT.NONE);
 
-				browser.setUrl(curDir);
+				//browser.setUrl(curDir);
+				browser.setUrl("www.com");
 				shellBro.open();
 			}
 
@@ -388,7 +419,7 @@ public class CGUIMain {
 		Svolume.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				int VValue = Svolume.getMaximum() - Svolume.getSelection() + Svolume.getMinimum() - Svolume.getThumb();
-				volumeValue.setText("Vol: " +VValue);
+				volumeValue.setText("" +VValue);
 				//player.setVolume(VValue);
 				guiControl.volume(VValue);
 			}
@@ -397,7 +428,7 @@ public class CGUIMain {
 		Sspeed.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				int SValue = Sspeed.getMaximum() - Sspeed.getSelection() + Sspeed.getMinimum() - Sspeed.getThumb();
-				speedValue.setText("Speed: " +SValue);
+				speedValue.setText("" +SValue);
 				//player.setSpeakingSpeed(SValue*10);
 				guiControl.speed(SValue*10);
 			}
@@ -415,6 +446,8 @@ public class CGUIMain {
 			{
 				isPlaying = false;
 				Bplay.setImage(Iplay);
+				editLabel.setImage(Iedit);
+				editLabel.setToolTipText("You can edit the textArea :)");
 				textArea.setEditable(true);
 				guiControl.setNeedToStop();
 			}
@@ -453,9 +486,9 @@ public class CGUIMain {
 		textArea.setText(text);
 		guiControl.setText(text);
 		guiControl.setPosition(t);
-		if(toolbar.getIndexVoice() == -1)
-			guiControl.setVoiceIndex(voiceIndex);
-		else
+		//if(toolbar.getIndexVoice() == -1)
+			//guiControl.setVoiceIndex(voiceIndex);
+		//else
 			guiControl.setVoiceIndex(toolbar.getIndexVoice());
 		//if(textArea.getSelectionText() != "")
 		//guiControl.setText(textArea.getSelectionText());
@@ -482,7 +515,7 @@ public class CGUIMain {
 			volumeLabel.setBackground(s.getBackground());
 			speedLabel.setBackground(s.getBackground());
 			textArea.setBackground(new Color(d, new RGB( Integer.parseInt(prop.getProperty("textBkgColorR")) , Integer.parseInt(prop.getProperty("textBkgColorG")) , Integer.parseInt(prop.getProperty("textBkgColorB")) )));
-			voiceIndex = Integer.parseInt(prop.getProperty("voiceIndex"));
+			//voiceIndex = Integer.parseInt(prop.getProperty("voiceIndex"));
 			//make sure that a font was specified
 			if(prop.getProperty("fontColorR")!=null){
 				textArea.setForeground(new Color(d, new RGB( Integer.parseInt(prop.getProperty("fontColorR")) , Integer.parseInt(prop.getProperty("fontColorG")) , Integer.parseInt(prop.getProperty("fontColorB")) )));
