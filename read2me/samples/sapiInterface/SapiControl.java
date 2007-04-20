@@ -1,4 +1,4 @@
-package sapiInterface;
+package samples.sapiInterface;
 
 import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.ComThread;
