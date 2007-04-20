@@ -68,7 +68,7 @@ public class CPreferenceWindow {
 		}
 	}
 
-	public void display(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, String[] voices){
+	public void display(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, final Label editLabel, String[] voices){
 
 		prefWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		//prefWin = new Shell();
@@ -145,6 +145,7 @@ public class CPreferenceWindow {
 				}
 				//t.setBackground(new Color(d, newColor));
 				s.setBackground(new Color(d, newColor));
+				editLabel.setBackground(new Color(d, newColor));
 				prefWin.setBackground(new Color(d, newColor));
 				labelWinColor.setBackground(new Color(d, newColor));
 				labelFont.setBackground(new Color(d, newColor));

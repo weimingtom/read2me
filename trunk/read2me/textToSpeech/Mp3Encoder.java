@@ -407,6 +407,25 @@ public class Mp3Encoder extends Thread {
 		}
 
 	}
+	
+	/**
+	 * Starts thread
+	 */
+	public void beginMP3Export(){
+		try
+		{
+			encodeMP3(path, quality) ;
+		}
+		catch(java.io.IOException e)
+		{
+			System.out.println("IOException caught: " + e);
+		}
+		catch(java.lang.InterruptedException e)
+		{
+			System.out.println("InterruptedException caught: " + e);
+		}
+
+	}
 
 
 }
