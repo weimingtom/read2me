@@ -22,6 +22,7 @@ public class CSapiControl extends Thread{
 	private CSapiListener sListener;
 	private boolean speaking;
 	private boolean stopped;
+	private boolean cancelled;
 	private boolean terminated ;
 	private boolean threadSuspended;
 	
@@ -40,6 +41,7 @@ public class CSapiControl extends Thread{
 		terminated = false;
 		threadSuspended = true;
 		stopped = false;
+		cancelled = false;
 	}
 	
 	public void addListener(CSapiListener listener){
@@ -129,6 +131,8 @@ public class CSapiControl extends Thread{
 				e.printStackTrace();
 			}
 		}
+		if(cancelled) stopped = true;
+		//System.out.println("Exited Play Loop");
 		//sListener.finished();
 	}
 	
@@ -143,14 +147,16 @@ public class CSapiControl extends Thread{
 	public void run(){
 		while(!terminated){
 			if(speaking){
-				play(toSpeak);
 				speaking = false;
+				play(toSpeak);
 				if(!stopped){
 					sListener.finished();
 				}
 				stopped = false;
 				threadSuspended = true;
-			} else {
+			} else if(!cancelled){
+				cancelled = true;
+				//System.out.println("Going to Wait");
 				try {
 	                sleep(200);
 	                synchronized(this) {
@@ -181,10 +187,21 @@ public class CSapiControl extends Thread{
 	
 	public synchronized void cancel(){
 		isPaused = false;
+		if(speaking) {
+			cancelled = true;
+			stopped = true;
+		}
+		Dispatch.call(msTTS, "Skip", "Sentence", new Variant(1));
+		sListener.cancelled();
+		//notify();
+	}
+	
+	public synchronized void stopSP(){
+		isPaused = false;
 		if(speaking) stopped = true;
 		Dispatch.call(msTTS, "Skip", "Sentence", new Variant(1));
 		sListener.cancelled();
-		notify();
+		//notify();
 	}
 	
 	public void exportToWAV(String speech, String target){

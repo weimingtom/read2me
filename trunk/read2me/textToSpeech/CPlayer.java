@@ -15,6 +15,9 @@ import java.util.Iterator;
 
 import javax.speech.AudioException;
 import javax.speech.Central;
+import com.sun.speech.freetts.jsapi.FreeTTSEngineCentral; 
+import javax.speech.EngineCreate;
+import java.util.Locale;
 import javax.speech.Engine;
 import javax.speech.EngineException;
 import javax.speech.EngineList;
@@ -63,9 +66,9 @@ public class CPlayer implements CPlayerInterface {
      * Creates a FreeTTS synthesizer.
      */
     public void createSynthesizers() {
-	try {
+    	try {
 	    EngineList list = Central.availableSynthesizers(null); 
-	    Enumeration e = list.elements();
+		Enumeration e = list.elements();
 
 	    while (e.hasMoreElements()) {
 		MySynthesizerModeDesc myModeDesc =
@@ -90,7 +93,34 @@ public class CPlayer implements CPlayerInterface {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //speakListener = new CR2MListener();
+    	/*try {
+            SynthesizerModeDesc desc = 
+                new SynthesizerModeDesc(null, 
+                                        "time", // use "time" or "general"
+                                        Locale.US, 
+                                        Boolean.FALSE,
+                                        null);
+
+            FreeTTSEngineCentral central = new FreeTTSEngineCentral();
+            EngineList list = central.createEngineList(desc); 
+            
+            if (list.size() > 0) { 
+                EngineCreate creator = (EngineCreate) list.get(0); 
+                synthesizer = (Synthesizer) creator.createEngine(); 
+            } 
+            if (synthesizerList.getSize() > 0) {
+        		setSynthesizer(0);
+            }
+            else if (synthesizer == null) {
+                System.err.println("Cannot create synthesizer");
+                System.exit(1);
+            }
+            synthesizer.allocate();
+            synthesizer.resume();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
     }
     
     public void setListener(SpeakableListener tgListener){
