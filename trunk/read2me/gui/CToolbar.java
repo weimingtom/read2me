@@ -14,14 +14,7 @@ public class CToolbar {
 	
 	int getIndexVoice()
 	{
-		try
-		{
-			return pref.selected;
-		}
-		catch(Exception e)
-		{
-			return -1;
-		}
+		return pref.selected;
 	}
 	CToolbar(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, final String[] voices)
 	{
@@ -73,8 +66,6 @@ public class CToolbar {
 		settings.setText("&Settings");
 		final Menu settingsmenu = new Menu(s, SWT.DROP_DOWN);
 		settings.setMenu(settingsmenu);
-		final MenuItem MP3MenuItem = new MenuItem(settingsmenu, SWT.PUSH);
-		MP3MenuItem.setText("MP3 Lame converter");
 		final MenuItem preferencesMenuItem = new MenuItem(settingsmenu, SWT.PUSH);
 		preferencesMenuItem.setText("Preferences...");
 

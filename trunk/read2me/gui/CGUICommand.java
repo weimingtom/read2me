@@ -79,12 +79,9 @@ public class CGUICommand implements CGUICommandInterface{
 		currentIndexParagraph = getParagraphNumber(indexOfSentence);
 		needUpdate = true;
 		guiMain.updateListeners();
-		//System.out.println("phrase a higllité: "+getSentence()[0]+ "  "+getSentence()[1]);
-		updateSpeechObject();
+		//updateSpeechObject();
 		if(currentIndex != indexOfSentence)
 		{
-			//endOfText = true;
-			//System.out.println("is going to play the next sentence");
 			play(false);
 		}
 		else
@@ -112,7 +109,7 @@ public class CGUICommand implements CGUICommandInterface{
 		indexOfSentence = getSentenceNumber(currentIndexParagraph);
 		if(isPlaying)
 		{
-			player.cancel();
+			//player.cancel();
 			play(false);
 		}
 	}
@@ -128,7 +125,7 @@ public class CGUICommand implements CGUICommandInterface{
 		currentIndexParagraph = getParagraphNumber(indexOfSentence);
 		if(isPlaying)
 		{
-			player.cancel();
+			//player.cancel();
 			play(false);
 		}
 	}
@@ -158,7 +155,7 @@ public class CGUICommand implements CGUICommandInterface{
 		indexOfSentence = getSentenceNumber(currentIndexParagraph);
 		if(isPlaying)
 		{
-			player.cancel();
+			//player.cancel();
 			play(false);
 		}
 	}

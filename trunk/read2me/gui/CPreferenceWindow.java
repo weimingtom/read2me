@@ -71,6 +71,7 @@ public class CPreferenceWindow {
 	public void display(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, String[] voices){
 
 		prefWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
+		//prefWin = new Shell();
 		prefWin.setSize(300, 300);
 		prefWin.setText("Preferences");
 
