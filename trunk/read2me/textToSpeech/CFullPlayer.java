@@ -75,7 +75,7 @@ public class CFullPlayer implements CPlayerInterface {
 		if(mode == 1)
 			freeTTSPlayer.stop();
 		else
-			sapiPlayer.cancel();
+			sapiPlayer.stopSP();
 	}
 	
 	public void cancel() {
