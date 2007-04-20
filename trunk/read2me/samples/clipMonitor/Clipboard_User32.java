@@ -1,4 +1,4 @@
-package clipMonitor;
+package samples.clipMonitor;
 
 import org.xvolks.jnative.JNative;
 import org.xvolks.jnative.Type;
