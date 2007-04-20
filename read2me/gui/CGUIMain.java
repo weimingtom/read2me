@@ -130,6 +130,8 @@ public class CGUIMain {
 		Bstop.setImage(Istop);
 		Bstop.setLayoutData(data);
 		Bstop.setToolTipText("Stop button");
+		
+		//Edit Icon
 
 		// Edit or Non Edit label
 		data = new GridData(SWT.CENTER);
@@ -270,7 +272,7 @@ public class CGUIMain {
 		//get the user customization (window color...)
 		getUserProperties();
 
-		toolbar = new CToolbar(s,d, textArea, volumeLabel, speedLabel, voices);
+		toolbar = new CToolbar(s,d, textArea, volumeLabel, speedLabel, editLabel, voices);
 		
 		// LISTENERS
 
@@ -514,6 +516,7 @@ public class CGUIMain {
 			s.setBackground(new Color(d, new RGB(  Integer.parseInt(prop.getProperty("windowsColorR")) , Integer.parseInt(prop.getProperty("windowsColorG")) , Integer.parseInt(prop.getProperty("windowsColorB")) )));
 			volumeLabel.setBackground(s.getBackground());
 			speedLabel.setBackground(s.getBackground());
+			editLabel.setBackground(s.getBackground());
 			textArea.setBackground(new Color(d, new RGB( Integer.parseInt(prop.getProperty("textBkgColorR")) , Integer.parseInt(prop.getProperty("textBkgColorG")) , Integer.parseInt(prop.getProperty("textBkgColorB")) )));
 			//voiceIndex = Integer.parseInt(prop.getProperty("voiceIndex"));
 			//make sure that a font was specified
