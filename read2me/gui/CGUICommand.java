@@ -143,7 +143,7 @@ public class CGUICommand implements CGUICommandInterface{
 		currentIndexParagraph = getParagraphNumber(indexOfSentence);
 		if(isPlaying)
 		{
-			player.cancel();
+			//player.cancel();
 			play(false);
 		}
 	}
@@ -176,7 +176,6 @@ public class CGUICommand implements CGUICommandInterface{
 			}
 			else
 			{ // just to this part when we first press play
-				//CSpeechObject speech = CSpeechObject.createTextSpeech(text);
 				updateSpeechObject();
 				player.addSpeech(speech);
 				player.play(speech);
@@ -198,7 +197,7 @@ public class CGUICommand implements CGUICommandInterface{
 	public boolean stop(){
 
 		isPlaying = false;
-		
+		player.resume();
 		player.stop();
         //player.resume();
         currentIndex = 0;
@@ -258,21 +257,42 @@ public class CGUICommand implements CGUICommandInterface{
 		int indexParag1=0, indexParag2=0;
 		for(int i=0; i<text.length(); i++)
 		{
-			if(text.charAt(i)== '.' || text.charAt(i)== '?' || text.charAt(i)== '!')
+			if(text.charAt(i)== '.' || text.charAt(i)== '?' || text.charAt(i)== '!' || text.charAt(i)== '(' || text.charAt(i)==')')
 			{
+				//begin is defined
+				/*end=i; // end is just before the .
+				
+				// we test the sentence defined by begin and end
+				if(end-begin == 1)
+					begin = end;
+				//if good we store it (begin+1 - end)
+				else
+				{
+					temp = new CSentence(begin+1,end);
+					begin = end;
+					endOfSentence.add(temp);
+				}*/
+					
+				//else we update the begin variable
+				
+				
+				
+			
 				index2 = i;
 				int test = index2 - index1;
-				if(test >1)
+				if(test >1 || (test == 1 && index1 == 0))
 				{
-					if(i == text.length()-1 || (i != 0 && i!=1 && i != text.length()-1))// && text.charAt(i+1) == ' ' && text.charAt(i-2) !='.'))
-					{
-						temp = new CSentence(index1,index2);
-						index1 = index2+1;
+					//if(i == text.length()-1 || (i != 0 && i!=1 && i != text.length()-1))// && text.charAt(i+1) == ' ' && text.charAt(i-2) !='.'))
+					//{
+						if(index1 == 0)
+							temp = new CSentence(index1,index2);
+						else
+							temp = new CSentence(index1+1,index2);
+						index1 = index2;
 						endOfSentence.add(temp);
-					}			
+					//}			
 				}
-				else
-					index1=i;
+				index1=i;
 			}
 			if(text.charAt(i) == '\n')
 			{
@@ -295,7 +315,7 @@ public class CGUICommand implements CGUICommandInterface{
 		{
 			if(index1 != text.length())
 			{
-				temp = new CSentence(index1,text.length());
+				temp = new CSentence(index1+1,text.length());
 				endOfSentence.add(temp);
 			}
 		}
@@ -339,6 +359,9 @@ public class CGUICommand implements CGUICommandInterface{
 	public void setText(String _text)
 	{
 		text = _text;
+		// modify text
+		//text = modifyText(_text);
+		
 		parseText();
 	}
 	
@@ -427,7 +450,7 @@ public class CGUICommand implements CGUICommandInterface{
 	public void setVoiceIndex(int _v)
 	{
 		voiceIndex = _v;
-		System.out.println("guicommand: "+ voiceIndex);
+		//System.out.println("guicommand: "+ voiceIndex);
 	}
 }
 
