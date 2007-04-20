@@ -14,6 +14,11 @@ public class CExportToWAVSAPI extends Thread{
 		this.target = target;
 	}
 	
+	public void exportToWAV(){
+		control.setVoice(voice.getIndex());
+		control.exportToWAV(text, target);
+	}
+	
 	public void run(){
 		control.setVoice(voice.getIndex());
 		control.exportToWAV(text, target);

@@ -19,6 +19,29 @@ public class CFullExportToWAV {
 	public void exportToWAV(){
 		System.out.println("Mode: " + voice.getMode());
 		if(voice.getMode() == 1) {
+			try{
+				wavFreeTTS.exportToWAV();
+			}
+			catch(java.io.IOException e)
+			{
+				System.out.println("IOException caught: " + e);
+			}
+			catch(java.lang.InterruptedException e)
+			{
+				System.out.println("InterruptedException caught: " + e);
+			}
+			System.out.println("Exporting FreeTTS WAV File");
+		}
+		else if(voice.getMode() == 2){
+			wavSapi.exportToWAV();
+		}
+		else
+			System.out.println("ERROR Exporting WAV: Incorrect Mode");
+	}
+	
+	public void start(){
+		System.out.println("Mode: " + voice.getMode());
+		if(voice.getMode() == 1) {
 			wavFreeTTS.start();
 			System.out.println("Exporting FreeTTS WAV File");
 		}
@@ -27,9 +50,5 @@ public class CFullExportToWAV {
 		}
 		else
 			System.out.println("ERROR Exporting WAV: Incorrect Mode");
-	}
-	
-	public void start(){
-		exportToWAV();
 	}
 }
