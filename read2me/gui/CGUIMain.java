@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.browser.*;
+//import java.awt.Font;
 import java.util.Properties;
 import java.io.*;
 //import org.eclipse.swt.graphics.Color;
@@ -72,7 +73,7 @@ public class CGUIMain {
 		final Image InextParagraph = new Image(d, "./Images/NextParagraph.png");
 		final Image Ivolume = new Image(d, "./Images/Sound.png");
 		final Image Ispeed = new Image(d, "./Images/speedFull.png");
-		final Image Imp3 = new Image(d, "./Images/mp3.png");
+		final Image Imp3 = new Image(d, "./Images/Export.png");
 		final Image Itip = new Image(d, "./Images/tip.png");
 
 
@@ -366,19 +367,19 @@ public class CGUIMain {
 		// Listener Tip button
 		Btip.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
-				final Shell shell = new Shell(d);
-				shell.setLayout(new FillLayout());
-				shell.setSize(500, 700);
-				shell.setText("Tips and Tricks");
-				shell.setLocation(600, 100);
+				final Shell shellBro = new Shell(d);
+				shellBro.setLayout(new FillLayout());
+				shellBro.setSize(500, 700);
+				shellBro.setText("Tips and Tricks");
+				shellBro.setLocation(600, 100);
 				String curDir = System.getProperty("user.dir");
 				String folder = "\\images\\tips.html";
 				curDir= curDir+folder;
 
-				Browser browser = new Browser(shell,SWT.NONE);
+				Browser browser = new Browser(shellBro,SWT.NONE);
 
 				browser.setUrl(curDir);
-				shell.open();
+				shellBro.open();
 			}
 
 			public void widgetDefaultSelected(SelectionEvent event) {
@@ -456,23 +457,18 @@ public class CGUIMain {
 		//Read properties file.
 		try {
 			prop.load(new FileInputStream("user.prop"));
-			//Color color = newColor(d, new RGB(  Integer.parseInt(prop.getProperty("windowsColorR")) , Integer.parseInt(prop.getProperty("windowsColorG")) , Integer.parseInt(prop.getProperty("windowsColorB")) )); 
 			s.setBackground(new Color(d, new RGB(  Integer.parseInt(prop.getProperty("windowsColorR")) , Integer.parseInt(prop.getProperty("windowsColorG")) , Integer.parseInt(prop.getProperty("windowsColorB")) )));
 			volumeLabel.setBackground(s.getBackground());
 			speedLabel.setBackground(s.getBackground());
 			textArea.setBackground(new Color(d, new RGB( Integer.parseInt(prop.getProperty("textBkgColorR")) , Integer.parseInt(prop.getProperty("textBkgColorG")) , Integer.parseInt(prop.getProperty("textBkgColorB")) )));
 			
-			if(prop.getProperty("fontColorR")!=null)
+			//make sure that a font was specified
+			if(prop.getProperty("fontColorR")!=null){
 				textArea.setForeground(new Color(d, new RGB( Integer.parseInt(prop.getProperty("fontColorR")) , Integer.parseInt(prop.getProperty("fontColorG")) , Integer.parseInt(prop.getProperty("fontColorB")) )));
-			/*
-			//Font font = new Font(d, prop.getProperty("fontName"), Integer.parseInt(prop.getProperty("fontHeight")), SWT.NONE);
-			Font font = new Font(d, prop.getProperty("fontName"), Integer.parseInt(prop.getProperty("fontHeight")) , Integer.parseInt(prop.getProperty("fontStyle")));
-			textArea.setFont(font);
+				Font font = new Font(d, new FontData(prop.getProperty("fontName"), Integer.parseInt(prop.getProperty("fontHeight")), Integer.parseInt(prop.getProperty("fontStyle"))) );
+				textArea.setFont(font);
+			}
 			
-			if (font != null && !font.isDisposed())
-			{
-				font.dispose();
-			}*/
 			System.out.println("user.prop found. Customization applied");
 		} 
 		catch (IOException e) {
