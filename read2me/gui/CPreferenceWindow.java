@@ -57,7 +57,6 @@ public class CPreferenceWindow {
 
 	public CPreferenceWindow()
 	{
-		System.out.println("user.home: "+System.getProperty("user.home"));
 		prop=new Properties();
 		try {
 			prop.load(new FileInputStream("user.prop"));
