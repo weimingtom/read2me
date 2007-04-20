@@ -1,8 +1,8 @@
-package sapiInterface;
+package samples.sapiInterface;
 
 
 
-	import sapiInterface.SapiControl.ReadEvent;
+import samples.sapiInterface.SapiControl.ReadEvent;
 
 import com.jacob.com.*;
 import com.jacob.activeX.*;

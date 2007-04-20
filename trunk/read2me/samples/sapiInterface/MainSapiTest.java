@@ -1,4 +1,4 @@
-package sapiInterface;
+package samples.sapiInterface;
 
 public class MainSapiTest {
 
