@@ -131,8 +131,8 @@ public class CSapiControl extends Thread{
 				e.printStackTrace();
 			}
 		}
-		if(cancelled) stopped = true;
-		//System.out.println("Exited Play Loop");
+		//if(cancelled) stopped = true;
+		System.out.println("Exited Play Loop");
 		//sListener.finished();
 	}
 	
@@ -146,7 +146,28 @@ public class CSapiControl extends Thread{
 	
 	public void run(){
 		while(!terminated){
-			if(speaking){
+			if(!speaking){
+				//cancelled = true;
+				System.out.println("Going to Wait");
+				try {
+	                sleep(200);
+	                synchronized(this) {
+	                    while (threadSuspended)
+	                        wait();
+	                }
+	            } catch (InterruptedException e){}
+	         } else {
+	        	 play(toSpeak);
+	        	 /* if(cancelled) {
+	        		 cancelled = false;
+	        		 System.out.println("Changed cancelled to false");
+	        	 }*/
+	        	 if(speaking && !cancelled) {
+	        		 sListener.finished();
+	        	 }
+	        	 cancelled = false;
+	         }
+			/*if(speaking){
 				speaking = false;
 				play(toSpeak);
 				if(!stopped){
@@ -154,9 +175,9 @@ public class CSapiControl extends Thread{
 				}
 				stopped = false;
 				threadSuspended = true;
-			} else if(!cancelled){
+			}else if(!cancelled){
 				cancelled = true;
-				//System.out.println("Going to Wait");
+				System.out.println("Going to Wait");
 				try {
 	                sleep(200);
 	                synchronized(this) {
@@ -165,7 +186,7 @@ public class CSapiControl extends Thread{
 	                }
 	            } catch (InterruptedException e){
 	            }
-			}
+			}*/
 		}
 	}
 	
@@ -187,10 +208,10 @@ public class CSapiControl extends Thread{
 	
 	public synchronized void cancel(){
 		isPaused = false;
-		if(speaking) {
+		//if(speaking) {
 			cancelled = true;
-			stopped = true;
-		}
+		//	stopped = true;
+		//}
 		Dispatch.call(msTTS, "Skip", "Sentence", new Variant(1));
 		sListener.cancelled();
 		//notify();
@@ -198,7 +219,10 @@ public class CSapiControl extends Thread{
 	
 	public synchronized void stopSP(){
 		isPaused = false;
-		if(speaking) stopped = true;
+		//cancelled = true;
+		//if(speaking) stopped = true;
+		speaking = false;
+		threadSuspended = true;
 		Dispatch.call(msTTS, "Skip", "Sentence", new Variant(1));
 		sListener.cancelled();
 		//notify();
