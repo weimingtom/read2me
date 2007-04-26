@@ -67,20 +67,22 @@ public class CGUIMain {
 		s.setMinimumSize(660, 450);
 		s.setText("Read2Me!");
 
-		Iplay = new Image(d, "./Images/Play.png");
-		Ipause = new Image(d, "./Images/Pause.png");
-		final Image Istop = new Image(d, "./Images/Stop.png");
-		final Image Iback = new Image(d, "./Images/Back.png");
-		final Image IbackParagraph = new Image(d, "./Images/BackParagraph.png");
-		final Image Inext = new Image(d, "./Images/Next.png");
-		final Image InextParagraph = new Image(d, "./Images/NextParagraph.png");
-		final Image Ivolume = new Image(d, "./Images/Sound.png");
-		final Image Ispeed = new Image(d, "./Images/speedFull.png");
-		final Image Imp3 = new Image(d, "./Images/Export.png");
-		final Image Itip = new Image(d, "./Images/tip.png");
-		final Image Iedit = new Image(d,"./Images/Pencil.png");
-		final Image Ixedit = new Image(d,"./Images/PencilX.png");
-		final Image Iclear = new Image(d,"./Images/Clear.png");
+		Iplay = new Image(d, "./resources/Play.png");
+		Ipause = new Image(d, "./resources/Pause.png");
+		final Image Istop = new Image(d, "./resources/Stop.png");
+		final Image Iback = new Image(d, "./resources/Back.png");
+		final Image IbackParagraph = new Image(d, "./resources/BackParagraph.png");
+		final Image Inext = new Image(d, "./resources/Next.png");
+		final Image InextParagraph = new Image(d, "./resources/NextParagraph.png");
+		final Image Ivolume = new Image(d, "./resources/Sound.png");
+		final Image Ispeed = new Image(d, "./resources/speedFull.png");
+		final Image Imp3 = new Image(d, "./resources/Export.png");
+		final Image Itip = new Image(d, "./resources/tip.png");
+		final Image Iedit = new Image(d,"./resources/Pencil.png");
+		final Image Ixedit = new Image(d,"./resources/PencilX.png");
+		final Image Iclear = new Image(d,"./resources/Clear.png");
+		final Image WindowIcon = new Image(d,"./resources/WindowIcon.gif");
+		
 
 		// Back paragraph button
 		GridData data = new GridData(SWT.CENTER);
@@ -138,7 +140,7 @@ public class CGUIMain {
 		editLabel = new Label(s, SWT.PUSH);
 		editLabel.setImage(Iedit);
 		editLabel.setLayoutData(data);
-		editLabel.setToolTipText("you can edit the text Area :)");
+		editLabel.setToolTipText("You can edit the text :)");
 		
 		// Separator
 		Button BnotShown2 = new Button(s, SWT.PUSH);
@@ -365,7 +367,7 @@ public class CGUIMain {
 				updateGUIControl(guiControl);
 				isPlaying = guiControl.stop();
 				editLabel.setImage(Iedit);
-				editLabel.setToolTipText("You can edit the textArea :)");
+				editLabel.setToolTipText("You can edit the text :)");
 				Bplay.setImage(Iplay);
 				textArea.setEditable(true);
 				//isPlaying = false;
@@ -398,20 +400,26 @@ public class CGUIMain {
 		// Listener Tip button
 		Btip.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
+				//final Shell shellBro = new Shell(d);
 				final Shell shellBro = new Shell(d);
 				shellBro.setLayout(new FillLayout());
 				shellBro.setSize(500, 700);
 				shellBro.setText("Tips and Tricks");
 				shellBro.setLocation(600, 100);
 				String curDir = System.getProperty("user.dir");
-				String folder = "\\images\\tips.html";
+				String folder = "\\resources\\tips.html";
 				curDir= curDir+folder;
-
+				
+				final Shell browWin = new Shell(s,SWT.NONE);
+				browWin.setSize(300, 300);
+				browWin.setText("Tips & Tricks");
+				
 				final Browser browser = new Browser(shellBro,SWT.NONE);
 
-				//browser.setUrl(curDir);
-				browser.setUrl("www.com");
+				browser.setUrl(curDir);
+				//browser.setUrl("www.com");
 				shellBro.open();
+				//browWin.open();
 			}
 
 			public void widgetDefaultSelected(SelectionEvent event) {
@@ -436,6 +444,7 @@ public class CGUIMain {
 			}
 		});
 
+		s.setImage(WindowIcon); //sets the uper left corner icon (in the window bar)
 		s.open();
 		while(!s.isDisposed()){
 			// check if we need to update the selection
@@ -449,7 +458,7 @@ public class CGUIMain {
 				isPlaying = false;
 				Bplay.setImage(Iplay);
 				editLabel.setImage(Iedit);
-				editLabel.setToolTipText("You can edit the textArea :)");
+				editLabel.setToolTipText("You can edit the text :)");
 				textArea.setEditable(true);
 				guiControl.setNeedToStop();
 			}

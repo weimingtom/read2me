@@ -109,7 +109,7 @@ public class CGUICommand implements CGUICommandInterface{
 		indexOfSentence = getSentenceNumber(currentIndexParagraph);
 		if(isPlaying)
 		{
-			//player.cancel();
+			player.cancel();
 			play(false);
 		}
 	}
@@ -125,7 +125,7 @@ public class CGUICommand implements CGUICommandInterface{
 		currentIndexParagraph = getParagraphNumber(indexOfSentence);
 		if(isPlaying)
 		{
-			//player.cancel();
+			player.cancel();
 			play(false);
 		}
 	}
@@ -140,7 +140,7 @@ public class CGUICommand implements CGUICommandInterface{
 		currentIndexParagraph = getParagraphNumber(indexOfSentence);
 		if(isPlaying)
 		{
-			//player.cancel();
+			player.cancel();
 			play(false);
 		}
 	}
@@ -155,7 +155,7 @@ public class CGUICommand implements CGUICommandInterface{
 		indexOfSentence = getSentenceNumber(currentIndexParagraph);
 		if(isPlaying)
 		{
-			//player.cancel();
+			player.cancel();
 			play(false);
 		}
 	}
@@ -411,7 +411,7 @@ public class CGUICommand implements CGUICommandInterface{
 	private void updateSpeechObject()
 	{
 		speech = CSpeechObject.createTextSpeech(text.substring(getSentence()[0], getSentence()[1]));
-		player.cancel();
+		//player.cancel();
 		player.setVoice(voiceIndex);
 	}
 	
