@@ -4,6 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -46,6 +47,8 @@ public class CPreferenceWindow {
 	Label labelVoice;
 	/**the voice comboBox*/
 	Combo voiceSel;
+	/** the add abbreviation label*/
+	Label labelAbbr;
 
 	//final Shell prefWin;
 	Shell prefWin;
@@ -72,7 +75,7 @@ public class CPreferenceWindow {
 
 		prefWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		//prefWin = new Shell();
-		prefWin.setSize(300, 300);
+		prefWin.setSize(300, 370);
 		prefWin.setText("Preferences");
 
 		//the text background color label
@@ -95,6 +98,11 @@ public class CPreferenceWindow {
 		labelVoice.setBounds(30, 180, 120, 20);
 		labelVoice.setText("Select voice: ");
 
+		//the add abbreviation label
+		labelAbbr = new Label(prefWin, SWT.PUSH);
+		labelAbbr.setBounds(30, 230, 120, 20);
+		labelAbbr.setText("Abbreviations: ");
+		
 
 		//the combo box to select the voices
 		voiceSel = new Combo(prefWin, SWT.READ_ONLY);
@@ -150,6 +158,7 @@ public class CPreferenceWindow {
 				labelWinColor.setBackground(new Color(d, newColor));
 				labelFont.setBackground(new Color(d, newColor));
 				labelVoice.setBackground(new Color(d, newColor));
+				labelAbbr.setBackground(new Color(d, newColor));
 				volumeLabel.setBackground(new Color(d, newColor));
 				speedLabel.setBackground(new Color(d, newColor));
 			}
@@ -182,14 +191,23 @@ public class CPreferenceWindow {
 			}
 		});
 
+		//the abbreviation manage button
+		final Button bAbbr = new Button(prefWin, SWT.PUSH);
+		bAbbr.setBounds(180, 225, 70, 25);
+		bAbbr.setText("Manage");
+		bAbbr.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				Program.launch(".\\resources\\myWords.txt");
+			}
+		});
 
 		final Button savePrefButton = new Button(prefWin, SWT.PUSH);
 		savePrefButton.setText("Save");
-		savePrefButton.setBounds(90, 220, 55, 25);
+		savePrefButton.setBounds(90, 290, 55, 25);
 
 		final Button cancelPrefButton = new Button(prefWin, SWT.PUSH);
 		cancelPrefButton.setText("Cancel");
-		cancelPrefButton.setBounds(155, 220, 55, 25);
+		cancelPrefButton.setBounds(155, 290, 55, 25);
 
 
 		//gets the properties (Font, Color...) from the main window
@@ -201,6 +219,7 @@ public class CPreferenceWindow {
 		labelFont.setFont(textArea.getFont());
 		labelFont.setForeground(textArea.getForeground());
 		labelVoice.setBackground(s.getBackground());
+		labelAbbr.setBackground(s.getBackground());
 
 		//save the main window customization options
 		//useful if the user decides to cancel his choice

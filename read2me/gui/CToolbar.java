@@ -3,6 +3,7 @@ package gui;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.*;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.program.Program;
@@ -148,30 +149,17 @@ public class CToolbar {
 
 		aboutMenuItem.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				//System.out.println("Help Invoked");
 				final Shell aboutWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-				aboutWin.setSize(200, 200);
+				aboutWin.setSize(561, 453);
 				aboutWin.setText("About");
+				final Image aboutScreen = new Image(d, "./resources/AboutScreen.jpg");
 				
-				final Label lab = new Label(aboutWin,SWT.CENTER);
-				lab.setText("Read2Me! \n\n" +
-						"Developers: \n" +
-						"- Stefan Estrada -\n- Rémi Jean -\n- Mickaël Meyer -");
-				lab.setBounds(0, 10, 200, 100);
-
-				final Button closePrefButton = new Button(aboutWin, SWT.PUSH);
-				closePrefButton.setText("Close");
-				closePrefButton.setBounds(75, 120, 50, 30);
-
-				aboutWin.open();
-
-				closePrefButton.addSelectionListener(new SelectionListener() {
-					public void widgetSelected(SelectionEvent e) {
-						aboutWin.close();
-					}
-					public void widgetDefaultSelected(SelectionEvent e) {                
-					}
+				aboutWin.addPaintListener(new PaintListener() {
+				      public void paintControl(PaintEvent event) {
+				        event.gc.drawImage(aboutScreen, 0, 0);
+				      }
 				});
+				aboutWin.open();
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
@@ -179,7 +167,7 @@ public class CToolbar {
 
 		tipsMenuItem.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
-				Program.launch(".\\images\\tips.html");
+				Program.launch(".\\resources\\tips.html");
 			}
 
 			public void widgetDefaultSelected(SelectionEvent event) {
@@ -188,7 +176,7 @@ public class CToolbar {
 
 		faqMenuItem.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				Program.launch(".\\images\\tips.html");
+				Program.launch(".\\resources\\tips.html");
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
