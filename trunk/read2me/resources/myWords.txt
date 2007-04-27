@@ -4,7 +4,10 @@ u.s.a. = USA
 Dr. = Doctor
 dr. = drive
 C.N.N. = CNN
-Mr. = Mister
 U.S. = US
 u.s. = US
-
+Prof = Professor
+Mr. = Mister
+Mme = Madame
+Mrs = Miss
+tcp/ip = t c p i p
