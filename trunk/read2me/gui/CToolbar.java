@@ -40,7 +40,7 @@ public class CToolbar {
 		exitMenuItem.setText("E&xit");
 
 		// create an edit menu and add cut copy and paste items
-		final MenuItem edit = new MenuItem(m, SWT.CASCADE);
+		/*final MenuItem edit = new MenuItem(m, SWT.CASCADE);
 		edit.setText("&Edit");
 		final Menu editmenu = new Menu(s, SWT.DROP_DOWN);
 		edit.setMenu(editmenu);
@@ -49,18 +49,7 @@ public class CToolbar {
 		final MenuItem copyMenuItem = new MenuItem(editmenu, SWT.PUSH);
 		copyMenuItem.setText("Co&py");
 		final MenuItem pasteMenuItem = new MenuItem(editmenu, SWT.PUSH);
-		pasteMenuItem.setText("&Paste");            
-
-		/*
-		//create a Voices menu and add Child item
-		final MenuItem voices = new MenuItem(m, SWT.CASCADE);
-		voices.setText("&Voices");
-		final Menu voicesmenu = new Menu(s, SWT.DROP_DOWN);
-		voices.setMenu(voicesmenu);
-		final MenuItem Voice1MenuItem = new MenuItem(voicesmenu, SWT.PUSH);
-		Voice1MenuItem.setText("Voice 1");
-		final MenuItem Voice2MenuItem = new MenuItem(voicesmenu, SWT.PUSH);
-		Voice2MenuItem.setText("Voice 2");*/
+		pasteMenuItem.setText("&Paste");     */       
 
 //		create a Settings menu and add Child item
 		final MenuItem settings = new MenuItem(m, SWT.CASCADE);
@@ -103,7 +92,7 @@ public class CToolbar {
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
 		});
-
+/*
 		cutMenuItem.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Cut");
@@ -129,23 +118,8 @@ public class CToolbar {
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
-		});
-/*
-		Voice1MenuItem.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
-				System.out.println("Voice 1 selected");
-			}
-			public void widgetDefaultSelected(SelectionEvent e) {                
-			}
-		});
-
-		Voice2MenuItem.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
-				System.out.println("Voice 2 selected");
-			}
-			public void widgetDefaultSelected(SelectionEvent e) {                
-			}
 		});*/
+
 
 		aboutMenuItem.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
