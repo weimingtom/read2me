@@ -142,7 +142,7 @@ public class CToolbar {
 		aboutMenuItem.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				final Shell aboutWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-				aboutWin.setSize(561, 453);
+				aboutWin.setSize(366, 318);
 				aboutWin.setText("About");
 				final Image aboutScreen = new Image(d, "./resources/AboutScreen.jpg");
 				
