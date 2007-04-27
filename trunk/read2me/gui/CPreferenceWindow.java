@@ -49,6 +49,8 @@ public class CPreferenceWindow {
 	Combo voiceSel;
 	/** the add abbreviation label*/
 	Label labelAbbr;
+	/** voices Array */
+	String[] voicesArray;
 
 	//final Shell prefWin;
 	Shell prefWin;
@@ -71,8 +73,13 @@ public class CPreferenceWindow {
 		}
 	}
 
+	public String getVoiceName()
+	{
+		return voicesArray[selected];
+	}
 	public void display(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, final Label editLabel, String[] voices){
 
+		voicesArray = voices;
 		prefWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		//prefWin = new Shell();
 		prefWin.setSize(300, 370);

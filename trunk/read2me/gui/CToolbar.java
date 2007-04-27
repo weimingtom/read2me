@@ -13,6 +13,7 @@ public class CToolbar {
 
 	private static CPreferenceWindow pref;
 	
+	
 	int getIndexVoice()
 	{
 		return pref.selected;
@@ -70,11 +71,27 @@ public class CToolbar {
 		faqMenuItem.setText("&F.A.Q.");
 		final MenuItem aboutMenuItem = new MenuItem(helpmenu, SWT.PUSH);
 		aboutMenuItem.setText("&About");
+		
+		final MenuItem separator = new MenuItem(m,SWT.SEPARATOR);
+		separator.setText("---------");
+		final MenuItem voice = new MenuItem(m, SWT.CASCADE | GridData.HORIZONTAL_ALIGN_END);
+		voice.setText("Current voice: "+voices[pref.selected]);
+		
 
 
 
 		// add action listeners for the menu items
 
+		voice.addSelectionListener(new SelectionListener(){
+			public void widgetSelected(SelectionEvent e) {
+				
+				pref.display(s,d,textArea, volumeLabel, speedLabel, editLabel, voices);
+				
+			}
+			public void widgetDefaultSelected(SelectionEvent e) {                
+			}
+		});
+		
 		preferencesMenuItem.addSelectionListener(new SelectionListener(){
 			public void widgetSelected(SelectionEvent e) {
 				
