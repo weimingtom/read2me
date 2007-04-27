@@ -38,7 +38,9 @@ public class CToolbar {
 		final Menu filemenu = new Menu(s, SWT.DROP_DOWN);
 		file.setMenu(filemenu);
 		final MenuItem exitMenuItem = new MenuItem(filemenu, SWT.PUSH);
-		exitMenuItem.setText("E&xit");
+		exitMenuItem.setText("E&xit\tCTRL+Q");
+		exitMenuItem.setAccelerator(SWT.CTRL + 'Q');
+		
 
 		// create an edit menu and add cut copy and paste items
 		/*final MenuItem edit = new MenuItem(m, SWT.CASCADE);
@@ -53,13 +55,13 @@ public class CToolbar {
 		pasteMenuItem.setText("&Paste");     */       
 
 //		create a Settings menu and add Child item
-		final MenuItem settings = new MenuItem(m, SWT.CASCADE);
-		settings.setText("&Settings");
-		final Menu settingsmenu = new Menu(s, SWT.DROP_DOWN);
+		final MenuItem preferencesMenuItem = new MenuItem(m, SWT.CASCADE);
+		preferencesMenuItem.setText("&Preferences");
+		/*final Menu settingsmenu = new Menu(s, SWT.DROP_DOWN);
 		settings.setMenu(settingsmenu);
 		final MenuItem preferencesMenuItem = new MenuItem(settingsmenu, SWT.PUSH);
 		preferencesMenuItem.setText("Preferences...");
-
+*/
 		// create a Help menu and add an about item
 		final MenuItem help = new MenuItem(m, SWT.CASCADE);
 		help.setText("&Help");

@@ -224,10 +224,10 @@ public class CGUIMain {
 		data.horizontalSpan = 1;
 		//final Slider Svolume = new Slider(s, SWT.VERTICAL);
 		Svolume = new Scale(s, SWT.VERTICAL);
-		Svolume.setMaximum(13);
+		Svolume.setMaximum(10);
 		Svolume.setMinimum(0);
 		Svolume.setIncrement(1);
-		Svolume.setPageIncrement(5);
+		Svolume.setPageIncrement(2);
 		//Svolume.setThumb(3);  // dimension of the thing
 		Svolume.setToolTipText("Adjust the volume");
 		//Svolume.setSelection(Svolume.getMaximum() - 10 + Svolume.getMinimum() - Svolume.getThumb());
@@ -244,7 +244,7 @@ public class CGUIMain {
 		data.horizontalSpan = 1;
 		//final Slider Sspeed = new Slider(s, SWT.VERTICAL);
 		Sspeed = new Scale(s, SWT.VERTICAL);
-		Sspeed.setMaximum(43);
+		Sspeed.setMaximum(40);
 		Sspeed.setMinimum(1);
 		Sspeed.setIncrement(1);
 		Sspeed.setPageIncrement(16);
@@ -464,10 +464,11 @@ public class CGUIMain {
 				tipLayout.numColumns = 2;
 				tipLayout.makeColumnsEqualWidth = false;
 				tipLayout.horizontalSpacing = 15;
-				tipLayout.marginTop = 5;
-				tipLayout.marginLeft = 2;
-				tipLayout.marginRight = 2;
-
+				tipLayout.verticalSpacing = 5;
+				/*tipLayout.marginTop = 5;
+				tipLayout.marginLeft = 5;
+				tipLayout.marginRight = 5;
+*/
 
 				shellWin.setLayout(tipLayout);
 				shellWin.setSize(350, 700);
@@ -476,44 +477,46 @@ public class CGUIMain {
 
 				GridData data = new GridData(SWT.CENTER);
 
-				Button backParagraph = new Button(shellWin, SWT.PUSH);
+				Label backParagraph = new Label(shellWin, SWT.PUSH);
 				backParagraph.setImage(IbackParagraph);
 				backParagraph.setLayoutData(data);
 				backParagraph.setToolTipText("Go back one paragraph.");
 				Label labBackParag = new Label(shellWin,SWT.BEGINNING);
 				labBackParag.setText("Go back one paragraph.");
 
-				Button back = new Button(shellWin, SWT.PUSH);
+				Label back = new Label(shellWin, SWT.PUSH);
 				back.setImage(Iback);
-				back.setLayoutData(data);
 				back.setToolTipText("Go back one sentence.");
 				Label labBack = new Label(shellWin,SWT.BEGINNING);
 				labBack.setText("Go back one sentence.");
 
-				Button next = new Button(shellWin, SWT.PUSH);
+				Label next = new Label(shellWin, SWT.PUSH);
 				next.setImage(Inext);
 				next.setLayoutData(data);
 				next.setToolTipText("Jump to next sentence.");
 				Label labNext = new Label(shellWin,SWT.BEGINNING);
 				labNext.setText("Jump to next sentence.");
 
-				Button nextP = new Button(shellWin, SWT.PUSH);
+				Label nextP = new Label(shellWin, SWT.PUSH);
 				nextP.setImage(InextParagraph);
-				nextP.setLayoutData(data);
 				nextP.setToolTipText("Jump to next paragraph.");
 				Label labNextP = new Label(shellWin,SWT.BEGINNING);
 				labNextP.setText("Jump to next paragraph.");
 
-				Button play = new Button(shellWin, SWT.PUSH);
+				Label play = new Label(shellWin, SWT.PUSH);
 				play.setImage(Iplay);
-				play.setLayoutData(data);
-				play.setToolTipText("Read the text / Pause the reading.");
+				play.setToolTipText("Read the text");
 				Label labPlay = new Label(shellWin,SWT.BEGINNING);
-				labPlay.setText("Read the text / Pause the reading.");
+				labPlay.setText("Read the text");
 
-				Button stop = new Button(shellWin, SWT.PUSH);
+				Label pause = new Label(shellWin, SWT.PUSH);
+				pause.setImage(Ipause);
+				pause.setToolTipText("Pause the reading.");
+				Label labPause = new Label(shellWin,SWT.BEGINNING);
+				labPause.setText("Pause the reading.");
+				
+				Label stop = new Label(shellWin, SWT.PUSH);
 				stop.setImage(Istop);
-				stop.setLayoutData(data);
 				stop.setToolTipText("Stop reading and go back to the top of the text.");
 				Label labStop = new Label(shellWin,SWT.BEGINNING);
 				labStop.setText("Stop reading and go back to the top of the text.");
@@ -525,16 +528,14 @@ public class CGUIMain {
 				Label labEdit = new Label(shellWin,SWT.BEGINNING);
 				labEdit.setText("Tells you if you can edit the text - Press stop to edit");
 
-				Button clear = new Button(shellWin, SWT.PUSH);
+				Label clear = new Label(shellWin, SWT.PUSH);
 				clear.setImage(Iclear);
-				clear.setLayoutData(data);
 				clear.setToolTipText("Clear Button");
 				Label labClear = new Label(shellWin,SWT.BEGINNING);
 				labClear.setText("Clear the text area");
 
-				Button export = new Button(shellWin, SWT.PUSH);
+				Label export = new Label(shellWin, SWT.PUSH);
 				export.setImage(Imp3);
-				export.setLayoutData(data);
 				export.setToolTipText("Export Button");
 				Label labExport = new Label(shellWin,SWT.BEGINNING);
 				labExport.setText("Export the current text to an audio file");
