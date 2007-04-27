@@ -18,7 +18,7 @@ public class CToolbar {
 	{
 		return pref.selected;
 	}
-	CToolbar(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, final Label editLabel, final String[] voices)
+	CToolbar(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, final Label editLabel, final String[] voices, final Scale Svolume, final Scale Sspeed)
 	{
 		pref = new CPreferenceWindow();
 		
@@ -85,7 +85,7 @@ public class CToolbar {
 		voice.addSelectionListener(new SelectionListener(){
 			public void widgetSelected(SelectionEvent e) {
 				
-				pref.display(s,d,textArea, volumeLabel, speedLabel, editLabel, voices);
+				pref.display(s,d,textArea, volumeLabel, speedLabel, editLabel, voices, Svolume, Sspeed);
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
@@ -94,7 +94,7 @@ public class CToolbar {
 		preferencesMenuItem.addSelectionListener(new SelectionListener(){
 			public void widgetSelected(SelectionEvent e) {
 				
-				pref.display(s,d,textArea, volumeLabel, speedLabel, editLabel, voices);
+				pref.display(s,d,textArea, volumeLabel, speedLabel, editLabel, voices, Svolume, Sspeed);
 				
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                

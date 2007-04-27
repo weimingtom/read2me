@@ -5,17 +5,18 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.program.Program;
-import org.eclipse.swt.widgets.Button;
+/*import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.FontDialog;*/
+import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.swt.graphics.FontData;
 import java.util.Properties;
 import java.io.*;
@@ -73,12 +74,13 @@ public class CPreferenceWindow {
 		}
 	}
 
+
 	public String getVoiceName()
 	{
 		return voicesArray[selected];
 	}
-	public void display(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, final Label editLabel, String[] voices){
 
+	public void display(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, final Label editLabel, String[] voices, final Scale Svolume, final Scale Sspeed){
 		voicesArray = voices;
 		prefWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		//prefWin = new Shell();
@@ -161,6 +163,8 @@ public class CPreferenceWindow {
 				//t.setBackground(new Color(d, newColor));
 				s.setBackground(new Color(d, newColor));
 				editLabel.setBackground(new Color(d, newColor));
+				Svolume.setBackground(new Color(d, newColor));
+				Sspeed.setBackground(new Color(d, newColor));
 				prefWin.setBackground(new Color(d, newColor));
 				labelWinColor.setBackground(new Color(d, newColor));
 				labelFont.setBackground(new Color(d, newColor));
@@ -263,6 +267,9 @@ public class CPreferenceWindow {
 				s.setBackground(colorMWindow);
 				volumeLabel.setBackground(colorMWindow);
 				speedLabel.setBackground(colorMWindow);
+				editLabel.setBackground(colorMWindow);
+				Svolume.setBackground(colorMWindow);
+				Sspeed.setBackground(colorMWindow);
 				textArea.setBackground(colorMTextBkg);
 				textArea.setFont(fontM);
 				textArea.setForeground(colorFont);

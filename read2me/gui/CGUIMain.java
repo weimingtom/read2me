@@ -37,7 +37,10 @@ public class CGUIMain {
 	private Label editLabel;
 	private static int voiceIndex =0;
 	private Properties prop;
+	private static Scale Sspeed;
+	private static Scale Svolume;
 	private static Vector<String> words;
+
 
 
 	// ------------------ Main ------------------------------
@@ -85,7 +88,7 @@ public class CGUIMain {
 		final Image Ixedit = new Image(d,"./resources/PencilX.png");
 		final Image Iclear = new Image(d,"./resources/Clear.png");
 		final Image WindowIcon = new Image(d,"./resources/WindowIcon.gif");
-		
+
 
 		// Back paragraph button
 		GridData data = new GridData(SWT.CENTER);
@@ -135,7 +138,7 @@ public class CGUIMain {
 		Bstop.setImage(Istop);
 		Bstop.setLayoutData(data);
 		Bstop.setToolTipText("Stop button");
-		
+
 		//Edit Icon
 
 		// Edit or Non Edit label
@@ -144,7 +147,7 @@ public class CGUIMain {
 		editLabel.setImage(Iedit);
 		editLabel.setLayoutData(data);
 		editLabel.setToolTipText("You can edit the text :)");
-		
+
 		// Separator
 		Button BnotShown2 = new Button(s, SWT.PUSH);
 		BnotShown2.setText("Not shown");
@@ -157,7 +160,7 @@ public class CGUIMain {
 		Bclear.setImage(Iclear);
 		Bclear.setLayoutData(data);
 		Bclear.setToolTipText("Clear the text Area");
-		
+
 		// MP3 Button
 		data = new GridData(SWT.CENTER);
 		Button Bmp3 = new Button(s, SWT.PUSH);
@@ -193,7 +196,7 @@ public class CGUIMain {
 		volumeLabel.setLayoutData(data);
 		volumeLabel.setToolTipText("Volume");
 
-		
+
 		// text area
 		data = new GridData(GridData.FILL_BOTH);
 		data.verticalIndent = 3;
@@ -203,7 +206,7 @@ public class CGUIMain {
 		textArea = new StyledText(s, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		textArea.setWordWrap(true);
 		textArea.setLayoutData(data);
-
+		
 		// Speed Label
 		data = new GridData(SWT.LEFT | GridData.HORIZONTAL_ALIGN_END | GridData.VERTICAL_ALIGN_BEGINNING);
 		data.horizontalIndent = 5;
@@ -219,30 +222,36 @@ public class CGUIMain {
 		data.verticalIndent = 10;
 		data.horizontalIndent = -2;
 		data.horizontalSpan = 1;
-		final Slider Svolume = new Slider(s, SWT.VERTICAL);
+		//final Slider Svolume = new Slider(s, SWT.VERTICAL);
+		Svolume = new Scale(s, SWT.VERTICAL);
 		Svolume.setMaximum(13);
 		Svolume.setMinimum(0);
 		Svolume.setIncrement(1);
 		Svolume.setPageIncrement(5);
-		Svolume.setThumb(3);  // dimension of the thing
+		//Svolume.setThumb(3);  // dimension of the thing
 		Svolume.setToolTipText("Adjust the volume");
-		Svolume.setSelection(Svolume.getMaximum() - 10 + Svolume.getMinimum() - Svolume.getThumb());
+		//Svolume.setSelection(Svolume.getMaximum() - 10 + Svolume.getMinimum() - Svolume.getThumb());
+		Svolume.setSelection(Svolume.getMaximum() - 10 + Svolume.getMinimum() );
 		guiControl.volume(10);
 		Svolume.setLayoutData(data);
+
+
 
 		// Right Slider
 		data = new GridData(SWT.CENTER /*| GridData.HORIZONTAL_ALIGN_CENTER*/ | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_VERTICAL);
 		data.horizontalIndent = 17;
 		data.verticalIndent = 10;
 		data.horizontalSpan = 1;
-		final Slider Sspeed = new Slider(s, SWT.VERTICAL);
+		//final Slider Sspeed = new Slider(s, SWT.VERTICAL);
+		Sspeed = new Scale(s, SWT.VERTICAL);
 		Sspeed.setMaximum(43);
 		Sspeed.setMinimum(1);
 		Sspeed.setIncrement(1);
-		Sspeed.setPageIncrement(5);
-		Sspeed.setThumb(3);
+		Sspeed.setPageIncrement(16);
+		//Sspeed.setThumb(3);
 		Sspeed.setToolTipText("Adjust the reading speed");
-		Sspeed.setSelection(Sspeed.getMaximum() - 15 + Sspeed.getMinimum() - Sspeed.getThumb());
+		//Sspeed.setSelection(Sspeed.getMaximum() - 15 + Sspeed.getMinimum() - Sspeed.getThumb());
+		Sspeed.setSelection(Sspeed.getMaximum() - 15 + Sspeed.getMinimum());
 		guiControl.speed(150);
 		Sspeed.setLayoutData(data);
 
@@ -252,7 +261,7 @@ public class CGUIMain {
 		//data.verticalAlignment = SWT.BEGINNING;
 		final Text volumeValue = new Text(s, SWT.BORDER );
 		volumeValue.setEditable(false);
-		int tempVolume = Svolume.getMaximum() - Svolume.getSelection() + Svolume.getMinimum() - Svolume.getThumb();
+		int tempVolume = Svolume.getMaximum() - Svolume.getSelection() + Svolume.getMinimum() ;//- Svolume.getThumb();
 		volumeValue.setText(""+ tempVolume);
 		volumeValue.setLayoutData(data);
 
@@ -264,21 +273,21 @@ public class CGUIMain {
 		BnotShown4.setText("Not shown");
 		BnotShown4.setVisible(false);
 		BnotShown4.setLayoutData(data);
-*/
+		 */
 		// Right Value
 		data = new GridData(GridData.CENTER | GridData.HORIZONTAL_ALIGN_CENTER);
 		data.horizontalSpan = 1;
 		final Text speedValue = new Text(s, SWT.BORDER | SWT.SINGLE);
 		speedValue.setEditable(false);
-		int tempSpeed = Sspeed.getMaximum() - Sspeed.getSelection() + Sspeed.getMinimum() - Sspeed.getThumb();
+		int tempSpeed = Sspeed.getMaximum() - Sspeed.getSelection() + Sspeed.getMinimum() ;// - Sspeed.getThumb();
 		speedValue.setText(""+tempSpeed);
 		speedValue.setLayoutData(data);
 
 		//get the user customization (window color...)
 		getUserProperties();
 
-		toolbar = new CToolbar(s,d, textArea, volumeLabel, speedLabel, editLabel, voices);
-		
+		toolbar = new CToolbar(s,d, textArea, volumeLabel, speedLabel, editLabel, voices, Svolume, Sspeed);
+
 		// LISTENERS
 
 		// link between the 2 classes
@@ -364,6 +373,37 @@ public class CGUIMain {
 			}
 		});
 		
+		
+		Bplay.addKeyListener(new KeyListener(){
+			public void keyPressed(KeyEvent e) {
+				if(Character.toString(e.character).equalsIgnoreCase(" "))
+				{
+					if(textArea.getText().length() != 0)
+					{
+						updateGUIControl(guiControl);
+						editLabel.setImage(Ixedit);
+						editLabel.setToolTipText("You can't edit - Press stop to edit");
+						isPlaying = guiControl.play(isPlaying);
+						if(isPlaying == true)
+						{
+							Bplay.setImage(Ipause);
+							textArea.setEditable(false);	
+						}
+						else
+						{
+							Bplay.setImage(Iplay);
+							textArea.setEditable(false);
+						}
+
+						highlight(guiControl);
+					}
+				}
+			}
+			public void keyReleased(KeyEvent e) {
+
+			}
+		});
+
 		// Listener Stop button
 		Bstop.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
@@ -380,7 +420,7 @@ public class CGUIMain {
 			public void widgetDefaultSelected(SelectionEvent event) {
 			}
 		});
-		
+
 		// listener clear button
 		Bclear.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
@@ -390,7 +430,7 @@ public class CGUIMain {
 			public void widgetDefaultSelected(SelectionEvent event) {
 			}
 		});
-		
+
 		// Listener mp3 button
 		Bmp3.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
@@ -401,12 +441,25 @@ public class CGUIMain {
 			public void widgetDefaultSelected(SelectionEvent event) {
 			}
 		});
+
 		// Listener Tip button
 		Btip.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
+				/*<<<<<<< .mine
 
+				final Shell shellBro = new Shell(d);
+				shellBro.setLayout(new FillLayout());
+				shellBro.setSize(500, 700);
+				shellBro.setText("Tips and Tricks");
+				shellBro.setLocation(600, 100);
+				String curDir = System.getProperty("user.dir");
+				String folder = "\\resources\\tips.html";
+				curDir= curDir+folder;
+				=======
+				 */
 				Shell shellWin = new Shell(d);
-				
+
+
 				GridLayout tipLayout = new GridLayout();
 				tipLayout.numColumns = 2;
 				tipLayout.makeColumnsEqualWidth = false;
@@ -414,101 +467,102 @@ public class CGUIMain {
 				tipLayout.marginTop = 5;
 				tipLayout.marginLeft = 2;
 				tipLayout.marginRight = 2;
-				
+
+
 				shellWin.setLayout(tipLayout);
 				shellWin.setSize(350, 700);
 				shellWin.setMinimumSize(350,700);
 				shellWin.setText("Read2Me! - Tips");
-				
+
 				GridData data = new GridData(SWT.CENTER);
-				
+
 				Button backParagraph = new Button(shellWin, SWT.PUSH);
 				backParagraph.setImage(IbackParagraph);
 				backParagraph.setLayoutData(data);
-				backParagraph.setToolTipText("One paragraph back");
+				backParagraph.setToolTipText("Go back one paragraph.");
 				Label labBackParag = new Label(shellWin,SWT.BEGINNING);
-				labBackParag.setText("Go one paragraph back");
-				
+				labBackParag.setText("Go back one paragraph.");
+
 				Button back = new Button(shellWin, SWT.PUSH);
 				back.setImage(Iback);
 				back.setLayoutData(data);
-				back.setToolTipText("One sentence back");
+				back.setToolTipText("Go back one sentence.");
 				Label labBack = new Label(shellWin,SWT.BEGINNING);
-				labBack.setText("One sentence back");
-				
+				labBack.setText("Go back one sentence.");
+
 				Button next = new Button(shellWin, SWT.PUSH);
 				next.setImage(Inext);
 				next.setLayoutData(data);
-				next.setToolTipText("One sentence further");
+				next.setToolTipText("Jump to next sentence.");
 				Label labNext = new Label(shellWin,SWT.BEGINNING);
-				labNext.setText("One sentence further");
-				
+				labNext.setText("Jump to next sentence.");
+
 				Button nextP = new Button(shellWin, SWT.PUSH);
 				nextP.setImage(InextParagraph);
 				nextP.setLayoutData(data);
-				nextP.setToolTipText("One sentence further");
+				nextP.setToolTipText("Jump to next paragraph.");
 				Label labNextP = new Label(shellWin,SWT.BEGINNING);
-				labNextP.setText("One sentence further");
-				
+				labNextP.setText("Jump to next paragraph.");
+
 				Button play = new Button(shellWin, SWT.PUSH);
 				play.setImage(Iplay);
 				play.setLayoutData(data);
-				play.setToolTipText("Play Button");
+				play.setToolTipText("Read the text / Pause the reading.");
 				Label labPlay = new Label(shellWin,SWT.BEGINNING);
-				labPlay.setText("Play Button");
-				
+				labPlay.setText("Read the text / Pause the reading.");
+
 				Button stop = new Button(shellWin, SWT.PUSH);
 				stop.setImage(Istop);
 				stop.setLayoutData(data);
-				stop.setToolTipText("Stop Button");
+				stop.setToolTipText("Stop reading and go back to the top of the text.");
 				Label labStop = new Label(shellWin,SWT.BEGINNING);
-				labStop.setText("Stop Button");
-				
+				labStop.setText("Stop reading and go back to the top of the text.");
+
 				Label edit = new Label(shellWin, SWT.BEGINNING);
 				edit.setImage(Iedit);
 				edit.setLayoutData(data);
 				edit.setToolTipText("Edit status");
 				Label labEdit = new Label(shellWin,SWT.BEGINNING);
 				labEdit.setText("Tells you if you can edit the text - Press stop to edit");
-				
+
 				Button clear = new Button(shellWin, SWT.PUSH);
 				clear.setImage(Iclear);
 				clear.setLayoutData(data);
 				clear.setToolTipText("Clear Button");
 				Label labClear = new Label(shellWin,SWT.BEGINNING);
 				labClear.setText("Clear the text area");
-				
+
 				Button export = new Button(shellWin, SWT.PUSH);
 				export.setImage(Imp3);
 				export.setLayoutData(data);
 				export.setToolTipText("Export Button");
 				Label labExport = new Label(shellWin,SWT.BEGINNING);
-				labExport.setText("Export the current text to a wav or mp3 file");
-				
+				labExport.setText("Export the current text to an audio file");
+
 				Label vol = new Label(shellWin, SWT.BEGINNING);
 				vol.setImage(Ivolume);
 				vol.setLayoutData(data);
 				vol.setToolTipText("Volume adjustment");
 				Label labVol = new Label(shellWin,SWT.BEGINNING);
-				labVol.setText("The slider allows you to adjust the volume");
-				
+				labVol.setText("Adjust the volume of the voice with the scale");
+
 				Label speed = new Label(shellWin, SWT.BEGINNING);
 				speed.setImage(Ispeed);
 				speed.setLayoutData(data);
 				speed.setToolTipText("Speed adjustment");
 				Label labSpeed = new Label(shellWin,SWT.BEGINNING);
-				labSpeed.setText("The slider allows you to adjust the speed");
+				labSpeed.setText("Adjust the speed of the voice with the scale");
 				shellWin.open();
-
 			}
 
 			public void widgetDefaultSelected(SelectionEvent event) {
 			}
 		});
+
 		// Listener Volume slider
 		Svolume.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				int VValue = Svolume.getMaximum() - Svolume.getSelection() + Svolume.getMinimum() - Svolume.getThumb();
+				int VValue = Svolume.getMaximum() - Svolume.getSelection() + Svolume.getMinimum() ;// - Svolume.getThumb();
 				volumeValue.setText("" +VValue);
 				//player.setVolume(VValue);
 				guiControl.volume(VValue);
@@ -517,7 +571,7 @@ public class CGUIMain {
 		// Listener Speed Slider
 		Sspeed.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				int SValue = Sspeed.getMaximum() - Sspeed.getSelection() + Sspeed.getMinimum() - Sspeed.getThumb();
+				int SValue = Sspeed.getMaximum() - Sspeed.getSelection() + Sspeed.getMinimum();// - Sspeed.getThumb();
 				speedValue.setText("" +SValue);
 				//player.setSpeakingSpeed(SValue*10);
 				guiControl.speed(SValue*10);
@@ -576,7 +630,7 @@ public class CGUIMain {
 				}
 			}
 			inFile.close();
-			
+
 			for(int i=0; i<words.size(); i+=2)
 			{
 				_t = _t.replace(words.elementAt(i),words.elementAt(i+1));
@@ -590,7 +644,7 @@ public class CGUIMain {
 		}
 		return _t;
 	}
-	
+
 	private static void updateGUIControl(final CGUICommandInterface guiControl)
 	{
 		int t = textArea.getCaretOffset();
@@ -599,9 +653,9 @@ public class CGUIMain {
 		guiControl.setText(text);
 		guiControl.setPosition(t);
 		//if(toolbar.getIndexVoice() == -1)
-			//guiControl.setVoiceIndex(voiceIndex);
+		//guiControl.setVoiceIndex(voiceIndex);
 		//else
-			guiControl.setVoiceIndex(toolbar.getIndexVoice());
+		guiControl.setVoiceIndex(toolbar.getIndexVoice());
 		//if(textArea.getSelectionText() != "")
 		//guiControl.setText(textArea.getSelectionText());
 	}
@@ -627,6 +681,8 @@ public class CGUIMain {
 			volumeLabel.setBackground(s.getBackground());
 			speedLabel.setBackground(s.getBackground());
 			editLabel.setBackground(s.getBackground());
+			Svolume.setBackground(s.getBackground());
+			Sspeed.setBackground(s.getBackground());
 			textArea.setBackground(new Color(d, new RGB( Integer.parseInt(prop.getProperty("textBkgColorR")) , Integer.parseInt(prop.getProperty("textBkgColorG")) , Integer.parseInt(prop.getProperty("textBkgColorB")) )));
 			//voiceIndex = Integer.parseInt(prop.getProperty("voiceIndex"));
 			//make sure that a font was specified
@@ -635,7 +691,7 @@ public class CGUIMain {
 				Font font = new Font(d, new FontData(prop.getProperty("fontName"), Integer.parseInt(prop.getProperty("fontHeight")), Integer.parseInt(prop.getProperty("fontStyle"))) );
 				textArea.setFont(font);
 			}
-			
+
 			System.out.println("user.prop found. Customization applied");
 		} 
 		catch (IOException e) {
@@ -652,4 +708,4 @@ SAPI
 
 icon meaning
 
-*/
+ */
