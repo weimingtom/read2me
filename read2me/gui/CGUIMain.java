@@ -414,24 +414,90 @@ public class CGUIMain {
 				tipLayout.marginTop = 5;
 				tipLayout.marginLeft = 2;
 				tipLayout.marginRight = 2;
-
-				shellWin.setMinimumSize(500,700);
+				
+				shellWin.setLayout(tipLayout);
+				shellWin.setSize(350, 700);
+				shellWin.setMinimumSize(350,700);
 				shellWin.setText("Read2Me! - Tips");
 				
 				GridData data = new GridData(SWT.CENTER);
-				Button TbackParagraph = new Button(shellWin, SWT.PUSH);
-				TbackParagraph.setImage(IbackParagraph);
-				TbackParagraph.setLayoutData(data);
-				TbackParagraph.setToolTipText("One paragraph back");
 				
-				Label TlabBackParag = new Label(shellWin,SWT.BEGINNING);
-				TlabBackParag.setText("Go one paragraph back");
+				Button backParagraph = new Button(shellWin, SWT.PUSH);
+				backParagraph.setImage(IbackParagraph);
+				backParagraph.setLayoutData(data);
+				backParagraph.setToolTipText("One paragraph back");
+				Label labBackParag = new Label(shellWin,SWT.BEGINNING);
+				labBackParag.setText("Go one paragraph back");
 				
-				Button Tback = new Button(shellWin, SWT.PUSH);
-				Tback.setImage(Iback);
-				Tback.setLayoutData(data);
-				Tback.setToolTipText("One sentence back");
+				Button back = new Button(shellWin, SWT.PUSH);
+				back.setImage(Iback);
+				back.setLayoutData(data);
+				back.setToolTipText("One sentence back");
+				Label labBack = new Label(shellWin,SWT.BEGINNING);
+				labBack.setText("One sentence back");
 				
+				Button next = new Button(shellWin, SWT.PUSH);
+				next.setImage(Inext);
+				next.setLayoutData(data);
+				next.setToolTipText("One sentence further");
+				Label labNext = new Label(shellWin,SWT.BEGINNING);
+				labNext.setText("One sentence further");
+				
+				Button nextP = new Button(shellWin, SWT.PUSH);
+				nextP.setImage(InextParagraph);
+				nextP.setLayoutData(data);
+				nextP.setToolTipText("One sentence further");
+				Label labNextP = new Label(shellWin,SWT.BEGINNING);
+				labNextP.setText("One sentence further");
+				
+				Button play = new Button(shellWin, SWT.PUSH);
+				play.setImage(Iplay);
+				play.setLayoutData(data);
+				play.setToolTipText("Play Button");
+				Label labPlay = new Label(shellWin,SWT.BEGINNING);
+				labPlay.setText("Play Button");
+				
+				Button stop = new Button(shellWin, SWT.PUSH);
+				stop.setImage(Istop);
+				stop.setLayoutData(data);
+				stop.setToolTipText("Stop Button");
+				Label labStop = new Label(shellWin,SWT.BEGINNING);
+				labStop.setText("Stop Button");
+				
+				Label edit = new Label(shellWin, SWT.BEGINNING);
+				edit.setImage(Iedit);
+				edit.setLayoutData(data);
+				edit.setToolTipText("Edit status");
+				Label labEdit = new Label(shellWin,SWT.BEGINNING);
+				labEdit.setText("Tells you if you can edit the text - Press stop to edit");
+				
+				Button clear = new Button(shellWin, SWT.PUSH);
+				clear.setImage(Iclear);
+				clear.setLayoutData(data);
+				clear.setToolTipText("Clear Button");
+				Label labClear = new Label(shellWin,SWT.BEGINNING);
+				labClear.setText("Clear the text area");
+				
+				Button export = new Button(shellWin, SWT.PUSH);
+				export.setImage(Imp3);
+				export.setLayoutData(data);
+				export.setToolTipText("Export Button");
+				Label labExport = new Label(shellWin,SWT.BEGINNING);
+				labExport.setText("Export the current text to a wav or mp3 file");
+				
+				Label vol = new Label(shellWin, SWT.BEGINNING);
+				vol.setImage(Ivolume);
+				vol.setLayoutData(data);
+				vol.setToolTipText("Volume adjustment");
+				Label labVol = new Label(shellWin,SWT.BEGINNING);
+				labVol.setText("The slider allows you to adjust the volume");
+				
+				Label speed = new Label(shellWin, SWT.BEGINNING);
+				speed.setImage(Ispeed);
+				speed.setLayoutData(data);
+				speed.setToolTipText("Speed adjustment");
+				Label labSpeed = new Label(shellWin,SWT.BEGINNING);
+				labSpeed.setText("The slider allows you to adjust the speed");
 				shellWin.open();
 
 			}
@@ -492,7 +558,7 @@ public class CGUIMain {
 	{
 		try
 		{
-			Scanner inFile=new Scanner(new File("myWords.txt"));
+			Scanner inFile=new Scanner(new File("resources/myWords.txt"));
 			String line;
 			int pos = -1;
 			while(inFile.hasNextLine())

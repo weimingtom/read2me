@@ -411,7 +411,20 @@ public class CGUICommand implements CGUICommandInterface{
 	private void updateSpeechObject()
 	{
 		speech = CSpeechObject.createTextSpeech(text.substring(getSentence()[0], getSentence()[1]));
-		//player.cancel();
+		
+		/*
+		 * voices = player.getVoiceList();
+		voiceIndex = 1;
+		//voices.getSize();
+		//playerVoice = (PlayerVoice)voices.getElementAt(voiceIndex);
+		//playerVoice.getName();
+		 * 
+		 */
+		
+		ListModel temp = player.getVoiceList();
+		PlayerVoice temp2 = (PlayerVoice)temp.getElementAt(voiceIndex);
+		if(temp2.getMode() == 1)
+			player.cancel();
 		player.setVoice(voiceIndex);
 	}
 	
