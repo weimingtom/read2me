@@ -1,3 +1,4 @@
+
 #you can add here all the special words (i.e. abbreviations)
 #and the way they should be pronounced
 #use:
@@ -20,4 +21,4 @@ u.s. = US
 C.N.N. = CNN
 
 
-tcp/ip = t c p i p
+tcp/ip = TCPIP
