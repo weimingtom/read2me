@@ -1,13 +1,23 @@
-# this is a comentary = tetet
-U.S.A. = USA
-u.s.a. = USA
-Dr. = Doctor
-dr. = drive
-C.N.N. = CNN
-U.S. = US
-u.s. = US
-Prof = Professor
+#you can add here all the special words (i.e. abbreviations)
+#and the way they should be pronounced
+#use:
+#original word = word you want it to be pronounced
+
 Mr. = Mister
 Mme = Madame
-Mrs = Miss
+Mrs. = Miss
+
+Dr. = Doctor
+Prof = Professor
+dr. = drive
+ln. = lane
+
+U.S.A. = USA
+u.s.a. = USA
+U.S. = US
+u.s. = US
+
+C.N.N. = CNN
+
+
 tcp/ip = t c p i p
