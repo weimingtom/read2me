@@ -10,6 +10,8 @@ import org.eclipse.swt.browser.*;
 //import java.awt.Font;
 import java.util.Properties;
 import java.io.*;
+import java.util.*;
+
 //import org.eclipse.swt.graphics.Color;
 //import textToSpeech.*; 
 
@@ -35,6 +37,7 @@ public class CGUIMain {
 	private Label editLabel;
 	private static int voiceIndex =0;
 	private Properties prop;
+	private static Vector<String> words;
 
 
 	// ------------------ Main ------------------------------
@@ -50,7 +53,7 @@ public class CGUIMain {
 		d = new Display();
 		s = new Shell(d);
 
-
+		words = new Vector<String>(10,1);
 
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 13;
@@ -246,8 +249,8 @@ public class CGUIMain {
 		// Left Value
 		data = new GridData(SWT.CENTER | GridData.HORIZONTAL_ALIGN_CENTER );
 		data.horizontalSpan = 1;
-		data.verticalAlignment = SWT.BEGINNING;
-		final Text volumeValue = new Text(s, SWT.BORDER | SWT.SINGLE);
+		//data.verticalAlignment = SWT.BEGINNING;
+		final Text volumeValue = new Text(s, SWT.BORDER );
 		volumeValue.setEditable(false);
 		int tempVolume = Svolume.getMaximum() - Svolume.getSelection() + Svolume.getMinimum() - Svolume.getThumb();
 		volumeValue.setText(""+ tempVolume);
@@ -360,6 +363,7 @@ public class CGUIMain {
 			public void widgetDefaultSelected(SelectionEvent event) {
 			}
 		});
+		
 		// Listener Stop button
 		Bstop.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
@@ -400,26 +404,36 @@ public class CGUIMain {
 		// Listener Tip button
 		Btip.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
-				//final Shell shellBro = new Shell(d);
-				final Shell shellBro = new Shell(d);
-				shellBro.setLayout(new FillLayout());
-				shellBro.setSize(500, 700);
-				shellBro.setText("Tips and Tricks");
-				shellBro.setLocation(600, 100);
-				String curDir = System.getProperty("user.dir");
-				String folder = "\\resources\\tips.html";
-				curDir= curDir+folder;
-				
-				final Shell browWin = new Shell(s,SWT.NONE);
-				browWin.setSize(300, 300);
-				browWin.setText("Tips & Tricks");
-				
-				final Browser browser = new Browser(shellBro,SWT.NONE);
 
-				browser.setUrl(curDir);
-				//browser.setUrl("www.com");
-				shellBro.open();
-				//browWin.open();
+				Shell shellWin = new Shell(d);
+				
+				GridLayout tipLayout = new GridLayout();
+				tipLayout.numColumns = 2;
+				tipLayout.makeColumnsEqualWidth = false;
+				tipLayout.horizontalSpacing = 15;
+				tipLayout.marginTop = 5;
+				tipLayout.marginLeft = 2;
+				tipLayout.marginRight = 2;
+
+				shellWin.setMinimumSize(500,700);
+				shellWin.setText("Read2Me! - Tips");
+				
+				GridData data = new GridData(SWT.CENTER);
+				Button TbackParagraph = new Button(shellWin, SWT.PUSH);
+				TbackParagraph.setImage(IbackParagraph);
+				TbackParagraph.setLayoutData(data);
+				TbackParagraph.setToolTipText("One paragraph back");
+				
+				Label TlabBackParag = new Label(shellWin,SWT.BEGINNING);
+				TlabBackParag.setText("Go one paragraph back");
+				
+				Button Tback = new Button(shellWin, SWT.PUSH);
+				Tback.setImage(Iback);
+				Tback.setLayoutData(data);
+				Tback.setToolTipText("One sentence back");
+				
+				shellWin.open();
+
 			}
 
 			public void widgetDefaultSelected(SelectionEvent event) {
@@ -476,17 +490,38 @@ public class CGUIMain {
 
 	private static String modifyText(String _t)
 	{
-		_t = _t.replace("U.S.A.", "United State Of America");
-		_t = _t.replace("u.s.a.", "usa");
-		_t = _t.replace("Dr.", "Doctor");
-		_t = _t.replace("dr.", "drive");
-		_t = _t.replace("C.N.N.", "CNN");
-		_t = _t.replace("Pr.", "Professor");
-		_t = _t.replace("U.S.", "US");
-		_t = _t.replace("u.s.", "US");
-		
-		
-		System.out.println(_t);
+		try
+		{
+			Scanner inFile=new Scanner(new File("myWords.txt"));
+			String line;
+			int pos = -1;
+			while(inFile.hasNextLine())
+			{
+				line=inFile.nextLine();
+				pos = line.indexOf('=');
+				if(pos == 0 || pos == -1 || pos == line.length()-1 || line.charAt(0) == '#')
+				{
+					System.out.println("myWords.txt :: line ignored: "+line);
+				}
+				else
+				{
+					words.addElement(line.substring(0, pos).trim());
+					words.addElement(line.substring(pos+1, line.length()).trim());
+				}
+			}
+			inFile.close();
+			
+			for(int i=0; i<words.size(); i+=2)
+			{
+				_t = _t.replace(words.elementAt(i),words.elementAt(i+1));
+			}
+
+		}
+		catch(Exception e)
+		{
+			System.out.println("file: myWord.txt wasn't found");
+			return _t;
+		}
 		return _t;
 	}
 	
@@ -543,3 +578,12 @@ public class CGUIMain {
 
 	}
 }
+
+/*
+Installation
+pre reqs
+SAPI
+
+icon meaning
+
+*/
