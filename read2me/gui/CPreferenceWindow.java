@@ -204,7 +204,27 @@ public class CPreferenceWindow {
 		bAbbr.setText("Manage");
 		bAbbr.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				Program.launch(".\\resources\\myWords.txt");
+				File f = new File(".\\resources\\myWords.txt");
+				if(f.exists())
+					Program.launch(".\\resources\\myWords.txt");
+				else
+				{
+					try
+					{
+						PrintWriter file = new PrintWriter(new BufferedWriter
+				                  (new FileWriter(".\\resources\\myWords.txt")));
+						file.println("#Write the words you want like this example");
+						file.println("U.S.A.=USA");
+						file.close();
+						Program.launch(".\\resources\\myWords.txt");
+					}
+					catch(Exception ex)
+					{
+						System.out.println("can't create file :(");
+					}
+					
+					
+				}
 			}
 		});
 

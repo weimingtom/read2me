@@ -86,7 +86,6 @@ public class CToolbar {
 			public void widgetSelected(SelectionEvent e) {
 				
 				pref.display(s,d,textArea, volumeLabel, speedLabel, editLabel, voices);
-				
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
