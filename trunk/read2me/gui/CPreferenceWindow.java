@@ -217,7 +217,14 @@ public class CPreferenceWindow {
 					{
 						PrintWriter file = new PrintWriter(new BufferedWriter
 				                  (new FileWriter(".\\resources\\myWords.txt")));
-						file.println("#Write the words you want like this example");
+						file.println("#you can add here all the special words (i.e. abbreviations)");
+						file.println("#and the way they should be pronounced");
+						file.println("#use:");
+						file.println("#original word = word you want it to be pronounced");
+						file.println("");
+						file.println("Mr. = Mister");
+						file.println("Mme = Madame");
+						file.println("Mrs. = Miss");
 						file.println("U.S.A.=USA");
 						file.close();
 						Program.launch(".\\resources\\myWords.txt");

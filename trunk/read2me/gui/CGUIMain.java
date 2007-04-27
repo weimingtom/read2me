@@ -87,7 +87,7 @@ public class CGUIMain {
 		final Image Iedit = new Image(d,"./resources/Pencil.png");
 		final Image Ixedit = new Image(d,"./resources/PencilX.png");
 		final Image Iclear = new Image(d,"./resources/Clear.png");
-		final Image WindowIcon = new Image(d,"./resources/WindowIcon.gif");
+		final Image WindowIcon = new Image(d,"./resources/WindowIcon.png");
 
 
 		// Back paragraph button
@@ -206,7 +206,7 @@ public class CGUIMain {
 		textArea = new StyledText(s, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		textArea.setWordWrap(true);
 		textArea.setLayoutData(data);
-		
+
 		// Speed Label
 		data = new GridData(SWT.LEFT | GridData.HORIZONTAL_ALIGN_END | GridData.VERTICAL_ALIGN_BEGINNING);
 		data.horizontalIndent = 5;
@@ -372,37 +372,8 @@ public class CGUIMain {
 			public void widgetDefaultSelected(SelectionEvent event) {
 			}
 		});
-		
-		
-		Bplay.addKeyListener(new KeyListener(){
-			public void keyPressed(KeyEvent e) {
-				if(Character.toString(e.character).equalsIgnoreCase(" "))
-				{
-					if(textArea.getText().length() != 0)
-					{
-						updateGUIControl(guiControl);
-						editLabel.setImage(Ixedit);
-						editLabel.setToolTipText("You can't edit - Press stop to edit");
-						isPlaying = guiControl.play(isPlaying);
-						if(isPlaying == true)
-						{
-							Bplay.setImage(Ipause);
-							textArea.setEditable(false);	
-						}
-						else
-						{
-							Bplay.setImage(Iplay);
-							textArea.setEditable(false);
-						}
 
-						highlight(guiControl);
-					}
-				}
-			}
-			public void keyReleased(KeyEvent e) {
 
-			}
-		});
 
 		// Listener Stop button
 		Bstop.addSelectionListener(new SelectionListener() {
@@ -468,7 +439,7 @@ public class CGUIMain {
 				/*tipLayout.marginTop = 5;
 				tipLayout.marginLeft = 5;
 				tipLayout.marginRight = 5;
-*/
+				 */
 
 				shellWin.setLayout(tipLayout);
 				shellWin.setSize(350, 700);
@@ -514,7 +485,7 @@ public class CGUIMain {
 				pause.setToolTipText("Pause the reading.");
 				Label labPause = new Label(shellWin,SWT.BEGINNING);
 				labPause.setText("Pause the reading.");
-				
+
 				Label stop = new Label(shellWin, SWT.PUSH);
 				stop.setImage(Istop);
 				stop.setToolTipText("Stop reading and go back to the top of the text.");
@@ -620,15 +591,12 @@ public class CGUIMain {
 			{
 				line=inFile.nextLine();
 				pos = line.indexOf('=');
-				if(pos == 0 || pos == -1 || pos == line.length()-1 || line.charAt(0) == '#')
-				{
-					System.out.println("myWords.txt :: line ignored: "+line);
-				}
-				else
+				if(!(pos == 0 || pos == -1 || pos == line.length()-1 || line.charAt(0) == '#'))
 				{
 					words.addElement(line.substring(0, pos).trim());
 					words.addElement(line.substring(pos+1, line.length()).trim());
 				}
+
 			}
 			inFile.close();
 
