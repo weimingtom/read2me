@@ -1,0 +1,10 @@
+# this is a comentary = tetet
+U.S.A. = USA
+u.s.a. = USA
+Dr. = Doctor
+dr. = drive
+C.N.N. = CNN
+Mr. = Mister
+U.S. = US
+u.s. = US
+
