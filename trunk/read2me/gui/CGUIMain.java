@@ -440,6 +440,7 @@ public class CGUIMain {
 			public void widgetSelected(SelectionEvent event) {
 				
 				Shell shellWin = new Shell(d);
+				shellWin.setImage(WindowIcon); //sets the uper left corner icon (in the window bar)
 
 				GridLayout tipLayout = new GridLayout();
 				tipLayout.numColumns = 2;
@@ -453,69 +454,85 @@ public class CGUIMain {
 				shellWin.setText("Read2Me! - Tips");
 
 				GridData data = new GridData(SWT.CENTER);
+				Label tip = new Label(shellWin, SWT.PUSH);
+				tip.setText("Read2Me! is\n\n\n");
+				tip.setLayoutData(data);
+				Label tip2 = new Label(shellWin,SWT.BEGINNING);
+				tip2.setText("as simple as paste text and hit the play button! Enjoy\n\n\n");
+				
+				
+				data = new GridData(SWT.CENTER);
 				Label backParagraph = new Label(shellWin, SWT.PUSH);
 				backParagraph.setImage(IbackParagraph);
 				backParagraph.setLayoutData(data);
-				backParagraph.setToolTipText("Go back one paragraph. ( Up Arrow )");
+				backParagraph.setToolTipText("Go back one paragraph \n(UP ARROW)");
 				Label labBackParag = new Label(shellWin,SWT.BEGINNING);
-				labBackParag.setText("Go back one paragraph. ( Up Arrow )");
+				labBackParag.setText("Go back one paragraph \n(UP ARROW)");
 
 				data = new GridData(SWT.CENTER);
 				Label back = new Label(shellWin, SWT.PUSH);
 				back.setImage(Iback);
 				back.setLayoutData(data);
-				back.setToolTipText("Go back one sentence. ( Left Arrow )");
+				back.setToolTipText("Go back one sentence \n(LEFT ARROW)");
 				Label labBack = new Label(shellWin,SWT.BEGINNING);
-				labBack.setText("Go back one sentence. ( Left Arrow )");
+				labBack.setText("Go back one sentence \n(LEFT ARROW)");
 
 				data = new GridData(SWT.CENTER);
 				Label next = new Label(shellWin, SWT.PUSH);
 				next.setImage(Inext);
 				next.setLayoutData(data);
-				next.setToolTipText("Jump to next sentence. ( Right Arrow )");
+				next.setToolTipText("Jump to next sentence \n(RIGHT ARROW)");
 				Label labNext = new Label(shellWin,SWT.BEGINNING);
-				labNext.setText("Jump to next sentence. ( Right Arrow )");
+				labNext.setText("Jump to next sentence \n(RIGHT ARROW)");
 
 				data = new GridData(SWT.CENTER);
 				Label nextP = new Label(shellWin, SWT.PUSH);
 				nextP.setImage(InextParagraph);
 				nextP.setLayoutData(data);
-				nextP.setToolTipText("Jump to next paragraph. ( Down Arrow )");
+				nextP.setToolTipText("Jump to next paragraph \n(DOWN ARROW)");
 				Label labNextP = new Label(shellWin,SWT.BEGINNING);
-				labNextP.setText("Jump to next paragraph. ( Down Arrow )");
+				labNextP.setText("Jump to next paragraph \n(DOWN ARROW)");
 
 				data = new GridData(SWT.CENTER);
 				Label play = new Label(shellWin, SWT.PUSH);
 				play.setImage(Iplay);
 				play.setLayoutData(data);
-				play.setToolTipText("Read the text (Space Bar )");
+				play.setToolTipText("Read the text \n(SPACE BAR)");
 				Label labPlay = new Label(shellWin,SWT.BEGINNING);
-				labPlay.setText("Read the text (Space Bar )");
+				labPlay.setText("Read the text \n(SPACE BAR)");
 
 				data = new GridData(SWT.CENTER);
 				Label pause = new Label(shellWin, SWT.PUSH);
 				pause.setImage(Ipause);
 				pause.setLayoutData(data);
-				pause.setToolTipText("Pause the reading. (Space Bar )");
+				pause.setToolTipText("Pause the reading \n(SPACE BAR)");
 				Label labPause = new Label(shellWin,SWT.BEGINNING);
-				labPause.setText("Pause the reading. (Space Bar )");
+				labPause.setText("Pause the reading \n(SPACE BAR)");
 
 				data = new GridData(SWT.CENTER);
 				Label stop = new Label(shellWin, SWT.PUSH);
 				stop.setImage(Istop);
 				stop.setLayoutData(data);
-				stop.setToolTipText("Stop reading and go back to the top of the text. (Return Key)");
+				stop.setToolTipText("Stop reading and go back to the top of the text \n(RETURN KEY)");
 				Label labStop = new Label(shellWin,SWT.BEGINNING);
-				labStop.setText("Stop reading and go back to the top of the text. (Return Key)");
+				labStop.setText("Stop reading and go back to the top of the text \n(RETURN KEY)");
 
 				data = new GridData(SWT.CENTER);
 				Label edit = new Label(shellWin, SWT.BEGINNING);
 				edit.setImage(Iedit);
 				edit.setLayoutData(data);
-				edit.setToolTipText("Edit status");
+				edit.setToolTipText("Edit status ON");
 				Label labEdit = new Label(shellWin,SWT.BEGINNING);
-				labEdit.setText("Tells you if you can edit the text - Press stop to edit");
+				labEdit.setText("Edit mode is ON. You can edit the text");
 
+				data = new GridData(SWT.CENTER);
+				Label editX = new Label(shellWin, SWT.BEGINNING);
+				editX.setImage(Ixedit);
+				editX.setLayoutData(data);
+				editX.setToolTipText("Edit status OFF");
+				Label labEditX = new Label(shellWin,SWT.BEGINNING);
+				labEditX.setText("Edit mode is OFF. Press STOP to switch to edit mode.");
+				
 				data = new GridData(SWT.CENTER);
 				Label clear = new Label(shellWin, SWT.PUSH);
 				clear.setImage(Iclear);
@@ -530,7 +547,7 @@ public class CGUIMain {
 				export.setLayoutData(data);
 				export.setToolTipText("Export Button");
 				Label labExport = new Label(shellWin,SWT.BEGINNING);
-				labExport.setText("Export the current text to an audio file");
+				labExport.setText("Export the current text to an audio file \nTakes effect when you hit the next time you STOP");
 
 				data = new GridData(SWT.CENTER);
 				Label vol = new Label(shellWin, SWT.BEGINNING);
@@ -538,7 +555,7 @@ public class CGUIMain {
 				vol.setLayoutData(data);
 				vol.setToolTipText("Volume adjustment");
 				Label labVol = new Label(shellWin,SWT.BEGINNING);
-				labVol.setText("Adjust the volume of the voice with the scale");
+				labVol.setText("Adjust the volume of the voice with the scale \nTakes effect the next time you hit STOP");
 
 				data = new GridData(SWT.CENTER);
 				Label speed = new Label(shellWin, SWT.BEGINNING);
@@ -546,7 +563,14 @@ public class CGUIMain {
 				speed.setLayoutData(data);
 				speed.setToolTipText("Speed adjustment");
 				Label labSpeed = new Label(shellWin,SWT.BEGINNING);
-				labSpeed.setText("Adjust the speed of the voice with the scale");
+				labSpeed.setText("Adjust the reading speed with the scale");
+				
+				data = new GridData(SWT.CENTER);
+				Label adHelp = new Label(shellWin, SWT.PUSH);
+				adHelp.setText("\n\n\nFor advanced");
+				adHelp.setLayoutData(data);
+				Label adHelp2 = new Label(shellWin,SWT.BEGINNING);
+				adHelp2.setText("\n\n\nhelp or more info, see the menu Help -> F.A.Q");
 				
 				shellWin.open();
 				textArea.setFocus();
