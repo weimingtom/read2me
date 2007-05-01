@@ -180,6 +180,7 @@ public class CGUIMain {
 
 		// MP3 Button
 		data = new GridData(SWT.CENTER);
+		data.horizontalIndent = 30;
 		Button Bmp3 = new Button(s, SWT.PUSH);
 		Bmp3.setImage(Imp3);
 		Bmp3.setLayoutData(data);
