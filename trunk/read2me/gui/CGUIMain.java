@@ -226,7 +226,7 @@ public class CGUIMain {
 
 		// Speed Label
 		data = new GridData(SWT.LEFT | GridData.HORIZONTAL_ALIGN_END | GridData.VERTICAL_ALIGN_BEGINNING);
-		data.horizontalIndent = 5;
+		data.horizontalIndent = 4;
 		data.verticalIndent = 10;
 		data.horizontalSpan = 1;
 		speedLabel = new Label(s, SWT.BEGINNING);
@@ -255,7 +255,7 @@ public class CGUIMain {
 
 		// Right Slider
 		data = new GridData(SWT.CENTER /*| GridData.HORIZONTAL_ALIGN_CENTER*/ | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_VERTICAL);
-		data.horizontalIndent = 17;
+		data.horizontalIndent = 9;
 		data.verticalIndent = 10;
 		data.horizontalSpan = 1;
 		//final Slider Sspeed = new Slider(s, SWT.VERTICAL);
