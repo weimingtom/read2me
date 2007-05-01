@@ -57,6 +57,7 @@ public class CToolbar {
 //		create a Settings menu and add Child item
 		final MenuItem preferencesMenuItem = new MenuItem(m, SWT.CASCADE);
 		preferencesMenuItem.setText("&Preferences");
+		preferencesMenuItem.setAccelerator(SWT.CTRL + 'P');
 		/*final Menu settingsmenu = new Menu(s, SWT.DROP_DOWN);
 		settings.setMenu(settingsmenu);
 		final MenuItem preferencesMenuItem = new MenuItem(settingsmenu, SWT.PUSH);
@@ -80,14 +81,12 @@ public class CToolbar {
 		voice.setText("Current voice: "+voices[pref.selected]);
 		
 
-
-
 		// add action listeners for the menu items
-
+ 
 		voice.addSelectionListener(new SelectionListener(){
 			public void widgetSelected(SelectionEvent e) {
 				
-				pref.display(s,d,textArea, volumeLabel, speedLabel, editLabel, voices, Svolume, Sspeed);
+				pref.display(s,d,textArea, volumeLabel, speedLabel, editLabel, voices, Svolume, Sspeed, voice);
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
@@ -96,7 +95,7 @@ public class CToolbar {
 		preferencesMenuItem.addSelectionListener(new SelectionListener(){
 			public void widgetSelected(SelectionEvent e) {
 				
-				pref.display(s,d,textArea, volumeLabel, speedLabel, editLabel, voices, Svolume, Sspeed);
+				pref.display(s,d,textArea, volumeLabel, speedLabel, editLabel, voices, Svolume, Sspeed, voice);
 				
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
