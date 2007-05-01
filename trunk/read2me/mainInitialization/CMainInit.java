@@ -22,7 +22,7 @@ public class CMainInit {
 		//System.out.println(System.getProperty("java.class.path"));
 		//System.out.println(System.getProperty("java.library.path"));
 		
-		// Free TTS player
+		// Text To Speech players (Free TTS / MS SAPI) initialization
 		final CPlayerInterface player;
 		player = new CFullPlayer();   
 		player.createSynthesizers();
@@ -45,8 +45,5 @@ public class CMainInit {
 		// Display the GUI
 		@SuppressWarnings("unused")
 		CGUIMain mainGUI = new CGUIMain(guiControl, listVoices );	
-
-		//player.setListener(new CTGListener(mainGUI));
-
 	}
 }

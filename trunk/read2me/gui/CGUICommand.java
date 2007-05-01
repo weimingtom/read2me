@@ -7,94 +7,107 @@ import javax.swing.ListModel;
 
 public class CGUICommand implements CGUICommandInterface{
 	
+	/** Interface to access the player's functions */
 	private final CPlayerInterface player;
+	/** Text that has been typed in the text area */
 	private String text;
+	/** Sentence number that is currently read (First sentence of the text is number 0 */
 	private int currentIndex = 0;
+	/** Paragraph number that is currently read (First paragraph of the text is number 0) */
 	private int currentIndexParagraph = 0;
+	/** position of the caret in the text area */
 	private int position;
+	/**  */
 	private int indexOfSentence = 0;
-	private Vector<CSentence> endOfSentence;
-	private Vector<CSentence> endOfParagraph;
+	/** Vector containing for each sentence, the begining and the end position */
+	private Vector<CSentence> listOfSentence;
+	/** Vector containing for each paragraph, the begining and the end position */
+	private Vector<CSentence> listOfParagraph;
+	/** Variable used to let the GuiMain class to update the highlight of the text*/
 	private boolean needUpdate = false;
+	/** Variable used to let the GuiMain class to go in stop mod */
 	private boolean needToStop = false;
+	/** Object that contains the text that the player has to read */
 	private CSpeechObject speech;
+	/** Reference to the GuiMain class */
 	private CGUIMain guiMain;
+	/** to know if we are currently reading text or not */
 	private boolean isPlaying;
+	/** Object containing all the voices */
 	private ListModel voices;
+	/** Index of the voice that is currently used */
 	private int voiceIndex;
-	//private PlayerVoice playerVoice;
-	//private boolean isConverting = false;
 		 
 	/**
-	 * Constructor for the command class if we use the FreeTTS player.
-	 * @param _player Interface with the FreeTTs player that has been initialised in the main Initialisation class
+	 * Constructor that initialize the player object and the voice object
+	 * @param _player Interface to the Text To Speech player
 	 */
 	public CGUICommand(final CPlayerInterface _player)
 	{
 		player = _player;
 		player.setListener(new CTGListener(this));
 		player.setSAPIListener(new CTSListener(this));
-		endOfSentence = new Vector<CSentence>(50,1);
-		endOfParagraph = new Vector<CSentence>(10,1);
-		
-		
-		
+		listOfSentence = new Vector<CSentence>(50,1);
+		listOfParagraph = new Vector<CSentence>(10,1);
+	
 		voices = player.getVoiceList();
 		voiceIndex = 1;
-		//voices.getSize();
-		//playerVoice = (PlayerVoice)voices.getElementAt(voiceIndex);
-		//playerVoice.getName();
 		
 		player.setVoice(voiceIndex);
-		//player.setVoice(0);
-		
 	}
 	
+	/** reference the GuiMain class to the command class */
 	public void setGUIMain(CGUIMain _gui)
 	{
 		guiMain = _gui;
 	}
+	
+	/** return a variable that tells the MainGui if it needs to stop */
 	public boolean getNeedToStop()
 	{
 		return needToStop;
 	}
+	
+	/** The gui is in stop mod and so it reinitializes the variable */
 	public void setNeedToStop()
 	{
 		needToStop = false;
 	}
+	
+	/** tells the gui if it needs to update text area and images */
 	public boolean getNeedUpdate()
 	{
 		return needUpdate;
 	}
+	/** the Gui updated the display so we reinitialize */
 	public void setNeedUpdate()
 	{
 		needUpdate = false;
 	}
+	
+	/** Function that gets called when a sentence has been finished to be read */
 	public void eventEndSpeak()
 	{
-		//nextSentence();
 		currentIndex = indexOfSentence;
-		if(indexOfSentence != endOfSentence.size()-1)
+		if(indexOfSentence != listOfSentence.size()-1)
 			indexOfSentence++;
 		currentIndexParagraph = getParagraphNumber(indexOfSentence);
 		needUpdate = true;
-		guiMain.updateListeners();
+		guiMain.updateDisplay();
 		//updateSpeechObject();
 		if(currentIndex != indexOfSentence)
 		{
 			play(false);
 		}
 		else
-		{
-
+		{   
 			needToStop = true;
-			guiMain.updateListeners();
+			guiMain.updateDisplay();
 			isPlaying = false;
 			stop();
 		}
 		// comes here only when it has finish to read everything
 		currentIndex = indexOfSentence;
-		
 	}
 	
 	
@@ -103,7 +116,6 @@ public class CGUICommand implements CGUICommandInterface{
 	 */
 	public void backParagraph()
 	{
-		System.out.println("back paragraph");
 		if(currentIndexParagraph != 0)
 			currentIndexParagraph--;
 		indexOfSentence = getSentenceNumber(currentIndexParagraph);
@@ -135,7 +147,7 @@ public class CGUICommand implements CGUICommandInterface{
 	 */
 	public void nextSentence(){
 		
-		if(indexOfSentence != endOfSentence.size()-1)
+		if(indexOfSentence != listOfSentence.size()-1)
 			indexOfSentence++;
 		currentIndexParagraph = getParagraphNumber(indexOfSentence);
 		if(isPlaying)
@@ -149,8 +161,7 @@ public class CGUICommand implements CGUICommandInterface{
 	 * Goes to the next paragraph
 	 */
 	public void nextParagraph(){
-		//System.out.println("next paragraph");
-		if(currentIndexParagraph != endOfParagraph.size()-1)
+		if(currentIndexParagraph != listOfParagraph.size()-1)
 			currentIndexParagraph++;
 		indexOfSentence = getSentenceNumber(currentIndexParagraph);
 		if(isPlaying)
@@ -172,10 +183,10 @@ public class CGUICommand implements CGUICommandInterface{
 				player.resume();
 			}
 			else
-			{ // just to this part when we first press play
-				updateSpeechObject();
-				player.addSpeech(speech);
-				player.play(speech);
+			{
+				updateSpeechObject();   // set the new sentence
+				player.addSpeech(speech);  // update the player
+				player.play(speech);  // play the sentence
 			}
 			isPlaying = true;
 			return true;
@@ -210,10 +221,6 @@ public class CGUICommand implements CGUICommandInterface{
 		CExportDialog exportDialog = new CExportDialog(text, (PlayerVoice)voices.getElementAt(voiceIndex));
 		exportDialog.createDialog(guiMain.s);
 	}
-		
-	public void tip(){
-		
-	}
 	
 	/**
 	 * Set the volume of the player
@@ -222,13 +229,16 @@ public class CGUICommand implements CGUICommandInterface{
 		player.setVolume(_value);
 	}
 	
-	/**
-	 * Set the reading speed of the text
-	 */
-	public void speed(int _value){
+	/** Set the reading speed of the player */
+	public void speed(int _value)
+	{
 		player.setSpeakingSpeed(_value);
 	}
 
+	/** Parse the text in order to separate each sentences
+	 * A sentence is defined when it ends with a . or ? or ! or ( or )
+	 * Finally update an array where all the index for the begining and and of sentences are written
+	 */
 	private void parseText()
 	{
 		/*String str = text;
@@ -247,34 +257,16 @@ public class CGUICommand implements CGUICommandInterface{
             end = brkit.next();
         }*/
         
-		endOfSentence.clear();
-		endOfParagraph.clear();
+		listOfSentence.clear();
+		listOfParagraph.clear();
 		CSentence temp;
 		int index1=0, index2=0;
 		int indexParag1=0, indexParag2=0;
 		for(int i=0; i<text.length(); i++)
 		{
+			// update the sentence vector
 			if(text.charAt(i)== '.' || text.charAt(i)== '?' || text.charAt(i)== '!' || text.charAt(i)== '(' || text.charAt(i)==')')
 			{
-				//begin is defined
-				/*end=i; // end is just before the .
-				
-				// we test the sentence defined by begin and end
-				if(end-begin == 1)
-					begin = end;
-				//if good we store it (begin+1 - end)
-				else
-				{
-					temp = new CSentence(begin+1,end);
-					begin = end;
-					endOfSentence.add(temp);
-				}*/
-					
-				//else we update the begin variable
-				
-				
-				
-			
 				index2 = i;
 				int test = index2 - index1;
 				if(test >1 || (test == 1 && index1 == 0))
@@ -286,17 +278,18 @@ public class CGUICommand implements CGUICommandInterface{
 						else
 							temp = new CSentence(index1+1,index2);
 						index1 = index2;
-						endOfSentence.add(temp);
+						listOfSentence.add(temp);
 					//}			
 				}
 				index1=i;
 			}
+			// update the paragraph vector
 			if(text.charAt(i) == '\n')
 			{
 				indexParag2 = i;
 				temp = new CSentence(indexParag1,indexParag2);
 				indexParag1 = indexParag2+1;
-				endOfParagraph.add(temp);
+				listOfParagraph.add(temp);
 			}
 		}
 		
@@ -304,7 +297,7 @@ public class CGUICommand implements CGUICommandInterface{
 		if(index1 == 0 && index2==0)
 		{
 			temp = new CSentence(0,text.length());
-			endOfSentence.add(temp);
+			listOfSentence.add(temp);
 		}
 		
 		// a point is not at the end of the text
@@ -313,70 +306,59 @@ public class CGUICommand implements CGUICommandInterface{
 			if(index1 != text.length())
 			{
 				temp = new CSentence(index1+1,text.length());
-				endOfSentence.add(temp);
+				listOfSentence.add(temp);
 			}
 		}
 		
 		// If there are no '\n' character, the text is considered as a paragraph
 		if(indexParag2 == 0 && indexParag1 == 0)
 		{
-			endOfParagraph.add(new CSentence(0, text.length()));
+			
+			listOfParagraph.add(new CSentence(0, text.length()));
 		}
 		
 		// Consider that the last character is a \n even if it doesn't exist
-		if(endOfParagraph.elementAt(endOfParagraph.size()-1).end != text.length()-1  && indexParag2 != 0 && indexParag1 != 0)
+		if(listOfParagraph.elementAt(listOfParagraph.size()-1).end != text.length()-1  && indexParag2 != 0 && indexParag1 != 0)
 		{
 			if(indexParag1 != text.length())
-				endOfParagraph.add(new CSentence(indexParag1, text.length()));
+				listOfParagraph.add(new CSentence(indexParag1, text.length()));
 		}
 		
 		// Don't consider when there are several blank lines
-		for(int i=0; i<endOfParagraph.size(); i++)
+		for(int i=0; i<listOfParagraph.size(); i++)
 		{
-			if(endOfParagraph.elementAt(i).begin == endOfParagraph.elementAt(i).end-1)
-				endOfParagraph.remove(i--);
+			if(text.length()!=1 && listOfParagraph.elementAt(i).begin == listOfParagraph.elementAt(i).end-1)
+				listOfParagraph.remove(i--);
 		}
-		
-		
-		
-		/*for(int i=0; i<endOfSentence.size(); i++)
-		{
-			System.out.println(endOfSentence.elementAt(i).begin+" end: "+endOfSentence.elementAt(i).end);
-		}
-		for(int i=0; i<endOfParagraph.size(); i++)
-		{
-			System.out.println(endOfParagraph.elementAt(i).begin+" end: "+endOfParagraph.elementAt(i).end);
-		}*/
 	}
 	
 	
 	/**
-	 * Pass the entire text to the command function in order to be processed
+	 * Set the text variable with the entire text from the Gui and parse it to update the sentence and
+	 * paragraph arrays
 	 */
 	public void setText(String _text)
 	{
 		text = _text;
-		// modify text
-		//text = modifyText(_text);
-		
 		parseText();
 	}
 	
 	/**
 	 * Set the position of the cursor in the text area
+	 * and determine the sentence that needs to be read and also the paragraph we are in.
 	 */
 	public void setPosition(int _pos)
 	{
 		position = _pos;
 		
 		// we update the sentence index
-		for(int i=0; i<endOfSentence.size(); i++)
+		for(int i=0; i<listOfSentence.size(); i++)
 		{
-			if(position >= endOfSentence.elementAt(i).begin && position <= endOfSentence.elementAt(i).end)
+			if(position >= listOfSentence.elementAt(i).begin && position <= listOfSentence.elementAt(i).end)
 				indexOfSentence = i;
-			else if(i != endOfSentence.size()-1 && position > endOfSentence.elementAt(i).end && position < endOfSentence.elementAt(i+1).begin)
+			else if(i != listOfSentence.size()-1 && position > listOfSentence.elementAt(i).end && position < listOfSentence.elementAt(i+1).begin)
 				indexOfSentence = i+1;
-			else if(position < endOfSentence.elementAt(0).begin)
+			else if(position < listOfSentence.elementAt(0).begin)
 				indexOfSentence = 0;
 		}
 		currentIndex = indexOfSentence;
@@ -398,69 +380,82 @@ public class CGUICommand implements CGUICommandInterface{
 	}
 	
 	/**
+	 * Function that tells us the sentence the caret is in
 	 * @return the starting and the ending indices to highlight the sentence
+	 * knowing the actual position of the cursor
 	 */
 	public int[] getSentence()
 	{
 		int[] temp = new int[2];
-		temp[0] = endOfSentence.elementAt(indexOfSentence).begin;
-		temp[1] = endOfSentence.elementAt(indexOfSentence).end;
+		temp[0] = listOfSentence.elementAt(indexOfSentence).begin;
+		temp[1] = listOfSentence.elementAt(indexOfSentence).end;
 		return temp;
 	}
 	
+	/**
+	 * Create a new speech object using the next sentence that is going to be read
+	 * And set the voice for the player
+	 */
 	private void updateSpeechObject()
 	{
+		// set the text that needs to be read
 		speech = CSpeechObject.createTextSpeech(text.substring(getSentence()[0], getSentence()[1]));
 		
-		/*
-		 * voices = player.getVoiceList();
-		voiceIndex = 1;
-		//voices.getSize();
-		//playerVoice = (PlayerVoice)voices.getElementAt(voiceIndex);
-		//playerVoice.getName();
-		 * 
-		 */
-		
+		// Part to deal with the 2 different players:
+		// freetts (mode 1) requires a cancel but MS SAPI doesn't
 		ListModel temp = player.getVoiceList();
 		PlayerVoice temp2 = (PlayerVoice)temp.getElementAt(voiceIndex);
 		if(temp2.getMode() == 1)
 			player.cancel();
+		
+		// set the correct voice
 		player.setVoice(voiceIndex);
 	}
 	
+	/**
+	 * Knowing the position of the cursor, 
+	 * it returns the index of the begining of the first sentence of the paragraph
+	 * @param _t position of the sursor
+	 * @return integer the index of the first sentence of that paragraph
+	 */
 	private int getParagraphNumber(int _t)
 	{
-		for(int i=0; i<endOfParagraph.size(); i++)
+		for(int i=0; i<listOfParagraph.size(); i++)
 		{
-			if(_t >= endOfParagraph.elementAt(i).begin && _t <= endOfParagraph.elementAt(i).end)
+			if(_t >= listOfParagraph.elementAt(i).begin && _t <= listOfParagraph.elementAt(i).end)
 				return i;
-			else if(i != endOfParagraph.size()-1 && _t > endOfParagraph.elementAt(i).end && _t < endOfParagraph.elementAt(i+1).begin)
+			else if(i != listOfParagraph.size()-1 && _t > listOfParagraph.elementAt(i).end && _t < listOfParagraph.elementAt(i+1).begin)
 				return i+1;
-			else if(_t < endOfParagraph.elementAt(0).begin)
+			else if(_t < listOfParagraph.elementAt(0).begin)
 				return 0;
 		}
 		return 0;
 	}
 	
+	/**
+	 * get the index of the first sentence of the paragraph given by the parameter t
+	 * @param _t paragraph number
+	 * @return the index of the first sentence
+	 */
 	private int getSentenceNumber(int _t )
 	{
-		int temp = endOfParagraph.elementAt(_t).begin;
-		for(int i=0; i<endOfSentence.size(); i++)
+		int temp = listOfParagraph.elementAt(_t).begin;
+		for(int i=0; i<listOfSentence.size(); i++)
 		{
-			if(temp >= endOfSentence.elementAt(i).begin && temp <= endOfSentence.elementAt(i).end)
+			if(temp >= listOfSentence.elementAt(i).begin && temp <= listOfSentence.elementAt(i).end)
 				return i;
-			else if(i != endOfSentence.size()-1 && temp > endOfSentence.elementAt(i).end && temp < endOfSentence.elementAt(i+1).begin)
+			else if(i != listOfSentence.size()-1 && temp > listOfSentence.elementAt(i).end && temp < listOfSentence.elementAt(i+1).begin)
 				return i+1;
-			else if(temp < endOfSentence.elementAt(0).begin)
+			else if(temp < listOfSentence.elementAt(0).begin)
 				return 0;
 		}
 		return 0;
 	}
 	
+	/** Set the voice index and so the player will load the right voice */
 	public void setVoiceIndex(int _v)
 	{
 		voiceIndex = _v;
-		//System.out.println("guicommand: "+ voiceIndex);
 	}
 }
 

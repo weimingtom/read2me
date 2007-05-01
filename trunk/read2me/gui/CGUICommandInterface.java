@@ -57,13 +57,6 @@ public interface CGUICommandInterface {
 	public void mp3();
 	
 	/**
-	 * Displays the help windows to the user.
-	 * It's a HTML pages that contains all the shortcuts
-	 *
-	 */
-	public void tip();
-	
-	/**
 	 * Sets the volume of the player to a specified value
 	 * @param _value  Volume value
 	 */
@@ -104,11 +97,16 @@ public interface CGUICommandInterface {
 	 */
 	public void setNeedUpdate();
 	
-	
+	/** To make the guiMain and the GuiCommand class interact with each other */
 	public void setGUIMain(CGUIMain _gui);
 	
+	/** Allows the guiMain to know if it has to go in stop mode */
 	public boolean getNeedToStop();
+	
+	/** reinitialise the variable in the GuiCommand class */
 	public void setNeedToStop();
+	
+	/** Specify the right voice to the GuiCommand class */
 	public void setVoiceIndex(int _v);
 
 }

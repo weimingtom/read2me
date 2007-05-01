@@ -80,7 +80,7 @@ public class CPreferenceWindow {
 		return voicesArray[selected];
 	}
 
-	public void display(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, final Label editLabel, String[] voices, final Scale Svolume, final Scale Sspeed){
+	public void display(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, final Label editLabel, final String[] voices, final Scale Svolume, final Scale Sspeed, final MenuItem voice){
 		voicesArray = voices;
 		prefWin = new Shell(s,SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		//prefWin = new Shell();
@@ -122,6 +122,7 @@ public class CPreferenceWindow {
 			public void widgetSelected(SelectionEvent e) {
 				//sets the customization options to what they were before
 				selected = voiceSel.getSelectionIndex();
+				voice.setText("Current voice: "+voices[selected]);
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}

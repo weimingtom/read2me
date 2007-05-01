@@ -6,58 +6,78 @@ import org.eclipse.swt.events.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
-import org.eclipse.swt.browser.*;
+//import org.eclipse.gef.tools.AbstractTool.*;
+
 //import java.awt.Font;
 import java.util.Properties;
 import java.io.*;
 import java.util.*;
 
-//import org.eclipse.swt.graphics.Color;
-//import textToSpeech.*; 
-
 
 public class CGUIMain {
+	
+	/** To keep track if we are currently reading or not */
 	private static boolean isPlaying = false;
+	/** To keep track if we are in pause mod */
+	private boolean isPaused=false;
 	public static Shell s;
 	public static Display d;
+	/** StyledText widget for the text area */
 	private static StyledText textArea;
-	private final Button Bplay;
+	/** Previous paragraph button */
 	private Button BbackParagraph;
+	/** Previous sentence Button */
 	private Button Bback;
+	/** Next sentence button */
 	private Button Bnext;
+	/** Next paragraph Button */
 	private Button BnextParagraph;
+	/** Play button */
+	private final Button Bplay;
+	/** Stop Button */
 	private Button Bstop;
-	private Button Bclear;
+	/** Interface for the GuiCommand class */
 	private CGUICommandInterface guiControl;
-	private final Image Iplay; 
+	/** reference to the play image */
+	private final Image Iplay;
+	/** reference to the pause image */
 	private final Image Ipause;
+	/** Menu Toolbar widget */
 	private static CToolbar toolbar;
+	/** Label for the volume logo */
 	private Label volumeLabel;
+	/** Label for the speed logo */
 	private Label speedLabel;
+	/** label for the editable status */
 	private Label editLabel;
-	private static int voiceIndex =0;
+//	private static int voiceIndex =0;
+	/** Properties object */
 	private Properties prop;
+	/** Scale widget for the speed */
 	private static Scale Sspeed;
+	/** Scale widget for the speed */
 	private static Scale Svolume;
+	/** array containing all the words that the user wants to be read in another way */
 	private static Vector<String> words;
 
 
-
-	// ------------------ Main ------------------------------
+	/**
+	 * Function that will build the User Interface
+	 * This function redraw and update the widgets when it's waken up otherwise it's in sleep mode.
+	 * @param _guiControl reference to the control layer: all the functions are made there
+	 * @param voices String Array containing all the names for all the voices 
+	 */
 	public CGUIMain(final CGUICommandInterface _guiControl, String[] voices){
+		
 		guiControl = _guiControl;
-		/*
-		final CPlayerInterface player = new CPlayer();   
-		player.createSynthesizers();
-		player.setSynthesizer(1);
-		 */
-		//final CGUICommandInterface guiControl = new CGUICommand();
 
 		d = new Display();
 		s = new Shell(d);
 
+		// vector containing the words that are going to be replaced in the text
 		words = new Vector<String>(10,1);
 
+		// The Gui is organised with a gridLAyout with 13 colomns
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 13;
 		layout.makeColumnsEqualWidth = false;
@@ -68,11 +88,10 @@ public class CGUIMain {
 
 		s.setLayout(layout);
 		s.setSize(660,450);
-
-		//s.setBackground(d.getSystemColor(SWT.COLOR_BLUE));
 		s.setMinimumSize(660, 450);
-		s.setText("Read2Me!");
+		s.setText("Read2Me!"); // title of the window
 
+		//load the images
 		Iplay = new Image(d, "./resources/Play.png");
 		Ipause = new Image(d, "./resources/Pause.png");
 		final Image Istop = new Image(d, "./resources/Stop.png");
@@ -95,41 +114,41 @@ public class CGUIMain {
 		BbackParagraph = new Button(s, SWT.PUSH);
 		BbackParagraph.setImage(IbackParagraph);
 		BbackParagraph.setLayoutData(data);
-		BbackParagraph.setToolTipText("One paragraph back");
+		BbackParagraph.setToolTipText("One paragraph back (Up Arrow when it's playing)");
 
 		// One sentence back Button
 		data = new GridData(SWT.CENTER);
 		Bback = new Button(s, SWT.PUSH);
 		Bback.setImage(Iback);
 		Bback.setLayoutData(data);
-		Bback.setToolTipText("One sentence back");
+		Bback.setToolTipText("One sentence back (Left Arrow when it's playing)");
 
 		// Next sentence Button
 		data = new GridData(SWT.CENTER);
 		Bnext = new Button(s, SWT.PUSH);
 		Bnext.setImage(Inext);
 		Bnext.setLayoutData(data);
-		Bnext.setToolTipText("Next sentence");
+		Bnext.setToolTipText("Next sentence (Right Arrow when it's playing)");
 
 		// Next Paragraph Button
 		data = new GridData(SWT.CENTER);
 		BnextParagraph = new Button(s, SWT.PUSH);
 		BnextParagraph.setImage(InextParagraph);
 		BnextParagraph.setLayoutData(data);
-		BnextParagraph.setToolTipText("Next paragraph");
+		BnextParagraph.setToolTipText("Next paragraph (Down Arrow when it's playing)");
 
-		// Separator
+		// Separator: used to create a blank
 		Button BnotShown = new Button(s, SWT.PUSH);
 		BnotShown.setText("Not shown");
 		BnotShown.setVisible(false);
 		BnotShown.setLayoutData(data);
 
-		// Play pause Button
-		data = new GridData(SWT.CENTER);
+		// Play / Pause Button
+		//data = new GridData(SWT.CENTER);
 		Bplay = new Button(s, SWT.PUSH);
 		Bplay.setImage(Iplay);
 		Bplay.setLayoutData(data);
-		Bplay.setToolTipText("Play / Pause button");
+		Bplay.setToolTipText("Play / Pause button (Space Bar when it's playing)");
 
 
 		// Stop Button
@@ -137,9 +156,7 @@ public class CGUIMain {
 		Bstop = new Button(s, SWT.PUSH);
 		Bstop.setImage(Istop);
 		Bstop.setLayoutData(data);
-		Bstop.setToolTipText("Stop button");
-
-		//Edit Icon
+		Bstop.setToolTipText("Stop button (Return Key when it's playing)");
 
 		// Edit or Non Edit label
 		data = new GridData(SWT.CENTER);
@@ -148,7 +165,7 @@ public class CGUIMain {
 		editLabel.setLayoutData(data);
 		editLabel.setToolTipText("You can edit the text :)");
 
-		// Separator
+		// Separator: blank space
 		Button BnotShown2 = new Button(s, SWT.PUSH);
 		BnotShown2.setText("Not shown");
 		BnotShown2.setVisible(false);
@@ -192,12 +209,11 @@ public class CGUIMain {
 		volumeLabel = new Label(s, SWT.BEGINNING);
 		volumeLabel.setImage(Ivolume);
 		Ivolume.setBackground(s.getBackground());
-		//volumeLabel.setForeground(s.getBackground());
 		volumeLabel.setLayoutData(data);
 		volumeLabel.setToolTipText("Volume");
 
 
-		// text area
+		// text area (11 colomns)
 		data = new GridData(GridData.FILL_BOTH);
 		data.verticalIndent = 3;
 		data.verticalSpan = 3;
@@ -217,7 +233,7 @@ public class CGUIMain {
 		speedLabel.setLayoutData(data);
 		speedLabel.setToolTipText("Reading speed");
 
-		// Left Slider
+		// Left Scale
 		data = new GridData(SWT.CENTER | GridData.HORIZONTAL_ALIGN_CENTER | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_VERTICAL);
 		data.verticalIndent = 10;
 		data.horizontalIndent = -2;
@@ -228,7 +244,6 @@ public class CGUIMain {
 		Svolume.setMinimum(0);
 		Svolume.setIncrement(1);
 		Svolume.setPageIncrement(2);
-		//Svolume.setThumb(3);  // dimension of the thing
 		Svolume.setToolTipText("Adjust the volume");
 		//Svolume.setSelection(Svolume.getMaximum() - 10 + Svolume.getMinimum() - Svolume.getThumb());
 		Svolume.setSelection(Svolume.getMaximum() - 10 + Svolume.getMinimum() );
@@ -265,15 +280,6 @@ public class CGUIMain {
 		volumeValue.setText(""+ tempVolume);
 		volumeValue.setLayoutData(data);
 
-		/*
-		//not shown button
-		data = new GridData(SWT.CENTER);
-		data.horizontalSpan = 9;
-		Button BnotShown4 = new Button(s, SWT.PUSH);
-		BnotShown4.setText("Not shown");
-		BnotShown4.setVisible(false);
-		BnotShown4.setLayoutData(data);
-		 */
 		// Right Value
 		data = new GridData(GridData.CENTER | GridData.HORIZONTAL_ALIGN_CENTER);
 		data.horizontalSpan = 1;
@@ -283,69 +289,73 @@ public class CGUIMain {
 		speedValue.setText(""+tempSpeed);
 		speedValue.setLayoutData(data);
 
-		//get the user customization (window color...)
+		// get the user customization (window color, font, voice...)
+		// needs to be done before the toolbar
 		getUserProperties();
 
+		// Display the Menu toolbar
 		toolbar = new CToolbar(s,d, textArea, volumeLabel, speedLabel, editLabel, voices, Svolume, Sspeed);
 
-		// LISTENERS
-
-		// link between the 2 classes
+		// link between the the GuiMain and GuiCommand classes
 		guiControl.setGUIMain(this);
+		textArea.setFocus();
 
+		
+//======= Listeners =======================================================
 		// Listener Back Paragraph
 		BbackParagraph.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
-				//guiControl.setText(getText());
 				updateGUIControl(guiControl);
 				guiControl.backParagraph();
 				highlight(guiControl);
-				System.out.println("backparagraph");
+				textArea.setFocus();
 			}
 
 			public void widgetDefaultSelected(SelectionEvent event) {
 			}
 		}); 
+		
 		// Listener back sentence
 		Bback.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
-				//guiControl.setText(getText());
 				updateGUIControl(guiControl);
 				guiControl.backSentence();
 				highlight(guiControl);
-
+				textArea.setFocus();
 			}
 
 			public void widgetDefaultSelected(SelectionEvent event) {
 			}
 		});
+		
 		// Listener next sentence
 		Bnext.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
-				//guiControl.setText(getText());
 				updateGUIControl(guiControl);
 				guiControl.nextSentence();
 				highlight(guiControl);
+				textArea.setFocus();
 			}
 
 			public void widgetDefaultSelected(SelectionEvent event) {
 			}
 		});
+		
 		// Listener next paragraph
 		BnextParagraph.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
-				//updateGUIControl(guiControl);
 				updateGUIControl(guiControl);
 				guiControl.nextParagraph();
 				highlight(guiControl);
+				textArea.setFocus();
 			}
 
 			public void widgetDefaultSelected(SelectionEvent event) {
 			}
 		});
+		
 		// Listener Play/pause button
 		Bplay.addSelectionListener(new SelectionListener() {
-
 			public void widgetSelected(SelectionEvent event) {
 
 				if(textArea.getText().length() != 0)
@@ -357,35 +367,37 @@ public class CGUIMain {
 					if(isPlaying == true)
 					{
 						Bplay.setImage(Ipause);
+						isPaused=false;
 						textArea.setEditable(false);	
 					}
 					else
 					{
 						Bplay.setImage(Iplay);
+						isPaused = true;
 						textArea.setEditable(false);
 					}
-
 					highlight(guiControl);
+					textArea.setFocus();
 				}
 			}
-
 			public void widgetDefaultSelected(SelectionEvent event) {
 			}
 		});
-
-
+		
+		
+		
 
 		// Listener Stop button
 		Bstop.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
-				//textArea.setText("Stop playing");
 				updateGUIControl(guiControl);
 				isPlaying = guiControl.stop();
 				editLabel.setImage(Iedit);
 				editLabel.setToolTipText("You can edit the text :)");
 				Bplay.setImage(Iplay);
+				isPaused = false;
 				textArea.setEditable(true);
-				//isPlaying = false;
+				textArea.setFocus();
 			}
 
 			public void widgetDefaultSelected(SelectionEvent event) {
@@ -396,6 +408,14 @@ public class CGUIMain {
 		Bclear.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
 				textArea.setText("");
+				updateGUIControl(guiControl);
+				isPlaying = guiControl.stop();
+				editLabel.setImage(Iedit);
+				editLabel.setToolTipText("You can edit the text :)");
+				Bplay.setImage(Iplay);
+				isPaused = false;
+				textArea.setEditable(true);
+				textArea.setFocus();
 			}
 
 			public void widgetDefaultSelected(SelectionEvent event) {
@@ -407,6 +427,7 @@ public class CGUIMain {
 			public void widgetSelected(SelectionEvent event) {
 				updateGUIControl(guiControl);
 				guiControl.mp3();
+				textArea.setFocus();
 			}
 
 			public void widgetDefaultSelected(SelectionEvent event) {
@@ -416,82 +437,77 @@ public class CGUIMain {
 		// Listener Tip button
 		Btip.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
-				/*<<<<<<< .mine
-
-				final Shell shellBro = new Shell(d);
-				shellBro.setLayout(new FillLayout());
-				shellBro.setSize(500, 700);
-				shellBro.setText("Tips and Tricks");
-				shellBro.setLocation(600, 100);
-				String curDir = System.getProperty("user.dir");
-				String folder = "\\resources\\tips.html";
-				curDir= curDir+folder;
-				=======
-				 */
+				
 				Shell shellWin = new Shell(d);
-
 
 				GridLayout tipLayout = new GridLayout();
 				tipLayout.numColumns = 2;
 				tipLayout.makeColumnsEqualWidth = false;
 				tipLayout.horizontalSpacing = 15;
 				tipLayout.verticalSpacing = 5;
-				/*tipLayout.marginTop = 5;
-				tipLayout.marginLeft = 5;
-				tipLayout.marginRight = 5;
-				 */
 
 				shellWin.setLayout(tipLayout);
-				shellWin.setSize(350, 700);
-				shellWin.setMinimumSize(350,700);
+				shellWin.setSize(380, 700);
+				shellWin.setMinimumSize(380,700);
 				shellWin.setText("Read2Me! - Tips");
 
 				GridData data = new GridData(SWT.CENTER);
-
 				Label backParagraph = new Label(shellWin, SWT.PUSH);
 				backParagraph.setImage(IbackParagraph);
 				backParagraph.setLayoutData(data);
-				backParagraph.setToolTipText("Go back one paragraph.");
+				backParagraph.setToolTipText("Go back one paragraph. ( Up Arrow )");
 				Label labBackParag = new Label(shellWin,SWT.BEGINNING);
-				labBackParag.setText("Go back one paragraph.");
+				labBackParag.setText("Go back one paragraph. ( Up Arrow )");
 
+				data = new GridData(SWT.CENTER);
 				Label back = new Label(shellWin, SWT.PUSH);
 				back.setImage(Iback);
-				back.setToolTipText("Go back one sentence.");
+				back.setLayoutData(data);
+				back.setToolTipText("Go back one sentence. ( Left Arrow )");
 				Label labBack = new Label(shellWin,SWT.BEGINNING);
-				labBack.setText("Go back one sentence.");
+				labBack.setText("Go back one sentence. ( Left Arrow )");
 
+				data = new GridData(SWT.CENTER);
 				Label next = new Label(shellWin, SWT.PUSH);
 				next.setImage(Inext);
 				next.setLayoutData(data);
-				next.setToolTipText("Jump to next sentence.");
+				next.setToolTipText("Jump to next sentence. ( Right Arrow )");
 				Label labNext = new Label(shellWin,SWT.BEGINNING);
-				labNext.setText("Jump to next sentence.");
+				labNext.setText("Jump to next sentence. ( Right Arrow )");
 
+				data = new GridData(SWT.CENTER);
 				Label nextP = new Label(shellWin, SWT.PUSH);
 				nextP.setImage(InextParagraph);
-				nextP.setToolTipText("Jump to next paragraph.");
+				nextP.setLayoutData(data);
+				nextP.setToolTipText("Jump to next paragraph. ( Down Arrow )");
 				Label labNextP = new Label(shellWin,SWT.BEGINNING);
-				labNextP.setText("Jump to next paragraph.");
+				labNextP.setText("Jump to next paragraph. ( Down Arrow )");
 
+				data = new GridData(SWT.CENTER);
 				Label play = new Label(shellWin, SWT.PUSH);
 				play.setImage(Iplay);
-				play.setToolTipText("Read the text");
+				play.setLayoutData(data);
+				play.setToolTipText("Read the text (Space Bar )");
 				Label labPlay = new Label(shellWin,SWT.BEGINNING);
-				labPlay.setText("Read the text");
+				labPlay.setText("Read the text (Space Bar )");
 
+				data = new GridData(SWT.CENTER);
 				Label pause = new Label(shellWin, SWT.PUSH);
 				pause.setImage(Ipause);
-				pause.setToolTipText("Pause the reading.");
+				pause.setLayoutData(data);
+				pause.setToolTipText("Pause the reading. (Space Bar )");
 				Label labPause = new Label(shellWin,SWT.BEGINNING);
-				labPause.setText("Pause the reading.");
+				labPause.setText("Pause the reading. (Space Bar )");
 
+				data = new GridData(SWT.CENTER);
 				Label stop = new Label(shellWin, SWT.PUSH);
 				stop.setImage(Istop);
-				stop.setToolTipText("Stop reading and go back to the top of the text.");
+				stop.setLayoutData(data);
+				stop.setToolTipText("Stop reading and go back to the top of the text. (Return Key)");
 				Label labStop = new Label(shellWin,SWT.BEGINNING);
-				labStop.setText("Stop reading and go back to the top of the text.");
+				labStop.setText("Stop reading and go back to the top of the text. (Return Key)");
 
+				data = new GridData(SWT.CENTER);
 				Label edit = new Label(shellWin, SWT.BEGINNING);
 				edit.setImage(Iedit);
 				edit.setLayoutData(data);
@@ -499,18 +515,23 @@ public class CGUIMain {
 				Label labEdit = new Label(shellWin,SWT.BEGINNING);
 				labEdit.setText("Tells you if you can edit the text - Press stop to edit");
 
+				data = new GridData(SWT.CENTER);
 				Label clear = new Label(shellWin, SWT.PUSH);
 				clear.setImage(Iclear);
+				clear.setLayoutData(data);
 				clear.setToolTipText("Clear Button");
 				Label labClear = new Label(shellWin,SWT.BEGINNING);
 				labClear.setText("Clear the text area");
 
+				data = new GridData(SWT.CENTER);
 				Label export = new Label(shellWin, SWT.PUSH);
 				export.setImage(Imp3);
+				export.setLayoutData(data);
 				export.setToolTipText("Export Button");
 				Label labExport = new Label(shellWin,SWT.BEGINNING);
 				labExport.setText("Export the current text to an audio file");
 
+				data = new GridData(SWT.CENTER);
 				Label vol = new Label(shellWin, SWT.BEGINNING);
 				vol.setImage(Ivolume);
 				vol.setLayoutData(data);
@@ -518,13 +539,16 @@ public class CGUIMain {
 				Label labVol = new Label(shellWin,SWT.BEGINNING);
 				labVol.setText("Adjust the volume of the voice with the scale");
 
+				data = new GridData(SWT.CENTER);
 				Label speed = new Label(shellWin, SWT.BEGINNING);
 				speed.setImage(Ispeed);
 				speed.setLayoutData(data);
 				speed.setToolTipText("Speed adjustment");
 				Label labSpeed = new Label(shellWin,SWT.BEGINNING);
 				labSpeed.setText("Adjust the speed of the voice with the scale");
+				
 				shellWin.open();
+				textArea.setFocus();
 			}
 
 			public void widgetDefaultSelected(SelectionEvent event) {
@@ -536,29 +560,123 @@ public class CGUIMain {
 			public void handleEvent(Event event) {
 				int VValue = Svolume.getMaximum() - Svolume.getSelection() + Svolume.getMinimum() ;// - Svolume.getThumb();
 				volumeValue.setText("" +VValue);
-				//player.setVolume(VValue);
 				guiControl.volume(VValue);
+				textArea.setFocus();
 			}
 		});
+		
 		// Listener Speed Slider
 		Sspeed.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				int SValue = Sspeed.getMaximum() - Sspeed.getSelection() + Sspeed.getMinimum();// - Sspeed.getThumb();
 				speedValue.setText("" +SValue);
-				//player.setSpeakingSpeed(SValue*10);
 				guiControl.speed(SValue*10);
+				textArea.setFocus();
+			}
+		});
+		
+		// Listener that allows the user to use shortcuts
+		textArea.addKeyListener(new KeyListener() {
+			
+			public void keyPressed(KeyEvent re)
+			{
+				if(isPlaying == true || isPaused == true)
+				{
+					System.out.println(re.character);
+					System.out.println(re.keyCode);
+					// Next sentence with right arrow
+					if(re.keyCode == 16777220)
+					{
+						updateGUIControl(guiControl);
+						guiControl.nextSentence();
+						highlight(guiControl);
+					}
+					// Back Sentence with left arrow
+					else if(re.keyCode == 16777219)
+					{
+						updateGUIControl(guiControl);
+						guiControl.backSentence();
+						highlight(guiControl);
+					}
+					// Back Paragraph with up arrow
+					else if(re.keyCode == 16777217)
+					{
+						updateGUIControl(guiControl);
+						guiControl.backParagraph();
+						highlight(guiControl);
+					}
+					// next paragraph with down arrow
+					else if(re.keyCode == 16777218)
+					{
+						updateGUIControl(guiControl);
+						guiControl.nextParagraph();
+						highlight(guiControl);
+					}
+					// play / pause with space bar
+					else if(re.keyCode == 32)
+					{
+						if(textArea.getText().length() != 0)
+						{
+							updateGUIControl(guiControl);
+							editLabel.setImage(Ixedit);
+							editLabel.setToolTipText("You can't edit - Press stop to edit");
+							isPlaying = guiControl.play(isPlaying);
+							if(isPlaying == true)
+							{
+								Bplay.setImage(Ipause);
+								isPaused=false;
+								textArea.setEditable(false);
+							}
+							else
+							{
+								Bplay.setImage(Iplay);
+								isPaused=true;
+								textArea.setEditable(false);
+							}
+							highlight(guiControl);
+							//textArea.setFocus();
+						}
+					}
+					else if(re.keyCode == 13)
+					{
+						updateGUIControl(guiControl);
+						isPlaying = guiControl.stop();
+						editLabel.setImage(Iedit);
+						editLabel.setToolTipText("You can edit the text :)");
+						Bplay.setImage(Iplay);
+						isPaused = false;
+						textArea.setEditable(true);
+					}
+					
+				}
+			}
+			
+			public void keyReleased(KeyEvent re)
+			{
+				
 			}
 		});
 
-		s.setImage(WindowIcon); //sets the uper left corner icon (in the window bar)
+		// Sets the Read2me! icon in the window title
+		s.setImage(WindowIcon);
 		s.open();
+		
 		while(!s.isDisposed()){
-			// check if we need to update the selection
+			/* Those functions get called when the Gui is awake
+			 * it checks if the the gui needs to highlight new sentences
+			 * or if it needs to set up the GUI in stop mod
+			 * 
+			 * Those functions calls the GuiCommand class
+			 */
+			
+			// if we need to highlight another sentence
 			if(guiControl.getNeedUpdate())
 			{
 				highlight(guiControl);
 				guiControl.setNeedUpdate();
 			}
+			
+			// If we need to be in stop mod
 			if(guiControl.getNeedToStop())
 			{
 				isPlaying = false;
@@ -568,18 +686,27 @@ public class CGUIMain {
 				textArea.setEditable(true);
 				guiControl.setNeedToStop();
 			}
-
+			
+			// sleep if there is noting to do
 			if(!d.readAndDispatch())
 				d.sleep();
 		}
-		//player.stop();
 
+		// when we close the program, we first stop the player
 		guiControl.stop();
 
+		// and we exit the program
 		d.dispose();
 		System.exit(0);
 	}
 
+	/**
+	 * Loads the myWords.txt files each time we press play in order to replace all the abbreviations
+	 * that the user might have typed in the text area.
+	 * the format in the file is: word_to_replace = new_word
+	 * @param _t the text in the text area that is going to be read
+	 * @return the text modified
+	 */
 	private static String modifyText(String _t)
 	{
 		try
@@ -596,7 +723,6 @@ public class CGUIMain {
 					words.addElement(line.substring(0, pos).trim());
 					words.addElement(line.substring(pos+1, line.length()).trim());
 				}
-
 			}
 			inFile.close();
 
@@ -604,7 +730,6 @@ public class CGUIMain {
 			{
 				_t = _t.replace(words.elementAt(i),words.elementAt(i+1));
 			}
-
 		}
 		catch(Exception e)
 		{
@@ -614,6 +739,11 @@ public class CGUIMain {
 		return _t;
 	}
 
+	/**
+	 * Set parameters to the GuiCommand class:
+	 * caret position, text, voice
+	 * @param guiControl instance to the guiCommand class
+	 */
 	private static void updateGUIControl(final CGUICommandInterface guiControl)
 	{
 		int t = textArea.getCaretOffset();
@@ -621,26 +751,33 @@ public class CGUIMain {
 		textArea.setText(text);
 		guiControl.setText(text);
 		guiControl.setPosition(t);
-		//if(toolbar.getIndexVoice() == -1)
-		//guiControl.setVoiceIndex(voiceIndex);
-		//else
 		guiControl.setVoiceIndex(toolbar.getIndexVoice());
-		//if(textArea.getSelectionText() != "")
-		//guiControl.setText(textArea.getSelectionText());
 	}
 
+	/**
+	 * Highlight a sentence in the text Area knowing the beginning position and the end position
+	 * and update the caret position to the begining of that sentence
+	 * @param guiControl 
+	 */
 	private static void highlight(final CGUICommandInterface guiControl)
 	{
 		textArea.setCaretOffset(guiControl.getSentence()[0]);
 		textArea.setSelection(guiControl.getSentence()[0],guiControl.getSentence()[1]);
-
 	}
 
-	public void updateListeners()
+	/**
+	 * Wake up the display to make it update the widgets
+	 * This function is called when an event has occured (button pressed, end of sentence reached)
+	 */
+	public void updateDisplay()
 	{
 		d.wake();
 	}
 
+	/** 
+	 * Read the properties defined previously by the user and apply them to the GUI
+	 * Background color, font.
+	 */
 	private void getUserProperties(){
 		prop = new Properties();
 		//Read properties file.
@@ -660,21 +797,10 @@ public class CGUIMain {
 				Font font = new Font(d, new FontData(prop.getProperty("fontName"), Integer.parseInt(prop.getProperty("fontHeight")), Integer.parseInt(prop.getProperty("fontStyle"))) );
 				textArea.setFont(font);
 			}
-
 			System.out.println("user.prop found. Customization applied");
 		} 
 		catch (IOException e) {
-			System.out.println("no user.prop found or a field is missing");
+			System.out.println("no user.prop found");
 		}
-
 	}
 }
-
-/*
-Installation
-pre reqs
-SAPI
-
-icon meaning
-
- */
