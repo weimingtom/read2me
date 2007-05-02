@@ -1,3 +1,21 @@
+/*
+This file is part of Read2Me!
+
+Read2Me! is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+Read2Me! is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Read2Me!. If not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
 package gui;
 
 import org.eclipse.swt.SWT;
@@ -260,6 +278,7 @@ public class CPreferenceWindow {
 		labelVoice.setBackground(s.getBackground());
 		labelAbbr.setBackground(s.getBackground());
 
+
 		//save the main window customization options
 		//useful if the user decides to cancel his choice
 		fontM = textArea.getFont();
@@ -281,6 +300,7 @@ public class CPreferenceWindow {
 				textArea.setBackground(colorMTextBkg);
 				textArea.setFont(fontM);
 				textArea.setForeground(colorFont);
+				
 				prefWin.close();
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
