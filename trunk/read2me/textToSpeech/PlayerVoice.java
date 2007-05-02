@@ -1,5 +1,13 @@
 package textToSpeech;
 
+/**
+ * 
+ * @author Stefan Estrada
+ *
+ * Object used to store Voice properties including
+ * voice name, mode (whether it is a FreeTTS or MS Sapi voice),
+ * and index (where in the voice list it is placed).
+ */
 public class PlayerVoice {
 
 	private String name;

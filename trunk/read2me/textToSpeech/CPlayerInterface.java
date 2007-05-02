@@ -4,7 +4,7 @@ import javax.speech.synthesis.SpeakableListener;
 import javax.speech.synthesis.SynthesizerModeDesc;
 
 /**
- * Defines the data model used for playing text using the FreeTTS synthesizer.
+ * Defines the data model used for playing text using the FreeTTS synthesizer or MS Sapi.
  * Defines methods for controlling volume and speaking speed.
  * Also gives you information such as the list of synthesizers available, 
  * list of voices, etc... that a user interface can use to manipulate
@@ -71,6 +71,9 @@ public interface CPlayerInterface {
      */
     public void setListener(SpeakableListener tgListener);
     
+    /**
+	 * Sets SAPI Listener (Only used for MS Sapi)
+	 */
     public void setSAPIListener(CSapiListener tsListener);
 
     /**

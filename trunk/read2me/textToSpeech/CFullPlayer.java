@@ -5,6 +5,14 @@ import javax.speech.synthesis.SynthesizerModeDesc;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ListModel;
 
+/**
+ * 
+ * @author Stefan Estrada
+ *
+ *Integrates FreeTTS and MS Sapi classes into one class using a unified interface.
+ *Which one is used by Read2Me is determined by the currently set voice in Read2Me.
+ *Some of the functions are only used by FreeTTS and not MS Sapi.
+ */
 public class CFullPlayer implements CPlayerInterface {
 	
 	private CPlayer freeTTSPlayer;
@@ -14,6 +22,9 @@ public class CFullPlayer implements CPlayerInterface {
 	//mode = 2 : SAPI
 	private DefaultComboBoxModel voiceList;
 	
+	/**
+     * Constructs a default CPlayer.
+     */
 	public CFullPlayer(){
 		
 		freeTTSPlayer = new CPlayer();
@@ -23,20 +34,35 @@ public class CFullPlayer implements CPlayerInterface {
 		
 	}
 	
+	/**
+     * Creates the list of synthesizers for FreeTTS.
+     * Initializes MS Sapi
+     */
 	public void createSynthesizers() {
 		freeTTSPlayer.createSynthesizers();
 		sapiPlayer.init();
 		sapiPlayer.start();
 	}
 	
+	/**
+     * Sets speakable listener (Only used for FreeTTS)
+     */
 	public void setListener(SpeakableListener tgListener){
     	freeTTSPlayer.setListener(tgListener);
     }
 	
+	/**
+	 * Sets SAPI Listener (Only used for MS Sapi)
+	 */
 	public void setSAPIListener(CSapiListener tsListener){
 		sapiPlayer.addListener(tsListener);
 	}
 	
+	/**
+     * Performs text-to-speech on the given SpeechObject.
+     *
+     * @param CSpeechObject the SpeechObject to perform text-to-speech
+     */
 	public void play(CSpeechObject speech) {
 		if(mode == 1)
 			freeTTSPlayer.play(speech);
@@ -46,10 +72,22 @@ public class CFullPlayer implements CPlayerInterface {
 		}
 	}
 	
+	/**
+     * Performs text-to-speech on the object at the given index of
+     * the play list. (Only used for FreeTTS)
+     *
+     * @param index the index of the SpeechObject on the play list
+     */
 	public void play(int index) {
 		freeTTSPlayer.play(index);
 	}
 	
+	/**
+     * Returns true if the player is paused.
+     *
+     * @return <code>true</code> if the player is paused,
+     *         <code>false</code> otherwise
+     */
 	public synchronized boolean isPaused() {
 		if(mode == 1)
 			return freeTTSPlayer.isPaused();
@@ -57,6 +95,9 @@ public class CFullPlayer implements CPlayerInterface {
 			return sapiPlayer.isPaused();
 	}
 	
+	/**
+     * Pauses the player.
+     */
 	public synchronized void pause() {
 		if(mode == 1)
 			freeTTSPlayer.pause();
@@ -64,6 +105,9 @@ public class CFullPlayer implements CPlayerInterface {
 			sapiPlayer.pause();
 	}
 	
+	/**
+     * Resumes the player.
+     */
 	public synchronized void resume() {
 		if(mode == 1)
 			freeTTSPlayer.resume();
@@ -71,6 +115,9 @@ public class CFullPlayer implements CPlayerInterface {
 			sapiPlayer.resumeSP();
 	}
 	
+	/**
+     * Stops the player if it is playing.
+     */
 	public synchronized void stop() {
 		if(mode == 1)
 			freeTTSPlayer.stop();
@@ -78,6 +125,9 @@ public class CFullPlayer implements CPlayerInterface {
 			sapiPlayer.stopSP();
 	}
 	
+	/**
+     * Cancels the currently playing item.
+     */
 	public void cancel() {
 		if(mode == 1)
 			freeTTSPlayer.cancel();
@@ -85,11 +135,20 @@ public class CFullPlayer implements CPlayerInterface {
 			sapiPlayer.cancel();
 	}
 	
+	/**
+     * Closes the CPlayer (Only used for FreeTTS)
+     */
 	public void close() {
 		if(mode == 1)
 			freeTTSPlayer.close();
 	}
 	
+	/**
+     * Sets the Synthesizer at the given index to use
+     * Creates global voice list including voice from both FreeTTS and MS Sapi
+     *
+     * @param index index of the synthesizer in the list
+     */
 	public void setSynthesizer(int index) {
 		freeTTSPlayer.setSynthesizer(index);
 		int totalVoices = sapiPlayer.getTotalVoices();
@@ -110,6 +169,11 @@ public class CFullPlayer implements CPlayerInterface {
 		}
 	}
 	
+	/**
+     * Sets the Voice at the given index to use.
+     *
+     * @param index the index of the voice in the list
+     */
 	public void setVoice(int index) {
 		PlayerVoice pVoice = (PlayerVoice) voiceList.getElementAt(index);
 		mode = pVoice.getMode();
@@ -119,6 +183,11 @@ public class CFullPlayer implements CPlayerInterface {
 			sapiPlayer.setVoice(index);
 	}
 	
+	/**
+     * Returns the volume.
+     *
+     * @return the volume, or -1 if unknown, or an error occurred (FreeTTS only)
+     */
 	public float getVolume() {
 		if(mode == 1)
 			return freeTTSPlayer.getVolume();
@@ -126,6 +195,13 @@ public class CFullPlayer implements CPlayerInterface {
 			return sapiPlayer.getVolume();
 	}
 	
+	/**
+     * Sets the volume.
+     *
+     * @param volume set the volume of the synthesizer
+     *
+     * @return true if new volume is set; false otherwise
+     */
 	 public boolean setVolume(float volume) {
 		 if(mode == 1)
 			 return freeTTSPlayer.setVolume(volume);
@@ -133,6 +209,11 @@ public class CFullPlayer implements CPlayerInterface {
 			 return sapiPlayer.setVolume(volume);
 	 }
 	 
+	 /**
+	     * Returns the speaking speed.
+	     *
+	     * @return the speaking speed, or -1 if unknown or an error occurred (FreeTTS only)
+	     */
 	 public float getSpeakingSpeed() {
 		 if(mode == 1)
 			 return freeTTSPlayer.getSpeakingSpeed();
@@ -140,6 +221,13 @@ public class CFullPlayer implements CPlayerInterface {
 			 return sapiPlayer.getSpeed();
 	 }
 	 
+	 /**
+	     * Sets the speaking speed in the number of words per minute.
+	     *
+	     * @param wordsPerMin the speaking speed
+	     *
+	     * @return true if new speaking speed is set; false otherwise
+	     */
 	 public boolean setSpeakingSpeed(float wordsPerMin) {
 		 if(mode == 1)
 			 return freeTTSPlayer.setSpeakingSpeed(wordsPerMin);
@@ -147,60 +235,78 @@ public class CFullPlayer implements CPlayerInterface {
 			 return sapiPlayer.setSpeed(wordsPerMin);
 	 }
 	 
+	 /**
+	     * Sets the list of voices using the given Synthesizer mode description.
+	     *
+	     * @param modeDesc the synthesizer mode description
+	     */
 	 public void setVoiceList(SynthesizerModeDesc modeDesc) {
 		 if(mode == 1)
 			 freeTTSPlayer.setVoiceList(modeDesc);
 	 }
 	 
+	 /**
+	     * Returns the play list.(Only used by FreeTTS)
+	     *
+	     * @return the play list
+	     */
 	 public ListModel getPlayList() {
 		 if(mode == 1)
 			 return freeTTSPlayer.getPlayList();
 		 else return null;
 	 }
 	 
+	 /**
+	     * Returns the list of voices of the current synthesizer
+	     *
+	     * @return the list of voices
+	     */
 	 public ListModel getVoiceList() {
 		 return voiceList;
 	 }
 	 
+	 /**
+	     * Returns the list synthesizers.
+	     *
+	     * @return the synthesizer list
+	     */
 	 public ListModel getSynthesizerList() {
 		 if(mode == 1)
 			 return freeTTSPlayer.getSynthesizerList();
 		 else return null;
 	 }
 
+	 /**
+	     * Returns the SpeechObject at the given index of the play list. (Used only by FreeTTS)
+	     *
+	     * @param index the index of the SpeechObject on the play list
+	     *
+	     * @return the CSpeechObject
+	     */
 	 public Object getSpeechObjectAt(int index) {
 		 if(mode == 1)
 			 return freeTTSPlayer.getSpeechObjectAt(index);
 		 else return null;
 	 }
 	 
+	 /**
+	     * Adds the given SpeechObject to the end of the play list. (Used only by FreeTTS)
+	     *
+	     * @param CSpeechObject the SpeechObject to add
+	     */
 	 public void addSpeech(CSpeechObject speech) {
 		 if(mode == 1)
 			 freeTTSPlayer.addSpeech(speech);
 	 }
 	 
+	 /**
+	     * Removes the SpeechObject at the given position from the list (Used only by FreeTTS)
+	     *
+	     * @param index the index of the SpeechObject to remove
+	     */
 	 public void removeSpeechObjectAt(int index) {
 		 if(mode == 1)
 			 freeTTSPlayer.removeSpeechObjectAt(index);
 	 }
 	 
 }
-/*
-/*class PlayerVoice {
-
-	private String name;
-	private int mode;
-	
-    public PlayerVoice(String name, int mode) {
-    	this.name = name;
-    	this.mode = mode;
-    }
-    
-    public String getName() {
-    	return name;
-    }
-    
-    public int getMode(){
-    	return mode;
-    }
-}*/

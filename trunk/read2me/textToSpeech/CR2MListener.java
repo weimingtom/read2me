@@ -3,6 +3,12 @@ package textToSpeech;
 import javax.speech.synthesis.SpeakableEvent;
 import javax.speech.synthesis.SpeakableListener;
 
+/**
+ * 
+ * @author Stefan Estrada
+ * 
+ *Default Listener used by CPlayer when one is not set.
+ */
 public class CR2MListener implements SpeakableListener {
 
     private String formatEvent(SpeakableEvent event) {
