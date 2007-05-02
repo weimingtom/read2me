@@ -167,7 +167,7 @@ public class CToolbar {
 
 		faqMenuItem.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				Program.launch(".\\resources\\tips.html");
+				Program.launch(".\\resources\\FAQ.html");
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
 			}
