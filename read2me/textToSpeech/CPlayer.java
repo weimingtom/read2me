@@ -15,13 +15,9 @@ import java.util.Iterator;
 
 import javax.speech.AudioException;
 import javax.speech.Central;
-import com.sun.speech.freetts.jsapi.FreeTTSEngineCentral; 
-import javax.speech.EngineCreate;
-import java.util.Locale;
 import javax.speech.Engine;
 import javax.speech.EngineException;
 import javax.speech.EngineList;
-import javax.speech.synthesis.SpeakableAdapter;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerModeDesc;
 import javax.speech.synthesis.SynthesizerProperties;
@@ -93,40 +89,19 @@ public class CPlayer implements CPlayerInterface {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    	/*try {
-            SynthesizerModeDesc desc = 
-                new SynthesizerModeDesc(null, 
-                                        "time", // use "time" or "general"
-                                        Locale.US, 
-                                        Boolean.FALSE,
-                                        null);
-
-            FreeTTSEngineCentral central = new FreeTTSEngineCentral();
-            EngineList list = central.createEngineList(desc); 
-            
-            if (list.size() > 0) { 
-                EngineCreate creator = (EngineCreate) list.get(0); 
-                synthesizer = (Synthesizer) creator.createEngine(); 
-            } 
-            if (synthesizerList.getSize() > 0) {
-        		setSynthesizer(0);
-            }
-            else if (synthesizer == null) {
-                System.err.println("Cannot create synthesizer");
-                System.exit(1);
-            }
-            synthesizer.allocate();
-            synthesizer.resume();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
     }
     
+    /**
+     * Sets FreeTTS Event Listener
+     */
     public void setListener(SpeakableListener tgListener){
     	speakListener = tgListener;
     }
     
+    /**
+     * Needed because it is used in the Read2Me TTS Interface which is also used
+     * by this class but doesn't actually do anything in this class.
+     */
     public void setSAPIListener(CSapiListener tsListener){
     	
     }
