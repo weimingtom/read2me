@@ -20,6 +20,9 @@ package gui;
 
 import textToSpeech.*;
 
+/**
+ * displays the status of the MS SAPI reading
+ */
 public class CTSListener implements CSapiListener{
 	
 	private CGUICommand GUIMain;

@@ -31,14 +31,19 @@ import java.util.Properties;
 import java.io.*;
 import java.util.*;
 
-
+/**
+ * creates the main window
+ * and implements the listener
+ */
 public class CGUIMain {
 	
 	/** To keep track if we are currently reading or not */
 	private static boolean isPlaying = false;
-	/** To keep track if we are in pause mod */
+	/** To keep track if we are in pause mode */
 	private boolean isPaused=false;
+	/** the shell*/
 	public static Shell s;
+	/** the display*/
 	public static Display d;
 	/** StyledText widget for the text area */
 	private static StyledText textArea;

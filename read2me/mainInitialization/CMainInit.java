@@ -26,8 +26,8 @@ import javax.swing.ListModel;
 import textToSpeech.PlayerVoice;
 
 /**
- * This class is main entry for the Read2Me! program
- * All the initializations will take place in this class
+ * This class is the main entry for the Read2Me! program
+ * All the initializations take place in this class
  * The user will be redirected from here to the place he needs to go
  *
  */
@@ -37,8 +37,6 @@ public class CMainInit {
 	public static void main(String[] a){
 		System.out.println("Starting Read2Me!");
 		//System.out.println(System.getProperty("os.name"));
-		//System.out.println(System.getProperty("java.class.path"));
-		//System.out.println(System.getProperty("java.library.path"));
 		
 		// Text To Speech players (Free TTS / MS SAPI) initialization
 		final CPlayerInterface player;
