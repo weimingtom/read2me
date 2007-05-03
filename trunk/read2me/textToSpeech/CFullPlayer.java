@@ -25,7 +25,7 @@ import javax.swing.ListModel;
 
 /**
  * 
- * @author Stefan Estrada
+ * 
  *
  *Integrates FreeTTS and MS Sapi classes into one class using a unified interface.
  *Which one is used by Read2Me is determined by the currently set voice in Read2Me.
@@ -79,7 +79,7 @@ public class CFullPlayer implements CPlayerInterface {
 	/**
      * Performs text-to-speech on the given SpeechObject.
      *
-     * @param CSpeechObject the SpeechObject to perform text-to-speech
+     * @param speech the SpeechObject to perform text-to-speech
      */
 	public void play(CSpeechObject speech) {
 		if(mode == 1)
@@ -310,7 +310,7 @@ public class CFullPlayer implements CPlayerInterface {
 	 /**
 	     * Adds the given SpeechObject to the end of the play list. (Used only by FreeTTS)
 	     *
-	     * @param CSpeechObject the SpeechObject to add
+	     * @param speech the SpeechObject to add
 	     */
 	 public void addSpeech(CSpeechObject speech) {
 		 if(mode == 1)

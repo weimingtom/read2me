@@ -20,7 +20,7 @@ package textToSpeech;
 
 /**
  * 
- * @author Stefan Estrada
+ * 
  *
  * Object used to store Voice properties including
  * voice name, mode (whether it is a FreeTTS or MS Sapi voice),

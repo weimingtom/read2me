@@ -23,7 +23,7 @@ import javax.speech.synthesis.SpeakableListener;
 
 /**
  * 
- * @author Stefan Estrada
+ * 
  * 
  *Default Listener used by CPlayer when one is not set.
  */
