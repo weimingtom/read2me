@@ -565,7 +565,7 @@ public class CGUIMain {
 				export.setLayoutData(data);
 				export.setToolTipText("Export Button");
 				Label labExport = new Label(shellWin,SWT.BEGINNING);
-				labExport.setText("Export the current text to an audio file \nTakes effect when you hit the next time you STOP");
+				labExport.setText("Export the current text to an audio file");
 
 				data = new GridData(SWT.CENTER);
 				Label vol = new Label(shellWin, SWT.BEGINNING);
@@ -573,7 +573,7 @@ public class CGUIMain {
 				vol.setLayoutData(data);
 				vol.setToolTipText("Volume adjustment");
 				Label labVol = new Label(shellWin,SWT.BEGINNING);
-				labVol.setText("Adjust the volume of the voice with the scale \nTakes effect the next time you hit STOP");
+				labVol.setText("Adjust the volume of the voice with the scale \nTakes effect next time you hit STOP");
 
 				data = new GridData(SWT.CENTER);
 				Label speed = new Label(shellWin, SWT.BEGINNING);
@@ -581,7 +581,7 @@ public class CGUIMain {
 				speed.setLayoutData(data);
 				speed.setToolTipText("Speed adjustment");
 				Label labSpeed = new Label(shellWin,SWT.BEGINNING);
-				labSpeed.setText("Adjust the reading speed with the scale");
+				labSpeed.setText("Adjust the reading speed with the scale \nTakes effect next time you hit STOP");
 				
 				data = new GridData(SWT.CENTER);
 				Label adHelp = new Label(shellWin, SWT.PUSH);
