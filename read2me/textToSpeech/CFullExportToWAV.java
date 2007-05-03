@@ -20,7 +20,7 @@ package textToSpeech;
 
 /**
  * 
- * @author Stefan Estrada
+ * 
  * 
  * Combines the WAV exporting functionality of both FreeTTS and MS Sapi into
  * one class that determines which one to use based on the voice currently

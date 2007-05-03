@@ -197,7 +197,7 @@ public class CPlayer implements CPlayerInterface {
     /**
      * Performs text-to-speech on the given JSML text.
      *
-     * @param text the text to perform TTS
+     * @param jsmlText the text to perform TTS
      */
     private void playJSML(String jsmlText) {
 	try {
@@ -229,7 +229,7 @@ public class CPlayer implements CPlayerInterface {
     /**
      * Plays the text in the given File.
      *
-     * @param file the File to play
+     * @param inStream the File to play
      * @param type the file type
      */
     private void playInputStream(InputStream inStream, CSpeechType type) {
@@ -600,7 +600,6 @@ class MyVoice extends Voice {
     /**
      * Returns the name of the person who owns this Voice.
      *
-     * @param String the name of the person
      */
     public String toString() {
 	return getName();

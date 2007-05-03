@@ -25,7 +25,7 @@ import com.jacob.com.Variant;
 
 /**
  * 
- * @author Stefan Estrada
+ * 
  * 
  * Controls MS SAPI through the Microsoft COM interface using the Jacob libraries.
  * Implements Play, Stop, Cancel, Pause, Change and get voices, and wav export.
@@ -364,7 +364,7 @@ public class CSapiControl extends Thread{
 
 /**
  * 
- * @author Stefan Estrada
+ * 
  *
  * Object that stores name of MS Sapi voice.
  */
