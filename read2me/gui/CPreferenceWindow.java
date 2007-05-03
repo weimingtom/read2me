@@ -1,21 +1,3 @@
-/*
-This file is part of Read2Me!
-
-Read2Me! is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-Read2Me! is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Read2Me!. If not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
-
 package gui;
 
 import org.eclipse.swt.SWT;
@@ -113,7 +95,7 @@ public class CPreferenceWindow {
 	{
 		return voicesArray[selected];
 	}
-
+ 
 	/**
 	 * displays the preference window
 	 * @param s the shell
@@ -143,16 +125,16 @@ public class CPreferenceWindow {
 		layout.marginTop = 20;
 		layout.verticalSpacing = 30;
 		
-		prefWin.setLayout(layout);
+		//prefWin.setLayout(layout);
 
 		//the text background color label
 		labelBkgColor = new Label(prefWin, SWT.PUSH);
-		//labelBkgColor.setBounds(30, 30, 110, 15);
+		labelBkgColor.setBounds(30, 30, 110, 15);
 		labelBkgColor.setText("Text Background Color");
 		
 		//the text background color change button
 		final Button bTextBkgColor = new Button(prefWin, SWT.PUSH);
-		//bTextBkgColor.setBounds(180, 25, 70, 25);
+		bTextBkgColor.setBounds(180, 25, 70, 25);
 		bTextBkgColor.setText(" Change ");
 		bTextBkgColor.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -171,12 +153,12 @@ public class CPreferenceWindow {
 
 		//the windows color label
 		labelWinColor = new Label(prefWin, SWT.PUSH);
-		//labelWinColor.setBounds(30, 80, 120, 15);
+		labelWinColor.setBounds(30, 80, 120, 15);
 		labelWinColor.setText("Windows color");
 		
 //		 the windows color change color
 		final Button bWindowsColor = new Button(prefWin, SWT.PUSH);
-		//bWindowsColor.setBounds(180, 75, 70, 25);
+		bWindowsColor.setBounds(180, 75, 70, 25);
 		bWindowsColor.setText(" Change ");
 		bWindowsColor.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -204,12 +186,12 @@ public class CPreferenceWindow {
 
 		//the font label
 		labelFont = new Label(prefWin, SWT.PUSH);
-		//labelFont.setBounds(30, 120, 120, 50);
+		labelFont.setBounds(30, 120, 120, 50);
 		labelFont.setText("Font");
 		
 //		the font change button
 		final Button bFont = new Button(prefWin, SWT.PUSH);
-		//bFont.setBounds(180, 125, 70, 25);
+		bFont.setBounds(180, 125, 70, 25);
 		bFont.setText(" Change ");
 		bFont.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -236,12 +218,12 @@ public class CPreferenceWindow {
 
 		//the voice label
 		labelVoice = new Label(prefWin, SWT.PUSH);
-		//labelVoice.setBounds(30, 180, 120, 20);
+		labelVoice.setBounds(30, 180, 120, 20);
 		labelVoice.setText("Select voice: ");
 
 //		the combo box to select the voices
 		voiceSel = new Combo(prefWin, SWT.READ_ONLY);
-		//voiceSel.setBounds(180, 180, 90, 40);
+		voiceSel.setBounds(180, 180, 90, 40);
 		voiceSel.setItems(voices);
 		voiceSel.select(selected);
 		voiceSel.addSelectionListener(new SelectionListener() {
@@ -256,12 +238,12 @@ public class CPreferenceWindow {
 		
 		//the add abbreviation label
 		labelAbbr = new Label(prefWin, SWT.PUSH);
-		//labelAbbr.setBounds(30, 230, 120, 20);
+		labelAbbr.setBounds(30, 230, 120, 20);
 		labelAbbr.setText("Abbreviations: ");
 		
 		//the abbreviation manage button
 		final Button bAbbr = new Button(prefWin, SWT.PUSH);
-		//bAbbr.setBounds(180, 225, 70, 25);
+		bAbbr.setBounds(180, 225, 70, 25);
 		bAbbr.setText(" Manage ");
 		bAbbr.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -301,11 +283,11 @@ public class CPreferenceWindow {
 		savePrefButton.setLayoutData(data);
 		savePrefButton.setText("   Save   ");
 		
-		//savePrefButton.setBounds(90, 290, 55, 25);
+		savePrefButton.setBounds(90, 290, 55, 25);
 
 		final Button cancelPrefButton = new Button(prefWin, SWT.PUSH);
 		cancelPrefButton.setText("  Cancel  ");
-		//cancelPrefButton.setBounds(155, 290, 55, 25);
+		cancelPrefButton.setBounds(155, 290, 55, 25);
 
 
 		//gets the properties (Font, Color...) from the main window
@@ -318,7 +300,6 @@ public class CPreferenceWindow {
 		labelFont.setForeground(textArea.getForeground());
 		labelVoice.setBackground(s.getBackground());
 		labelAbbr.setBackground(s.getBackground());
-
 
 		//save the main window customization options
 		//useful if the user decides to cancel his choice
@@ -343,7 +324,6 @@ public class CPreferenceWindow {
 				textArea.setBackground(colorMTextBkg);
 				textArea.setFont(fontM);
 				textArea.setForeground(colorFont);
-				
 				prefWin.close();
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {                
