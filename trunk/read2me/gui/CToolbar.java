@@ -25,17 +25,31 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.program.Program;
-//import java.awt.datatransfer.*;
 
 public class CToolbar {
 
 	private static CPreferenceWindow pref;
 	
-	
+	/**
+	 * @return the index of the selected voice
+	 */
 	int getIndexVoice()
 	{
 		return pref.selected;
 	}
+
+	/**
+	 * creates the menu toolbar
+	 * @param s the shell
+	 * @param d the display
+	 * @param textArea the textarea
+	 * @param volumeLabel
+	 * @param speedLabel
+	 * @param editLabel
+	 * @param voices
+	 * @param Svolume the volume scale
+	 * @param Sspeed the reading speed scale
+	 */
 	CToolbar(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, final Label editLabel, final String[] voices, final Scale Svolume, final Scale Sspeed)
 	{
 		pref = new CPreferenceWindow();

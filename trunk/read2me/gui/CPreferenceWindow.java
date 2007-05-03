@@ -41,11 +41,19 @@ import org.eclipse.swt.graphics.FontData;
 import java.util.Properties;
 import java.io.*;
 
+/**
+ * This is the preference class.
+ * Allows the customization of Read2Me!
+ * Allows to change the windows color, the text color/font/size and the voice.
+ * Allows to add specific word like abbreviations
+ * and the way they should be pronounced 
+ */
 public class CPreferenceWindow {
 
+	/** the text font*/
 	private Font font;
+	/** the font color*/
 	private Color fontColor;
-
 	/**main window: font*/
 	private Font fontM;
 	/** main window: text color background*/
@@ -81,8 +89,9 @@ public class CPreferenceWindow {
 	private boolean fontSet=false;
 
 
-	//public CPreferenceWindow(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, String[] voices){
-
+	/**
+	 * loads the user customization if there is one
+	 */
 	public CPreferenceWindow()
 	{
 		prop=new Properties();
@@ -97,11 +106,27 @@ public class CPreferenceWindow {
 	}
 
 
+	/**
+	 * @return the name of the selected voice
+	 */
 	public String getVoiceName()
 	{
 		return voicesArray[selected];
 	}
 
+	/**
+	 * displays the preference window
+	 * @param s the shell
+	 * @param d the display
+	 * @param textArea 
+	 * @param volumeLabel 
+	 * @param speedLabel
+	 * @param editLabel
+	 * @param voices
+	 * @param Svolume the volume scale
+	 * @param Sspeed the reading speed scale
+	 * @param voice
+	 */
 	public void display(final Shell s, final Display d, final StyledText textArea, final Label volumeLabel, final Label speedLabel, final Label editLabel, final String[] voices, final Scale Svolume, final Scale Sspeed, final MenuItem voice){
 		voicesArray = voices;
 		old_selected = selected;
@@ -335,17 +360,26 @@ public class CPreferenceWindow {
 		});
 	}
 
+	/**
+	 * saves the preferences to a file
+	 * so when the user launches Read2Me!
+	 * he automatically finds it as he left it
+	 * (with the voice, the font, the color...
+	 *
+	 */
 	public void savePref()
 	{
-
+		//saves the text background color
 		prop.setProperty("textBkgColorR" , ""+labelBkgColor.getBackground().getRed());
 		prop.setProperty("textBkgColorG" , ""+labelBkgColor.getBackground().getGreen());
 		prop.setProperty("textBkgColorB" , ""+labelBkgColor.getBackground().getBlue());
-
+		
+//		saves the window color
 		prop.setProperty("windowsColorR", ""+prefWin.getBackground().getRed());
 		prop.setProperty("windowsColorG", ""+prefWin.getBackground().getGreen());
 		prop.setProperty("windowsColorB", ""+prefWin.getBackground().getBlue());
 
+		//saves the font/fontcolor/fonstyle/fontsize
 		if(fontSet){
 			prop.setProperty("fontName", ""+font.getFontData()[0].getName());
 			prop.setProperty("fontHeight", ""+font.getFontData()[0].getHeight());
@@ -355,7 +389,7 @@ public class CPreferenceWindow {
 			prop.setProperty("fontColorG", ""+fontColor.getGreen());
 			prop.setProperty("fontColorB", ""+fontColor.getBlue());
 		}
-
+		//saves the voice
 		prop.setProperty("voiceIndex", ""+selected);
 
 
